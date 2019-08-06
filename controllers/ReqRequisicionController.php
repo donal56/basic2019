@@ -3,8 +3,8 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Requisicion;
-use app\models\RequisicionSearch;
+use app\models\ReqRequisicion;
+use app\models\ReqRequisicionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -18,7 +18,7 @@ use app\models\ReqDetalle;
 /**
  * RequisicionController implements the CRUD actions for Requisicion model.
  */
-class RequisicionController extends Controller
+class ReqRequisicionController extends Controller
 {
     /**
      * @inheritdoc
@@ -41,7 +41,7 @@ class RequisicionController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new RequisicionSearch();
+        $searchModel = new ReqRequisicionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -72,7 +72,7 @@ class RequisicionController extends Controller
 
     {   
 
-        $model = new  Requisicion();
+        $model = new  ReqRequisicion();
         $modelDet = new  ReqDetalle();
 
 
@@ -227,7 +227,7 @@ class RequisicionController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Requisicion::findOne($id)) !== null) {
+        if (($model = ReqRequisicion::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('La requesicion solicitada no existe.');

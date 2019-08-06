@@ -3,17 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\ReqArea;
 use app\models\ReqPersonal;
-use app\models\AreaSearch;
+use app\models\ReqPersonalSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * AreaController implements the CRUD actions for ReqArea model.
+ * PersonalController implements the CRUD actions for ReqPersonal model.
  */
-class AreaController extends Controller
+class ReqPersonalController extends Controller
 {
     /**
      * @inheritdoc
@@ -31,12 +30,12 @@ class AreaController extends Controller
     }
 
     /**
-     * Lists all ReqArea models.
+     * Lists all ReqPersonal models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new AreaSearch();
+        $searchModel = new ReqPersonalSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -46,7 +45,7 @@ class AreaController extends Controller
     }
 
     /**
-     * Displays a single ReqArea model.
+     * Displays a single ReqPersonal model.
      * @param integer $id
      * @return mixed
      */
@@ -58,16 +57,16 @@ class AreaController extends Controller
     }
 
     /**
-     * Creates a new ReqArea model.
+     * Creates a new ReqPersonal model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new ReqArea();
+        $model = new ReqPersonal();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->are_id]);
+            return $this->redirect(['view', 'id' => $model->per_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -76,7 +75,7 @@ class AreaController extends Controller
     }
 
     /**
-     * Updates an existing ReqArea model.
+     * Updates an existing ReqPersonal model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -86,7 +85,7 @@ class AreaController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->are_id]);
+            return $this->redirect(['view', 'id' => $model->per_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -95,7 +94,7 @@ class AreaController extends Controller
     }
 
     /**
-     * Deletes an existing ReqArea model.
+     * Deletes an existing ReqPersonal model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -108,18 +107,24 @@ class AreaController extends Controller
     }
 
     /**
-     * Finds the ReqArea model based on its primary key value.
+     * Finds the ReqPersonal model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return ReqArea the loaded model
+     * @return ReqPersonal the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = ReqArea::findOne($id)) !== null) {
+        if (($model = ReqPersonal::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    protected function fullName($per)
+    { 
+        return  $per->per_nombre." ".
+                $per->per_paterno." ".
+                $per->per_materno;
     }
 }

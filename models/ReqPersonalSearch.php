@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\ReqConfiguracion;
+use app\models\ReqPersonal;
 
 /**
- * ConfiguracionSearch represents the model behind the search form about `app\models\ReqConfiguracion`.
+ * PersonalSearch represents the model behind the search form about `app\models\ReqPersonal`.
  */
-class ConfiguracionSearch extends ReqConfiguracion
+class ReqPersonalSearch extends ReqPersonal
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class ConfiguracionSearch extends ReqConfiguracion
     public function rules()
     {
         return [
-            [['con_id'], 'integer'],
-            [['con_instituto', 'con_logo', 'con_revision'], 'safe'],
+            [['per_id', 'per_fkuser'], 'integer'],
+            [['per_nombre', 'per_paterno', 'per_materno'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class ConfiguracionSearch extends ReqConfiguracion
      */
     public function search($params)
     {
-        $query = ReqConfiguracion::find();
+        $query = ReqPersonal::find();
 
         // add conditions that should always apply here
 
@@ -59,12 +59,13 @@ class ConfiguracionSearch extends ReqConfiguracion
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'con_id' => $this->con_id,
+            'per_id' => $this->per_id,
+            'per_fkuser' => $this->per_fkuser,
         ]);
 
-        $query->andFilterWhere(['like', 'con_instituto', $this->con_instituto])
-            ->andFilterWhere(['like', 'con_logo', $this->con_logo])
-            ->andFilterWhere(['like', 'con_revision', $this->con_revision]);
+        $query->andFilterWhere(['like', 'per_nombre', $this->per_nombre])
+            ->andFilterWhere(['like', 'per_paterno', $this->per_paterno])
+            ->andFilterWhere(['like', 'per_materno', $this->per_materno]);
 
         return $dataProvider;
     }

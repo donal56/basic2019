@@ -3,16 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\ReqPersonal;
-use app\models\PersonalSearch;
+use app\models\ReqConfiguracion;
+use app\models\ReqConfiguracionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * PersonalController implements the CRUD actions for ReqPersonal model.
+ * ConfiguracionController implements the CRUD actions for ReqConfiguracion model.
  */
-class PersonalController extends Controller
+class ReqConfiguracionController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +30,12 @@ class PersonalController extends Controller
     }
 
     /**
-     * Lists all ReqPersonal models.
+     * Lists all ReqConfiguracion models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new PersonalSearch();
+        $searchModel = new ReqConfiguracionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class PersonalController extends Controller
     }
 
     /**
-     * Displays a single ReqPersonal model.
+     * Displays a single ReqConfiguracion model.
      * @param integer $id
      * @return mixed
      */
@@ -57,16 +57,16 @@ class PersonalController extends Controller
     }
 
     /**
-     * Creates a new ReqPersonal model.
+     * Creates a new ReqConfiguracion model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new ReqPersonal();
+        $model = new ReqConfiguracion();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->per_id]);
+            return $this->redirect(['view', 'id' => $model->con_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -75,7 +75,7 @@ class PersonalController extends Controller
     }
 
     /**
-     * Updates an existing ReqPersonal model.
+     * Updates an existing ReqConfiguracion model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -85,7 +85,7 @@ class PersonalController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->per_id]);
+            return $this->redirect(['view', 'id' => $model->con_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -94,7 +94,7 @@ class PersonalController extends Controller
     }
 
     /**
-     * Deletes an existing ReqPersonal model.
+     * Deletes an existing ReqConfiguracion model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -107,24 +107,18 @@ class PersonalController extends Controller
     }
 
     /**
-     * Finds the ReqPersonal model based on its primary key value.
+     * Finds the ReqConfiguracion model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return ReqPersonal the loaded model
+     * @return ReqConfiguracion the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = ReqPersonal::findOne($id)) !== null) {
+        if (($model = ReqConfiguracion::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-    protected function fullName($per)
-    { 
-        return  $per->per_nombre." ".
-                $per->per_paterno." ".
-                $per->per_materno;
     }
 }

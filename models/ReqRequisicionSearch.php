@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Requisicion;
+use app\models\ReqRequisicion;
 
 /**
  * RequisicionSearch represents the model behind the search form about `app\models\Requisicion`.
  */
-class RequisicionSearch extends Requisicion
+class ReqRequisicionSearch extends ReqRequisicion
 {
     /**
      * @inheritdoc
@@ -41,7 +41,7 @@ class RequisicionSearch extends Requisicion
      */
     public function search($params)
     {
-        $query = Requisicion::find();
+        $query = ReqRequisicion::find();
 
         // add conditions that should always apply here
 

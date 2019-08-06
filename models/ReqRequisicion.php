@@ -26,7 +26,7 @@ use Yii;
  * @property ReqPersonal $reqFkperDirector
  * @property ReqConfiguracion $reqFkconfiguracion
  */
-class Requisicion extends \yii\db\ActiveRecord
+class ReqRequisicion extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc

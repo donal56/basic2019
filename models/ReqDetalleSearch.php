@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\ReqArea;
+use app\models\ReqDetalle;
 
 /**
- * AreaSearch represents the model behind the search form about `app\models\ReqArea`.
+ * ReqDetalleSearch represents the model behind the search form about `app\models\ReqDetalle`.
  */
-class AreaSearch extends ReqArea
+class ReqDetalleSearch extends ReqDetalle
 {
     /**
      * @inheritdoc
@@ -18,8 +18,9 @@ class AreaSearch extends ReqArea
     public function rules()
     {
         return [
-            [['are_id', 'are_nivel', 'are_fkper_responsable', 'are_fkper_superior'], 'integer'],
-            [['are_nombre'], 'safe'],
+            [['det_id', 'det_fkrequisicion'], 'integer'],
+            [['det_clave', 'det_partida', 'det_unidad', 'det_descripcion'], 'safe'],
+            [['det_cantidad', 'det_costo'], 'number'],
         ];
     }
 
@@ -41,7 +42,7 @@ class AreaSearch extends ReqArea
      */
     public function search($params)
     {
-        $query = ReqArea::find();
+        $query = ReqDetalle::find();
 
         // add conditions that should always apply here
 
@@ -59,13 +60,16 @@ class AreaSearch extends ReqArea
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'are_id' => $this->are_id,
-            'are_nivel' => $this->are_nivel,
-            'are_fkper_responsable' => $this->are_fkper_responsable,
-            'are_fkper_superior' => $this->are_fkper_superior,
+            'det_id' => $this->det_id,
+            'det_fkrequisicion' => $this->det_fkrequisicion,
+            'det_cantidad' => $this->det_cantidad,
+            'det_costo' => $this->det_costo,
         ]);
 
-        $query->andFilterWhere(['like', 'are_nombre', $this->are_nombre]);
+        $query->andFilterWhere(['like', 'det_clave', $this->det_clave])
+            ->andFilterWhere(['like', 'det_partida', $this->det_partida])
+            ->andFilterWhere(['like', 'det_unidad', $this->det_unidad])
+            ->andFilterWhere(['like', 'det_descripcion', $this->det_descripcion]);
 
         return $dataProvider;
     }

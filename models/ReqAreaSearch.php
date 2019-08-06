@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\ReqPersonal;
+use app\models\ReqArea;
 
 /**
- * PersonalSearch represents the model behind the search form about `app\models\ReqPersonal`.
+ * AreaSearch represents the model behind the search form about `app\models\ReqArea`.
  */
-class PersonalSearch extends ReqPersonal
+class ReqAreaSearch extends ReqArea
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class PersonalSearch extends ReqPersonal
     public function rules()
     {
         return [
-            [['per_id', 'per_fkuser'], 'integer'],
-            [['per_nombre', 'per_paterno', 'per_materno'], 'safe'],
+            [['are_id', 'are_nivel', 'are_fkper_responsable', 'are_fkper_superior'], 'integer'],
+            [['are_nombre'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class PersonalSearch extends ReqPersonal
      */
     public function search($params)
     {
-        $query = ReqPersonal::find();
+        $query = ReqArea::find();
 
         // add conditions that should always apply here
 
@@ -59,13 +59,13 @@ class PersonalSearch extends ReqPersonal
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'per_id' => $this->per_id,
-            'per_fkuser' => $this->per_fkuser,
+            'are_id' => $this->are_id,
+            'are_nivel' => $this->are_nivel,
+            'are_fkper_responsable' => $this->are_fkper_responsable,
+            'are_fkper_superior' => $this->are_fkper_superior,
         ]);
 
-        $query->andFilterWhere(['like', 'per_nombre', $this->per_nombre])
-            ->andFilterWhere(['like', 'per_paterno', $this->per_paterno])
-            ->andFilterWhere(['like', 'per_materno', $this->per_materno]);
+        $query->andFilterWhere(['like', 'are_nombre', $this->are_nombre]);
 
         return $dataProvider;
     }

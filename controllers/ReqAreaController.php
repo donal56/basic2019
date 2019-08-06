@@ -3,16 +3,17 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\ReqConfiguracion;
-use app\models\ConfiguracionSearch;
+use app\models\ReqArea;
+use app\models\ReqPersonal;
+use app\models\ReqAreaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ConfiguracionController implements the CRUD actions for ReqConfiguracion model.
+ * AreaController implements the CRUD actions for ReqArea model.
  */
-class ConfiguracionController extends Controller
+class ReqAreaController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +31,12 @@ class ConfiguracionController extends Controller
     }
 
     /**
-     * Lists all ReqConfiguracion models.
+     * Lists all ReqArea models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ConfiguracionSearch();
+        $searchModel = new ReqAreaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +46,7 @@ class ConfiguracionController extends Controller
     }
 
     /**
-     * Displays a single ReqConfiguracion model.
+     * Displays a single ReqArea model.
      * @param integer $id
      * @return mixed
      */
@@ -57,16 +58,16 @@ class ConfiguracionController extends Controller
     }
 
     /**
-     * Creates a new ReqConfiguracion model.
+     * Creates a new ReqArea model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new ReqConfiguracion();
+        $model = new ReqArea();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->con_id]);
+            return $this->redirect(['view', 'id' => $model->are_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -75,7 +76,7 @@ class ConfiguracionController extends Controller
     }
 
     /**
-     * Updates an existing ReqConfiguracion model.
+     * Updates an existing ReqArea model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -85,7 +86,7 @@ class ConfiguracionController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->con_id]);
+            return $this->redirect(['view', 'id' => $model->are_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -94,7 +95,7 @@ class ConfiguracionController extends Controller
     }
 
     /**
-     * Deletes an existing ReqConfiguracion model.
+     * Deletes an existing ReqArea model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -107,15 +108,15 @@ class ConfiguracionController extends Controller
     }
 
     /**
-     * Finds the ReqConfiguracion model based on its primary key value.
+     * Finds the ReqArea model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return ReqConfiguracion the loaded model
+     * @return ReqArea the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = ReqConfiguracion::findOne($id)) !== null) {
+        if (($model = ReqArea::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
