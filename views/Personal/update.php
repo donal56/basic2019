@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\ReqPersonal */
 
-$this->title = 'Update Req Personal: ' . $model->per_id;
-$this->params['breadcrumbs'][] = ['label' => 'Req Personals', 'url' => ['index']];
+$this->title = 'Actualizar Personal: ' . $model->per_id;
+$this->params['breadcrumbs'][] = ['label' => 'Personas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->per_id, 'url' => ['view', 'id' => $model->per_id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

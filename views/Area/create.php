@@ -10,7 +10,7 @@ use yii\db\Query;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\ReqArea */
-	$this->title = "Crear Area";
+	$this->title = "Crear Área";
     $this->params['breadcrumbs'][] = ['label' => 'Área', 'url' => ['index']];
     $this->params['breadcrumbs'][] = $this->title;
 ?>

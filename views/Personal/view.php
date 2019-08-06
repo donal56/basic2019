@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\ReqPersonal */
 
 $this->title = $model->per_id;
-$this->params['breadcrumbs'][] = ['label' => 'Req Personals', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Personas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="req-personal-view">

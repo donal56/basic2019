@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\ReqConfiguracion */
 
 $this->title = $model->con_id;
-$this->params['breadcrumbs'][] = ['label' => 'Req Configuracions', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Configuraciones', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="req-configuracion-view">
