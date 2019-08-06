@@ -1,0 +1,21 @@
+<?php
+
+use yii\helpers\Html;
+
+
+/* @var $this yii\web\View */
+/* @var $model app\models\ReqConfiguracion */
+
+$this->title = 'Create Req Configuracion';
+$this->params['breadcrumbs'][] = ['label' => 'Req Configuracions', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="req-configuracion-create">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+
+    <?= $this->render('_form', [
+        'model' => $model,
+    ]) ?>
+
+</div>
