@@ -52,42 +52,6 @@ use yii\db\Query;
     <?= $form -> field($model, 'req_fkper_director') -> dropDownList(ArrayHelper::map($data4, "ID", "Nombre")) ?>
     <?= $form -> field($model, 'req_fkconfiguracion') -> dropDownList(ArrayHelper::map($data5, "ID", "Instituto")) ?>
 
-    <?= $form->field($modelDet, 'det_id')->widget(MultipleInput::className(), 
-    [
-        'allowEmptyList'    => false,
-        'addButtonPosition' => MultipleInput::POS_ROW,
-        'prepend'   => true,
-        'sortable' => true,
-        'columns' => 
-        [
-            [
-            'name'  => 'det_clave',
-            'title' => 'Clave'
-            ],
-            [
-            'name'  => 'det_partida',
-            'title' => 'Partida'
-            ],
-            [
-            'name'  => 'req_cantidad',
-            'title' => 'Cantidad'
-            ],
-            [
-            'name'  => 'req_unidad',
-            'title' => 'Unidad'
-            ],
-            [
-            'name'  => 'req_descripcion',
-            'title' => 'Descripcion'
-            ],
-            [
-            'name'  => 'req_costo',
-            'title' => 'Costo'
-            ]
-        ]
-    ]);
-    ?>
-
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
