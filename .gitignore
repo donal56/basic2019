@@ -2,6 +2,7 @@
 /assets
 /commands
 /components
+/config
 /mail
 /runtime
 /tests
