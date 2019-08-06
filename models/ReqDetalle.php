@@ -51,14 +51,14 @@ class ReqDetalle extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'det_id' => 'Det ID',
-            'det_fkrequisicion' => 'Det Fkrequisicion',
-            'det_clave' => 'Det Clave',
-            'det_partida' => 'Det Partida',
-            'det_cantidad' => 'Det Cantidad',
-            'det_unidad' => 'Det Unidad',
-            'det_descripcion' => 'Det Descripcion',
-            'det_costo' => 'Det Costo',
+            'det_id' => 'Id',
+            'det_fkrequisicion' => 'Requisición',
+            'det_clave' => 'Clave presupuestal',
+            'det_partida' => 'Partida',
+            'det_cantidad' => 'Cantidad',
+            'det_unidad' => 'Unidad',
+            'det_descripcion' => 'Descripción',
+            'det_costo' => 'Costo estimado (Total + IVA)',
         ];
     }
 

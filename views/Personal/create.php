@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\ReqPersonal */
 
-$this->title = 'Create Req Personal';
-$this->params['breadcrumbs'][] = ['label' => 'Req Personals', 'url' => ['index']];
+$this->title = 'Crear Personal';
+$this->params['breadcrumbs'][] = ['label' => 'Personas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="req-personal-create">

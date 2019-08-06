@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\ReqArea */
 
 $this->title = $model->are_id;
-$this->params['breadcrumbs'][] = ['label' => 'Req Areas', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Areas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="req-area-view">

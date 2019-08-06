@@ -61,17 +61,17 @@ class Requisicion extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'req_id' => 'Req ID',
-            'req_fecha' => 'Req Fecha',
-            'req_folio' => 'Req Folio',
-            'req_fkper_solicitante' => 'Req Fkper Solicitante',
-            'req_fechasolicitante' => 'Req Fechasolicitante',
-            'req_esoperativo' => 'Req Esoperativo',
-            'req_justificacion' => 'Req Justificacion',
-            'req_fkper_subdirector' => 'Req Fkper Subdirector',
-            'req_fkper_planeacion' => 'Req Fkper Planeacion',
-            'req_fkper_director' => 'Req Fkper Director',
-            'req_fkconfiguracion' => 'Req Fkconfiguracion',
+            'req_id' => 'Id',
+            'req_fecha' => 'Fecha de elaboración',
+            'req_folio' => 'Folio',
+            'req_fkper_solicitante' => 'Solicitante',
+            'req_fechasolicitante' => 'Fecha de solicitud',
+            'req_esoperativo' => 'Esta contemplado en el plan operativo anual',
+            'req_justificacion' => 'Justificación',
+            'req_fkper_subdirector' => 'Subdirector',
+            'req_fkper_planeacion' => 'Jefe de planeación',
+            'req_fkper_director' => 'Director',
+            'req_fkconfiguracion' => 'Configuración',
         ];
     }
 
