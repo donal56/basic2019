@@ -51,44 +51,9 @@ use yii\web\User;
     <?= $form -> field($model, 'req_fkconfiguracion') -> dropDownList(ArrayHelper::map($data5, "ID", "Instituto")) ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
-
-<?php 
-        $searchModel = new app\models\ReqDetalleSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-echo Yii::$app->controller->renderPartial('//req-detalle/index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-
-  $modal = Modal::begin([
-
-            'header' => '<h2>Hello world</h2>',
-
-            'toggleButton' => ['label' => 'click me'],
-
-            ]);
-
-
-              
-echo "<div id='modalContent'>";
-
-// $detalle = new app\models\ReqDetalle();
-
-//         if ($detalle->load(Yii::$app->request->post()) && $detalle->save()) {
-//             echo Yii::$app->controller->redirect(['view', 'id' => $detalle->det_id]);
-//         } else {
-//             echo Yii::$app->controller->render('create', [
-//                 'model' => $detalle,
-//             ]);
-//         }
-
-echo "</div>";
-        Modal::end();
- ?>
