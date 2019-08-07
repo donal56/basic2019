@@ -3,14 +3,14 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\ReqRequisicion;
-use app\models\ReqRequisicionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\base\Model;
 
 use kartik\mpdf\Pdf;
+use app\models\ReqRequisicion;
+use app\models\ReqRequisicionSearch;
 use app\models\ReqConfiguracion;
 use app\models\ReqPersonal;
 use app\models\ReqArea;
@@ -69,41 +69,17 @@ class ReqRequisicionController extends Controller
      */
 
     public function actionCreate()
+    {
+        $model = new ReqRequisicion();
 
-    {   
-
-        $model = new  ReqRequisicion();
-        $modelDet = new  ReqDetalle();
-
-
-        if ($model->load(Yii::$app->request->post()) && $modelDet->load(Yii::$app->request->post()) && Model::validateMultiple([$model, $modelDet])) {
-
-            
-
-            $model->save(false); // skip validation as model is already validated
-
-            $modelDet->det_fkrequisicion = $model->req_id; // no need for validation rule on model_id as you set it yourself
-
-            $modelDet-save(false); 
-
-            
-
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->req_id]);
-
         } else {
-
             return $this->render('create', [
-
                 'model' => $model,
-
-                'modelDet' => $modelDet,
-
             ]);
-
         }
-
     }
-
 
 
 

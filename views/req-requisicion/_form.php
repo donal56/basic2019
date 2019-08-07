@@ -1,11 +1,13 @@
 <?php
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use unclead\multipleinput\MultipleInput;
 use yii\db\Query;
+
+use yii\bootstrap\Modal;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Requisicion */
@@ -59,3 +61,42 @@ use yii\db\Query;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php 
+        $searchModel = new app\models\ReqDetalleSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+echo Yii::$app->controller->renderPartial('//req-detalle/index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+
+  $modal = Modal::begin([
+
+            'header' => '<h2>DETALLES</h2>',
+
+            'toggleButton' => ['label' => 'click me'],
+
+            ]);
+
+
+              
+echo "<div id='modalContent'>";
+
+$detalle = new app\models\ReqDetalle();
+
+        if ($detalle->load(Yii::$app->request->post()) && $detalle->save()) {
+            echo Yii::$app->controller->redirect(['view', 'id' => $detalle->det_id]);
+        } else {
+            echo Yii::$app->controller->render('create', [
+                'model' => $detalle,
+            ]);
+        }
+
+echo "</div>";
+
+
+        
+
+        Modal::end(); 
+ ?>
