@@ -5,7 +5,6 @@ use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use unclead\multipleinput\MultipleInput;
 use yii\db\Query;
-use yii\bootstrap\Modal;
 use yii\web\User;
 
 /* @var $this yii\web\View */
@@ -36,13 +35,13 @@ use yii\web\User;
 
 <div class="requisicion-form">
 
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form -> field($model, 'req_fecha') -> input('date', ['value' => date('Y-m-d'), ]); ?>
+    <?php $form = ActiveForm::begin(['fieldConfig' => ['options' => ['class' => 'col-md-3']]]); ?>
+    
+    <?= $form -> field($model, 'req_fecha') -> input('date', ['value' => date('Y-m-d')]); ?>    
     <?= $form -> field($model, 'req_folio'); ?>
     <?= $form -> field($model, 'req_fkper_solicitante') -> dropDownList(ArrayHelper::map($data1, "ID", "Nombre"), 
     ['readonly' => true]); ?>
-    <?= $form -> field($model, 'req_fechaSolicitante') -> input('date', ['value' => date('Y-m-d'), ]); ?>
+    <?= $form -> field($model, 'req_fechaSolicitante') -> input('date', ['value' => date('Y-m-d')]); ?>
     <?= $form -> field($model, 'req_esoperativo') -> checkbox(['label' => '¿Es parte del presupuesto operativo anual?']); ?>
     <?= $form -> field($model, 'req_justificacion') -> textarea(['label' => 'Justificación', 'rows' => 5]); ?>
     <?= $form -> field($model, 'req_fkper_subdirector') -> dropDownList(ArrayHelper::map($data2, "ID", "Nombre")) ?>
