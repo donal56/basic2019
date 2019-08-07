@@ -73,7 +73,7 @@ echo Yii::$app->controller->renderPartial('//req-detalle/index', [
 
   $modal = Modal::begin([
 
-            'header' => '<h2>DETALLES</h2>',
+            'header' => '<h2>Hello world</h2>',
 
             'toggleButton' => ['label' => 'click me'],
 
