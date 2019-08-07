@@ -65,8 +65,8 @@ class ReqDetalleController extends Controller
     {
         $model = new ReqDetalle();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->det_id]);
+        if ($model->load(Yii::$app->request->post())) {
+          echo print_r ($model->det_descripcion);
         } else {
             return $this->render('create', [
                 'model' => $model,

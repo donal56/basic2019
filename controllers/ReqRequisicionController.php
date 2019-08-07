@@ -68,17 +68,40 @@ class ReqRequisicionController extends Controller
      * @return mixed
      */
 
-    public function actionCreate()
-    {
-        $model = new ReqRequisicion();
+ public function actionCreate()
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+    {   
+
+        $model = new  ReqRequisicion();
+        $modelDet = new  ReqDetalle();
+
+
+        if ($model->load(Yii::$app->request->post()) && $modelDet->load(Yii::$app->request->post()) && Model::validateMultiple([$model, $modelDet])) {
+
+            
+
+            $model->save(false); // skip validation as model is already validated
+
+            $modelDet->det_fkrequisicion = $model->req_id; // no need for validation rule on model_id as you set it yourself
+
+            $modelDet-save(false); 
+
+            
+
             return $this->redirect(['view', 'id' => $model->req_id]);
+
         } else {
+
             return $this->render('create', [
+
                 'model' => $model,
+
+                'modelDet' => $modelDet,
+
             ]);
+
         }
+
     }
 
 
