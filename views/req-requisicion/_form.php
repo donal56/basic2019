@@ -118,7 +118,7 @@ echo Yii::$app->controller->renderPartial('//req-detalle/index', [
 
               
 echo "<div id='modalContent'>";
-
+/*
 $detalle = new app\models\ReqDetalle();
 
         if ($detalle->load(Yii::$app->request->post()) && $detalle->save()) {
@@ -128,7 +128,7 @@ $detalle = new app\models\ReqDetalle();
                 'model' => $detalle,
             ]);
         }
-
+*/
 echo "</div>";
 
 

@@ -34,6 +34,7 @@ class ReqDetalle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [[ 'temp'] , 'safe' ],
             [['det_fkrequisicion'], 'required'],
             [['det_fkrequisicion'], 'integer'],
             [['det_cantidad', 'det_costo'], 'number'],

@@ -14,7 +14,7 @@ use unclead\multipleinput\MultipleInput;
     <?php $form = ActiveForm::begin(); ?>
 
 
-    <?= $form->field($model, 'det_descripcion')->widget(MultipleInput::className(), 
+    <?= $form->field($model,'temp')->widget(MultipleInput::className(), 
     [
         'allowEmptyList'    => false,
         'addButtonPosition' => MultipleInput::POS_ROW,
@@ -31,19 +31,19 @@ use unclead\multipleinput\MultipleInput;
             'title' => 'Partida'
             ],
             [
-            'name'  => 'req_cantidad',
+            'name'  => 'det_cantidad',
             'title' => 'Cantidad'
             ],
             [
-            'name'  => 'req_unidad',
+            'name'  => 'det_unidad',
             'title' => 'Unidad'
             ],
             [
-            'name'  => 'req_descripcion',
+            'name'  => 'det_descripcion',
             'title' => 'Descripcion'
             ],
             [
-            'name'  => 'req_costo',
+            'name'  => 'det_costo',
             'title' => 'Costo'
             ]
         ]

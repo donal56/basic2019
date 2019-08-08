@@ -91,14 +91,14 @@ class ReqRequisicionController extends Controller
             return $this->redirect(['view', 'id' => $model->req_id]);
 
         } else {
-
-            return $this->render('create', [
+echo print_r(Yii::$app->request->post());
+        /*    return $this->render('create', [
 
                 'model' => $model,
 
                 'modelDet' => $modelDet,
 
-            ]);
+            ]);  */
 
         }
 

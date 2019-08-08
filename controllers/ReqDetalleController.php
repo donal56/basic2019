@@ -63,12 +63,27 @@ class ReqDetalleController extends Controller
      */
     public function actionCreate()
     {
+        
         $model = new ReqDetalle();
+       
+        if($_POST['_csrf']!=""){
+            
+            for ($i=0; $i < count(Yii::$app->request->post()['ReqDetalle']['temp']); $i++) { 
 
-        if ($model->load(Yii::$app->request->post())) {
-          echo print_r ($model->det_descripcion);
-        } else {
-            return $this->render('create', [
+                $data['_csrf'] =  Yii::$app->request->post()['_csrf'];
+
+                $data['ReqDetalle'] = Yii::$app->request->post()['ReqDetalle']['temp'][$i];
+                $data['ReqDetalle']['det_fkrequisicion']=1;
+
+                if ($model->load($data) && $model->save()) {
+                    $model = new ReqDetalle();    
+                } else {
+                    throw new NotFoundHttpException('A OCCURIDO UN ERROR.');
+                }
+            }
+        }else{
+
+           return $this->render('create', [
                 'model' => $model,
             ]);
         }
