@@ -4,6 +4,7 @@ use yii\widgets\ActiveForm;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use unclead\multipleinput\MultipleInput;
+use kartik\date\DatePicker;
 use yii\db\Query;
 use yii\web\User;
 
@@ -35,22 +36,68 @@ use yii\web\User;
 
 <div class="requisicion-form">
 
-    <?php $form = ActiveForm::begin(['fieldConfig' => ['options' => ['class' => 'col-md-3']]]); ?>
-    
-    <?= $form -> field($model, 'req_fecha') -> input('date', ['value' => date('Y-m-d')]); ?>    
-    <?= $form -> field($model, 'req_folio'); ?>
-    <?= $form -> field($model, 'req_fkper_solicitante') -> dropDownList(ArrayHelper::map($data1, "ID", "Nombre"), 
-    ['readonly' => true]); ?>
-    <?= $form -> field($model, 'req_fechaSolicitante') -> input('date', ['value' => date('Y-m-d')]); ?>
-    <?= $form -> field($model, 'req_esoperativo') -> checkbox(['label' => '¿Es parte del presupuesto operativo anual?']); ?>
-    <?= $form -> field($model, 'req_justificacion') -> textarea(['label' => 'Justificación', 'rows' => 5]); ?>
-    <?= $form -> field($model, 'req_fkper_subdirector') -> dropDownList(ArrayHelper::map($data2, "ID", "Nombre")) ?>
-    <?= $form -> field($model, 'req_fkper_planeacion') -> dropDownList(ArrayHelper::map($data3, "ID", "Nombre")) ?>
-    <?= $form -> field($model, 'req_fkper_director') -> dropDownList(ArrayHelper::map($data4, "ID", "Nombre")) ?>
-    <?= $form -> field($model, 'req_fkconfiguracion') -> dropDownList(ArrayHelper::map($data5, "ID", "Instituto")) ?>
+    <?php $form = ActiveForm::begin(['fieldConfig' => function ($model, $attribute) 
+    {
+        if ($attribute == 'req_esoperativo' || $attribute == 'req_justificacion') 
+        {
+            return ['options' => ['class' => 'col-md-12']];
+        }
+        else 
+        {
+            return ['options' => ['class' => 'col-md-3']];
+        }
+    },
+]); ?>
+    <div class= 'row' style= 'margin-top: 1.0em'>
+        <?php
+            echo $form->field($model, 'req_fecha') -> widget(DatePicker::classname(), 
+            [
+                'options' => ['value' => date('Y-m-d')],
+                'language' => 'es',
+                'removeButton' => false,
+                'pluginOptions' => [
+                    'todayHighlight' => true,
+                    'todayBtn' => true,
+                    'autoclose' => true, 
+                    'format' => 'yyyy-mm-dd']
+            ]); 
+        ?>  
+        <?= $form -> field($model, 'req_folio'); ?>
+        <?= $form -> field($model, 'req_fkper_solicitante') -> dropDownList(ArrayHelper::map($data1, "ID", "Nombre"), ['readonly' => true]); ?>
+        <?php
+            echo $form->field($model, 'req_fechasolicitante') -> widget(DatePicker::classname(), 
+            [
+                'options' => ['value' => date('Y-m-d')],
+                'language' => 'es',
+                'removeButton' => false,
+                'pluginOptions' => [
+                    'todayHighlight' => true,
+                    'todayBtn' => true,
+                    'autoclose' => true, 
+                    'format' => 'yyyy-mm-dd']
+            ]); 
+        ?>  
 
-    <div class="form-group">
+    </div>
+
+    <div class= 'row' style= 'margin-top: 1.0em'>
+        <?= $form -> field($model, 'req_esoperativo') -> checkbox(['label' => '¿Es parte del presupuesto operativo anual?']); ?>
+    </div>
+
+    <div class= 'row' style= 'margin-top: 1.0em'>
+        <?= $form -> field($model, 'req_justificacion') -> textarea(['label' => 'Justificación', 'rows' => 5]); ?>
+    </div>
+
+    <div class= 'row' style= 'margin-top: 1.0em'>
+        <?= $form -> field($model, 'req_fkper_subdirector') -> dropDownList(ArrayHelper::map($data2, "ID", "Nombre")) ?>
+        <?= $form -> field($model, 'req_fkper_planeacion') -> dropDownList(ArrayHelper::map($data3, "ID", "Nombre")) ?>
+        <?= $form -> field($model, 'req_fkper_director') -> dropDownList(ArrayHelper::map($data4, "ID", "Nombre")) ?>
+        <?= $form -> field($model, 'req_fkconfiguracion') -> dropDownList(ArrayHelper::map($data5, "ID", "Instituto")) ?>
+    </div>
+
+    <div class="row form-group col-md-3" style= 'margin-top: 1.0em'>
         <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::a('Cancelar', '/req-requisicion', ['Class' => 'btn btn-danger']); ?>
     </div>
 
     <?php ActiveForm::end(); ?>

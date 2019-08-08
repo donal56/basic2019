@@ -17,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <br>
 
     <p>
+        <?= Html::a('', '/req-requisicion', ['class' => 'btn btn-success glyphicon glyphicon-arrow-left']) ?>
         <?= Html::a('Actualizar', ['update', 'id' => $model->req_id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Eliminar', ['delete', 'id' => $model->req_id], [
             'class' => 'btn btn-danger',

@@ -11,9 +11,9 @@ $this->params['breadcrumbs'][] = ['label' => 'Configuraciones', 'url' => ['index
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="req-configuracion-create">
-
+    <br>
     <h1><?= Html::encode($this->title) ?></h1>
-
+    <br>
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>

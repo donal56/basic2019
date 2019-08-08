@@ -61,7 +61,7 @@ class ReqRequisicion extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'req_id' => 'Id',
+            'req_id' => 'ID',
             'req_fecha' => 'Fecha de elaboración',
             'req_folio' => 'Folio',
             'req_fkper_solicitante' => 'Solicitante',

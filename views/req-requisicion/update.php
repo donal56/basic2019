@@ -11,9 +11,9 @@ $this->params['breadcrumbs'][] = ['label' => $model->req_id, 'url' => ['view', '
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="requisicion-update">
-
+    <br>
     <h1><?= Html::encode($this->title) ?></h1>
-
+    <br>
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>

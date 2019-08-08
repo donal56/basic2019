@@ -12,11 +12,14 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="req-area-index">
 
+    <br>
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <br>
 
     <p>
         <?= Html::a('Create Area', ['create'], ['class' => 'btn btn-success']) ?>
+        <br><br>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
