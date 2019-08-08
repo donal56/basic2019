@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\ReqConfiguracion */
 
-$this->title = 'Actualizar Configuracion: ' . $model->con_id;
+$this->title = 'Actualizar configuración ' . $model->con_id;
 $this->params['breadcrumbs'][] = ['label' => 'Configuraciones', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->con_id, 'url' => ['view', 'id' => $model->con_id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Actualizar';
 ?>
 <div class="req-configuracion-update">
     <br>

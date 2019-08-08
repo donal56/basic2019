@@ -28,8 +28,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'are_id',
             'are_nivel',
             'are_nombre',
             [
@@ -47,7 +45,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model-> fullNameS($model->are_fkper_superior,$model->are_nivel);
                 }, 
             ],
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

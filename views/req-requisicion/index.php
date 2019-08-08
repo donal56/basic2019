@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <br>
 
     <p>
-        <?= Html::a('Crear Requisicion', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear requisición', ['create'], ['class' => 'btn btn-success']) ?>
         <br><br>
     </p>
 
@@ -26,12 +26,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'req_id',
-            'req_fecha',
             'req_folio',
-            'req_fkper_solicitante',
+            'req_fecha',
+            [
+                'attribute' => req_fkper_solicitante,
+                'format'    => 'raw',
+                'value'     => function ($model) {
+                    return $model-> fullName($model->req_fkper_solicitante);
+                }
+            ],
             'req_fechasolicitante',
             // 'req_esoperativo',
             // 'req_justificacion:ntext',

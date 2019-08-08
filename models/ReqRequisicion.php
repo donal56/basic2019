@@ -122,4 +122,21 @@ class ReqRequisicion extends \yii\db\ActiveRecord
     {
         return $this->hasOne(ReqConfiguracion::className(), ['con_id' => 'req_fkconfiguracion']);
     }
+
+    public static function fullName($id)
+    { 
+        $per = ReqRequisicion::findPersona($id);
+        return  $per->per_nombre." ".
+                $per->per_paterno." ".
+                $per->per_materno;
+    }
+
+    public static function findPersona($id)
+    {
+        if (($model = ReqPersonal::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('Error en el registro del personal');
+        }
+    }
 }

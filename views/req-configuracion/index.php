@@ -16,16 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <br>
-
-    <p>
-        <br><br>
-    </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'con_id',
             'con_instituto',
             [
@@ -33,14 +26,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format'    => 'raw',
                 'contentOptions' => ['style'=>'vertical-align: middle; width:65px;'],
                 'value'     => function ($model) {
-                    return '<center>'.Html::img($model->con_logo, ['width'=>'50px']).'<br>'.$model->con_logo.'</center>';
+                    return '<center>'.Html::img($model->con_logo, ['width'=>'80px']).'<br>'.$model->con_logo.'</center>';
                 },
             ],
-            'con_revision',
-
+            [
+                'attribute' => con_revision,
+                'format'    => 'boolean'
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{update} {view}',
+                'template' => '{update}',
             ],
         ],
     ]); ?>
