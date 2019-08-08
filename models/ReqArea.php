@@ -3,7 +3,6 @@
 namespace app\models;
 
 use Yii;
-
 /**
  * This is the model class for table "req_area".
  *
@@ -68,5 +67,42 @@ class ReqArea extends \yii\db\ActiveRecord
     public function getAreFkperSuperior()
     {
         return $this->hasOne(ReqPersonal::className(), ['per_id' => 'are_fkper_superior']);
+    }
+    public static function findPersona($id)
+    {
+        if (($model = ReqPersonal::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('Error en el registro del personal');
+        }
+    }
+    public static function fullName($id)
+    { 
+        $per = ReqArea::findPersona($id);
+        return  $per->per_nombre." ".
+                $per->per_paterno." ".
+                $per->per_materno;
+    }
+    public static function findSuperior($id)
+    {
+        if (($model = ReqPersonal::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('Error en el registro del personal');
+        }
+    }
+    public static function fullNameS($id,$nivel)
+    { 
+        $per = ReqArea::findSuperior($id);
+        if($nivel!=0)
+        {
+            return $per->per_nombre." ".
+                   $per->per_paterno." ".
+                   $per->per_materno;
+        }
+        else
+        {
+            return " ";
+        }
     }
 }
