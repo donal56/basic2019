@@ -16,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('', '/req-area', ['class' => 'btn btn-success glyphicon glyphicon-arrow-left']) ?>
-        <?= Html::a('Update', ['update', 'id' => $model->are_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->are_id], [
+        <?= Html::a('Actualizar', ['update', 'id' => $model->are_id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Eliminar', ['delete', 'id' => $model->are_id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => '¿Estas seguro de seguro de eliminar este elemento?',
@@ -25,6 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
+
+    <br>
 
     <?= DetailView::widget([
         'model' => $model,

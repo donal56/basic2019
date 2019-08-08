@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\ReqPersonal */
 
-$this->title = $model->per_id;
+$this->title = $model->per_nombre . " " . $model->per_paterno . " " . $model->per_materno;
 $this->params['breadcrumbs'][] = ['label' => 'Personas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -16,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
     <?= Html::a('', '/req-personal', ['class' => 'btn btn-success glyphicon glyphicon-arrow-left']) ?>
-        <?= Html::a('Update', ['update', 'id' => $model->per_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->per_id], [
+        <?= Html::a('Actualizar', ['update', 'id' => $model->per_id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Eliminar', ['delete', 'id' => $model->per_id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => '¿Estas seguro de seguro de eliminar este elemento?',
@@ -25,6 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
+
+    <br>        
 
     <?= DetailView::widget([
         'model' => $model,
