@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\AreaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Areas';
+$this->title = 'Áreas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="req-area-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <br>
 
     <p>
-        <?= Html::a('Create Area', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear área', ['create'], ['class' => 'btn btn-success']) ?>
         <br><br>
     </p>
     <?= GridView::widget([
