@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "req_personal".
@@ -54,7 +56,7 @@ class ReqPersonal extends \yii\db\ActiveRecord
             'per_nombre' => 'Nombre',
             'per_paterno' => 'Apellido Paterno',
             'per_materno' => 'Apellido Materno',
-            'per_fkuser' => 'ID Usuario',
+            'per_fkuser' => 'Username',
         ];
     }
 
@@ -113,19 +115,17 @@ class ReqPersonal extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ReqRequisicion::className(), ['req_fkper_director' => 'per_id']);
     }
-    public function sacarNombre($id)
+    public static function fillUserName($id)
     {
         $query = new Query;
-        $query  ->select([
-        'req_area.are_id as ID' , 
-        'CONCAT(req_personal.per_nombre, " ", req_personal.per_paterno, " ", req_personal.per_materno) as Nombre ']
-        )  
-        ->from('req_area')
-        ->join('INNER JOIN', 'req_personal',
-            'req_area.are_fkper_responsable = req_personal.per_id');
+        $query  ->select('user.username')
+        ->from('user')
+        ->where(['user.id' => $id]);
 
-        $query2 = $query ->where(['req_area.are_nivel' => $id]);
         $command = $query->createCommand();
-        return $data1 = $command->queryAll();
+        $data1 = $command->queryAll();
+
+        $result = ArrayHelper::getColumn($data1,'username');
+        return $result[0];
     }
 }

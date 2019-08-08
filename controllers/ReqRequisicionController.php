@@ -246,8 +246,6 @@ class ReqRequisicionController extends Controller
         }
 
     }
-
-
     protected function fullName($per)
     { 
         return  $per->per_nombre." ".

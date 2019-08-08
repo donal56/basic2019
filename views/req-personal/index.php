@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\models\ReqPersonal;
+use app\models\User;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PersonalSearch */
@@ -31,8 +33,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'per_nombre',
             'per_paterno',
             'per_materno',
-            'per_fkuser',
-
+            [
+                'attribute' => per_fkuser,
+                'format'    => 'raw',
+                'value'     => function ($model) {
+                    return $model-> fillUserName($model->per_fkuser);
+                }
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\ReqPersonal;
 use app\models\ReqPersonalSearch;
+use app\models\User;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -120,11 +121,5 @@ class ReqPersonalController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-    protected function fullName($per)
-    { 
-        return  $per->per_nombre." ".
-                $per->per_paterno." ".
-                $per->per_materno;
     }
 }
