@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\Query;
 use app\models\ReqRequisicion;
 
 /**
@@ -42,6 +43,15 @@ class ReqRequisicionSearch extends ReqRequisicion
     public function search($params)
     {
         $query = ReqRequisicion::find();
+       
+        $query1 = new Query;
+        $query1 -> select(['req_personal.per_id as ID', 
+        'CONCAT(req_personal.per_nombre, " ", req_personal.per_paterno, " ", req_personal.per_materno) as Nombre '])
+            -> from('req_personal')
+            -> join('INNER JOIN', 'user', 'req_personal.per_fkuser = user.id')
+            -> where(['user.id' => Yii::$app->user->identity->id]);
+        $usuarioActual = $query1 -> createCommand() -> queryAll();
+
 
         // add conditions that should always apply here
 
@@ -57,12 +67,12 @@ class ReqRequisicionSearch extends ReqRequisicion
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        
         // grid filtering conditions
         $query->andFilterWhere([
             'req_id' => $this->req_id,
             'req_fecha' => $this->req_fecha,
-            'req_fkper_solicitante' => $this->req_fkper_solicitante,
+            'req_fkper_solicitante' => $usuarioActual[0][Nombre],
             'req_fechasolicitante' => $this->req_fechasolicitante,
             'req_esoperativo' => $this->req_esoperativo,
             'req_fkper_subdirector' => $this->req_fkper_subdirector,

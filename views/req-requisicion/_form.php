@@ -93,20 +93,8 @@ use yii\web\User;
     <div class= 'row'>
         <?= $form -> field($model, 'req_justificacion') -> textarea(['label' => 'Justificación', 'rows' => 1, 'placeholder' => 'LO ANTERIOR PARA SER UTILIZADO EN LA ACCIÓN:']); ?>
     </div>
-
-    <div class= 'row'>
-        <?= $form -> field($model, 'req_fkper_subdirector') -> dropDownList(ArrayHelper::map($data2, "ID", "Nombre")) ?>
-        <?= $form -> field($model, 'req_fkper_planeacion') -> dropDownList(ArrayHelper::map($data3, "ID", "Nombre")) ?>
-        <?= $form -> field($model, 'req_fkper_director') -> dropDownList(ArrayHelper::map($data4, "ID", "Nombre")) ?>
-    </div>
-
-    <?= $form -> field($model, 'req_fkconfiguracion') -> hiddenInput(['value'=> 1])->label(false); ?>
-
-    <br>
         
     <div class="row req-detalle-form">
-        
-        <label class= "control-label col-md-3" for="temp">Conceptos</label>
 
         <?= $form->field($modeldet,'temp')->widget(MultipleInput::className(), 
         [
@@ -150,6 +138,14 @@ use yii\web\User;
         ?>
 
     </div>
+
+    <div class= 'row'>
+        <?= $form -> field($model, 'req_fkper_subdirector') -> dropDownList(ArrayHelper::map($data2, "ID", "Nombre")) ?>
+        <?= $form -> field($model, 'req_fkper_planeacion') -> dropDownList(ArrayHelper::map($data3, "ID", "Nombre")) ?>
+        <?= $form -> field($model, 'req_fkper_director') -> dropDownList(ArrayHelper::map($data4, "ID", "Nombre")) ?>
+    </div>
+
+    <?= $form -> field($model, 'req_fkconfiguracion') -> hiddenInput(['value'=> 1])->label(false); ?><br>
 
     <div class="row form-group col-md-3" style= 'margin-top: 1.0em'>
         <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
