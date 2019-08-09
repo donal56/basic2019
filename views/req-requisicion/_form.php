@@ -38,7 +38,7 @@ use yii\web\User;
 
     <?php $form = ActiveForm::begin(['fieldConfig' => function ($model, $attribute) 
     {
-        if ($attribute == 'req_esoperativo' || $attribute == 'req_justificacion') 
+        if ($attribute == 'req_esoperativo' || $attribute == 'req_justificacion' || $attribute == 'temp') 
         {
             return ['options' => ['class' => 'col-md-12']];
         }
@@ -95,7 +95,11 @@ use yii\web\User;
         <?= $form -> field($model, 'req_fkconfiguracion') -> dropDownList(ArrayHelper::map($data5, "ID", "Instituto")) ?>
     </div>
 
-    <div class="req-detalle-form">
+    <br>
+        
+    <div class="row req-detalle-form">
+        
+        <label class= "control-label col-md-3" for="temp">Conceptos</label>
 
         <?= $form->field($modeldet,'temp')->widget(MultipleInput::className(), 
         [
@@ -134,7 +138,7 @@ use yii\web\User;
                 'title' => 'Costo'
                 ]
             ]
-        ]);
+        ])->label(false);
         ?>
 
     </div>
