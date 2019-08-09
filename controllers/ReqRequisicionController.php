@@ -76,13 +76,13 @@ class ReqRequisicionController extends Controller
         if($_POST['_csrf']!=""){
 
         //Save requisicion
-            $req = Yii::$app->request->post()['ReqRequisicion'];
+            $req = Yii::$app->request->post();
             $detalle=array_pop($req);
             $requisicion = $req;
 
             $datareq['_csrf'] =  Yii::$app->request->post()['_csrf'];
-            $datareq['ReqRequisicion']= $req;
-
+            $datareq= $req;
+            
             if ($model->load($datareq) && $model->save()) {
                 $req_id =  $model->req_id;
                 //Save detalles
@@ -96,10 +96,12 @@ class ReqRequisicionController extends Controller
                     if ($modeldet->load($datadet) && $modeldet->save()) {
                         $modeldet = new ReqDetalle();    
                     } else {
-                        throw new NotFoundHttpException('A OCCURIDO UN ERROR.');
+                        throw new NotFoundHttpException('A OCCURIDO UN ERROR CON LOS DETALLES');
                     }
                 }
 
+            }else{
+                 throw new NotFoundHttpException('A OCCURIDO UN ERROR CON LA REQUISICION.'); 
             }
 
             return $this->redirect(['view', 'id' => $req_id]); 
