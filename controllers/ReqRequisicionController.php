@@ -185,6 +185,7 @@ class ReqRequisicionController extends Controller
      */
     public function actionDelete($id)
     {
+    	ReqDetalle::deleteAll('det_fkrequisicion = '.$id);
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
