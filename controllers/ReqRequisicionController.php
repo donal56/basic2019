@@ -344,7 +344,7 @@ class ReqRequisicionController extends Controller
     }
 
     public function deleteEmpty($id){
-        ReqDetalle::deleteAll('det_clave IS NULL AND det_fkrequisicion = '.$id);
+        ReqDetalle::deleteAll('det_clave ="" AND det_fkrequisicion = '.$id);
     }
 
 }
