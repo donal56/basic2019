@@ -77,7 +77,7 @@ class ReqRequisicionController extends Controller
 
         //Save requisicion
             $req = Yii::$app->request->post();
-            $detalle=array_pop($req);
+            $detalle=array_pop($req)['temp'];
             $requisicion = $req;
 
             $datareq['_csrf'] =  Yii::$app->request->post()['_csrf'];
@@ -86,13 +86,13 @@ class ReqRequisicionController extends Controller
             if ($model->load($datareq) && $model->save()) {
                 $req_id =  $model->req_id;
                 //Save detalles
+                
                 for ($i=0; $i < count($detalle); $i++) { 
 
                     $datadet['_csrf'] =  Yii::$app->request->post()['_csrf'];
 
                     $datadet['ReqDetalle'] = $detalle[$i];
                     $datadet['ReqDetalle']['det_fkrequisicion']=$model->req_id;
-
                     if ($modeldet->load($datadet) && $modeldet->save()) {
                         $modeldet = new ReqDetalle();    
                     } else {
