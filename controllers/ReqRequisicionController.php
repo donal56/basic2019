@@ -71,14 +71,47 @@ class ReqRequisicionController extends Controller
     public function actionCreate()
     {
         $model = new ReqRequisicion();
+        $modeldet = new ReqDetalle();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->req_id]);
-        } else {
+        if($_POST['_csrf']!=""){
+
+        //Save requisicion
+            $req = Yii::$app->request->post()['ReqRequisicion'];
+            $detalle=array_pop($req);
+            $requisicion = $req;
+
+            $datareq['_csrf'] =  Yii::$app->request->post()['_csrf'];
+            $datareq['ReqRequisicion']= $req;
+
+            if ($model->load($datareq) && $model->save()) {
+                $req_id =  $model->req_id;
+                //Save detalles
+                for ($i=0; $i < count($detalle); $i++) { 
+
+                    $datadet['_csrf'] =  Yii::$app->request->post()['_csrf'];
+
+                    $datadet['ReqDetalle'] = $detalle[$i];
+                    $datadet['ReqDetalle']['det_fkrequisicion']=$model->req_id;
+
+                    if ($modeldet->load($datadet) && $modeldet->save()) {
+                        $modeldet = new ReqDetalle();    
+                    } else {
+                        throw new NotFoundHttpException('A OCCURIDO UN ERROR.');
+                    }
+                }
+
+            }
+
+            return $this->redirect(['view', 'id' => $req_id]); 
+
+        }else{
+            
             return $this->render('create', [
-                'model' => $model,
+                    'model' => $model,
+                    'modeldet'  => $modeldet,
             ]);
         }
+
     }
 
 

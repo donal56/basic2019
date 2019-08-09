@@ -48,6 +48,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'req_fkper_director',
             'req_fkconfiguracion',
         ],
+
+    
     ]) ?>
 
 </div>

@@ -95,6 +95,50 @@ use yii\web\User;
         <?= $form -> field($model, 'req_fkconfiguracion') -> dropDownList(ArrayHelper::map($data5, "ID", "Instituto")) ?>
     </div>
 
+    <div class="req-detalle-form">
+
+        <?= $form->field($model,'temp')->widget(MultipleInput::className(), 
+        [
+            'allowEmptyList'    => false,
+            'addButtonPosition' => MultipleInput::POS_ROW,
+            'prepend'   => true,
+            'sortable' => false,
+            'columns' => 
+            [
+                [
+                'name'  => 'det_id',
+                'title' => 'ID'
+                ],
+                [
+                'name'  => 'det_clave',
+                'title' => 'Clave'
+                ],
+                [
+                'name'  => 'det_partida',
+                'title' => 'Partida'
+                ],
+                [
+                'name'  => 'det_cantidad',
+                'title' => 'Cantidad'
+                ],
+                [
+                'name'  => 'det_unidad',
+                'title' => 'Unidad'
+                ],
+                [
+                'name'  => 'det_descripcion',
+                'title' => 'Descripcion'
+                ],
+                [
+                'name'  => 'det_costo',
+                'title' => 'Costo'
+                ]
+            ]
+        ]);
+        ?>
+
+    </div>
+
     <div class="row form-group col-md-3" style= 'margin-top: 1.0em'>
         <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         <?= Html::a('Cancelar', '/req-requisicion', ['Class' => 'btn btn-danger']); ?>
@@ -103,3 +147,26 @@ use yii\web\User;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+
+<?php 
+$script = <<< JS
+
+$('.multiple-input').on('afterInit', function(){
+    $('.list-cell__det_id').hide();
+}).on('afterAddRow', function(e, row, currentIndex) {
+    $('.list-cell__det_id').hide();
+    var first = $('.js-input-plus').clone();
+    var last = $('.js-input-remove').first().clone();
+    $('.js-input-plus').replaceWith(last);
+    $('.multiple-input-list__btn').first().replaceWith(first);
+
+}).on('beforeDeleteRow', function(e, row, currentIndex){
+    return confirm('¿Seguro que quieres eliminar esta fila?')
+});
+
+JS;
+
+$this->registerJs($script);
+
+?>
