@@ -47,7 +47,8 @@ class ReqRequisicionSearch extends ReqRequisicion
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-        ]);
+            'sort'=> ['defaultOrder' => ['req_fecha'=>SORT_DESC]]
+           ]);
 
         $this->load($params);
 
