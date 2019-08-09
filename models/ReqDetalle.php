@@ -23,6 +23,8 @@ class ReqDetalle extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public $temp = null;
+
     public static function tableName()
     {
         return 'req_detalle';
@@ -70,4 +72,11 @@ class ReqDetalle extends \yii\db\ActiveRecord
     {
         return $this->hasOne(ReqRequisicion::className(), ['req_id' => 'det_fkrequisicion']);
     }
+
+    public function getTemp()
+    {
+        return $temp;
+    }
+
+
 }

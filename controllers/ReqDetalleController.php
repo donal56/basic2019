@@ -67,7 +67,7 @@ class ReqDetalleController extends Controller
         $model = new ReqDetalle();
        
         if($_POST['_csrf']!=""){
-            
+            print("<pre>".print_r(Yii::$app->request->post(),true)."</pre>");
             for ($i=0; $i < count(Yii::$app->request->post()['ReqDetalle']['temp']); $i++) { 
 
                 $data['_csrf'] =  Yii::$app->request->post()['_csrf'];
@@ -81,6 +81,7 @@ class ReqDetalleController extends Controller
                     throw new NotFoundHttpException('A OCCURIDO UN ERROR.');
                 }
             }
+
         }else{
 
            return $this->render('create', [
@@ -97,15 +98,40 @@ class ReqDetalleController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+       // 
+        $model = new ReqDetalle();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->det_id]);
-        } else {
-            return $this->render('update', [
+        $model['temp'] = $this->findAllDetalle($id);
+         
+          if($_POST['_csrf']!=""){ 
+
+            for ($i=0; $i < count(Yii::$app->request->post()['ReqDetalle']['temp']); $i++) { 
+
+                $data['_csrf'] =  Yii::$app->request->post()['_csrf'];
+
+                $data['ReqDetalle'] = Yii::$app->request->post()['ReqDetalle']['temp'][$i];
+                $data['ReqDetalle']['det_fkrequisicion']=$id;
+                $model = $this->findModel($data['ReqDetalle']['det_id']);
+                
+                if ($model->load($data) && $model->save()) {
+                    $model = new ReqDetalle();    
+                } else {
+                    throw new NotFoundHttpException('A OCCURIDO UN ERROR.');
+                }
+            }
+
+          } else{
+             return $this->render('update', [
                 'model' => $model,
             ]);
-        }
+          }
+
+   /*     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+           return $this->redirect(['view', 'id' => $model->det_id]);
+        } else {
+        
+        
+        }  */ 
     }
 
     /**
@@ -131,6 +157,15 @@ class ReqDetalleController extends Controller
     protected function findModel($id)
     {
         if (($model = ReqDetalle::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    protected function findAllDetalle($id)
+    {
+        if (($model = ReqDetalle::find()->where(['det_fkrequisicion' => $id])->asArray()->all()) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

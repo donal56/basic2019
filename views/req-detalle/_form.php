@@ -19,9 +19,13 @@ use unclead\multipleinput\MultipleInput;
         'allowEmptyList'    => false,
         'addButtonPosition' => MultipleInput::POS_ROW,
         'prepend'   => true,
-        'sortable' => true,
+        'sortable' => false,
         'columns' => 
         [
+            [
+            'name'  => 'det_id',
+            'title' => 'ID'
+            ],
             [
             'name'  => 'det_clave',
             'title' => 'Clave'
@@ -58,3 +62,27 @@ use unclead\multipleinput\MultipleInput;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php 
+$script = <<< JS
+
+$('.multiple-input').on('afterInit', function(){
+    $('.list-cell__det_id').hide();
+}).on('afterAddRow', function(e, row, currentIndex) {
+    var first = $('.js-input-plus').clone();
+    var last = $('.js-input-remove').first().clone();
+    $('.js-input-plus').replaceWith(last);
+    $('.multiple-input-list__btn').first().replaceWith(first);
+
+}).on('beforeDeleteRow', function(e, row, currentIndex){
+    // row - HTML container of the current row for removal.
+    // For TableRenderer it is tr.multiple-input-list__item
+    console.log('calls on before remove row event.');
+    return confirm('¿Seguro que quieres eliminar esta fila?')
+});
+
+JS;
+
+$this->registerJs($script);
+
+?>
