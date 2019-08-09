@@ -97,7 +97,7 @@ use yii\web\User;
 
     <div class="req-detalle-form">
 
-        <?= $form->field($model,'temp')->widget(MultipleInput::className(), 
+        <?= $form->field($modeldet,'temp')->widget(MultipleInput::className(), 
         [
             'allowEmptyList'    => false,
             'addButtonPosition' => MultipleInput::POS_ROW,

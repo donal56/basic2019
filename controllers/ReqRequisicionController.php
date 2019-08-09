@@ -126,13 +126,53 @@ class ReqRequisicionController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->req_id]);
-        } else {
+        $modeldet = new ReqDetalle();
+        $modeldet['temp'] = $this->findAllDetalle($model->req_id);
+
+        if($_POST['_csrf']!=""){
+            //update requisicion
+
+            $requisicion = Yii::$app->request->post()['ReqRequisicion'];
+            $detalle=Yii::$app->request->post()['ReqDetalle']['temp'];
+    
+            $datareq['_csrf'] =  Yii::$app->request->post()['_csrf'];
+            $datareq['ReqRequisicion']= $requisicion;
+
+        
+            if ($model->load($datareq) && $model->save()) {
+                
+            //update detalles
+                for ($i=0; $i < sizeof($detalle); $i++) { 
+
+                    $datadet['_csrf'] =  Yii::$app->request->post()['_csrf'];
+
+                    $datadet['ReqDetalle'] = current($detalle);
+                    next($detalle);
+
+                    $datadet['ReqDetalle']['det_fkrequisicion']=$id;
+                    
+                    //$model = $this->findModel($data['ReqDetalle']['det_id']);
+
+                    if ($modeldet->load($datadet) && $modeldet->save()) {
+                        $idlist[$i] = $modeldet->det_id;
+                        $modeldet = new ReqDetalle();    
+                    } else {
+                        throw new NotFoundHttpException('A OCCURIDO UN ERROR.');
+                    }
+
+                }
+
+                $this->deleteNotListed($id,$idlist);
+            }   
+            return $this->redirect(['view', 'id' => $id]);
+        }else{
             return $this->render('update', [
                 'model' => $model,
+                'modeldet' => $modeldet,
             ]);
         }
+
+     
     }
 
     /**
@@ -288,6 +328,20 @@ class ReqRequisicionController extends Controller
 
 
 
+    protected function findAllDetalle($id)
+    {
+        if (($model = ReqDetalle::find()->where(['det_fkrequisicion' => $id])->asArray()->all()) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    public function deleteNotListed($id,$idlist)
+    {
+       ReqDetalle::deleteAll('det_id NOT IN ('.implode(", ",$idlist).') AND det_fkrequisicion = '.$id);
+
+    }
 
 
 }
