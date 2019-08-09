@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\RequisicionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Requisiciones';
+$this->title = 'MIS REQUISICIONES';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="requisicion-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <br>
 
     <p>
-        <?= Html::a('Crear requisición', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Nueva Requisición', ['create'], ['class' => 'btn btn-success']) ?>
         <br><br>
     </p>
 
@@ -47,3 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>
+
+<?php 
+$this->registerCssFile("css/req.css");
+ ?>

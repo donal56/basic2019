@@ -103,7 +103,7 @@ class ReqRequisicionController extends Controller
             }else{
                  throw new NotFoundHttpException('A OCCURIDO UN ERROR CON LA REQUISICION.'); 
             }
-
+            $this->deleteEmpty($req_id);
             return $this->redirect(['view', 'id' => $req_id]); 
 
         }else{
@@ -152,8 +152,6 @@ class ReqRequisicionController extends Controller
                     next($detalle);
 
                     $datadet['ReqDetalle']['det_fkrequisicion']=$id;
-                    
-                    //$model = $this->findModel($data['ReqDetalle']['det_id']);
 
                     if ($modeldet->load($datadet) && $modeldet->save()) {
                         $idlist[$i] = $modeldet->det_id;
@@ -163,7 +161,7 @@ class ReqRequisicionController extends Controller
                     }
 
                 }
-
+                $this->deleteEmpty($id);
                 $this->deleteNotListed($id,$idlist);
             }   
             return $this->redirect(['view', 'id' => $id]);
@@ -342,9 +340,12 @@ class ReqRequisicionController extends Controller
 
     public function deleteNotListed($id,$idlist)
     {
-       ReqDetalle::deleteAll('det_id NOT IN ('.implode(", ",$idlist).') AND det_fkrequisicion = '.$id);
+        ReqDetalle::deleteAll('det_id NOT IN ('.implode(", ",$idlist).') AND det_fkrequisicion = '.$id);
 
     }
 
+    public function deleteEmpty($id){
+        ReqDetalle::deleteAll('det_clave IS NULL AND det_fkrequisicion = '.$id);
+    }
 
 }
