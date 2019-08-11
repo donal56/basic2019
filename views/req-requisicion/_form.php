@@ -38,13 +38,21 @@ use yii\web\User;
 
     <?php $form = ActiveForm::begin(['fieldConfig' => function ($model, $attribute) 
     {
-        if ($attribute == 'req_esoperativo' || $attribute == 'req_justificacion' || $attribute == 'temp') 
+        if ($attribute == 'req_justificacion' || $attribute == 'temp') 
         {
             return ['options' => ['class' => 'col-md-12']];
         }
-        else 
+        else if($attribute == 'req_esoperativo'  || $attribute == 'req_fkper_solicitante') 
         {
             return ['options' => ['class' => 'col-md-3']];
+        }
+        else if ($attribute == 'req_fkper_subdirector' || $attribute == 'req_fkper_planeacion' || $attribute == 'req_fkper_director') 
+        {
+            return ['options' => ['class' => 'col-md-4']];
+        }
+        else 
+        {
+            return ['options' => ['class' => 'col-md-2']];
         }
     },
 ]); ?>
@@ -77,29 +85,16 @@ use yii\web\User;
                     'format' => 'yyyy-mm-dd']
             ]); 
         ?>  
+        <?= $form -> field($model, 'req_esoperativo') -> checkbox(['label' => '¿Los bienes o servicios estan contemplados en el programa operativo anual?']); ?>
+   
 
     </div>
 
-    <div class= 'row' style= 'margin-top: 1.0em'>
-        <?= $form -> field($model, 'req_esoperativo') -> checkbox(['label' => '¿Es parte del presupuesto operativo anual?']); ?>
+    <div class= 'row'>
+        <?= $form -> field($model, 'req_justificacion') -> textarea(['label' => 'Justificación', 'rows' => 1, 'placeholder' => 'LO ANTERIOR PARA SER UTILIZADO EN LA ACCIÓN:']); ?>
     </div>
-
-    <div class= 'row' style= 'margin-top: 1.0em'>
-        <?= $form -> field($model, 'req_justificacion') -> textarea(['label' => 'Justificación', 'rows' => 5]); ?>
-    </div>
-
-    <div class= 'row' style= 'margin-top: 1.0em'>
-        <?= $form -> field($model, 'req_fkper_subdirector') -> dropDownList(ArrayHelper::map($data2, "ID", "Nombre")) ?>
-        <?= $form -> field($model, 'req_fkper_planeacion') -> dropDownList(ArrayHelper::map($data3, "ID", "Nombre")) ?>
-        <?= $form -> field($model, 'req_fkper_director') -> dropDownList(ArrayHelper::map($data4, "ID", "Nombre")) ?>
-        <?= $form -> field($model, 'req_fkconfiguracion') -> dropDownList(ArrayHelper::map($data5, "ID", "Instituto")) ?>
-    </div>
-
-    <br>
         
     <div class="row req-detalle-form">
-        
-        <label class= "control-label col-md-3" for="temp">Conceptos</label>
 
         <?= $form->field($modeldet,'temp')->widget(MultipleInput::className(), 
         [
@@ -110,38 +105,47 @@ use yii\web\User;
             'columns' => 
             [
                 [
-                'name'  => 'det_id',
-                'title' => 'ID'
+                    'name'  => 'det_id',
+                    'title' => 'ID'
+
                 ],
                 [
-                'name'  => 'det_clave',
-                'title' => 'Clave'
+                    'name'  => 'det_clave',
+                    'title' => 'Clave'
                 ],
                 [
-                'name'  => 'det_partida',
-                'title' => 'Partida'
+                    'name'  => 'det_partida',
+                    'title' => 'Partida'
                 ],
                 [
-                'name'  => 'det_cantidad',
-                'title' => 'Cantidad'
+                    'name'  => 'det_cantidad',
+                    'title' => 'Cantidad'
                 ],
                 [
-                'name'  => 'det_unidad',
-                'title' => 'Unidad'
+                    'name'  => 'det_unidad',
+                    'title' => 'Unidad'
                 ],
                 [
-                'name'  => 'det_descripcion',
-                'title' => 'Descripcion'
+                    'name'  => 'det_descripcion',
+                    'title' => 'Descripcion'
                 ],
                 [
-                'name'  => 'det_costo',
-                'title' => 'Costo'
+                    'name'  => 'det_costo',
+                    'title' => 'Costo'
                 ]
             ]
         ])->label(false);
         ?>
 
     </div>
+
+    <div class= 'row'>
+        <?= $form -> field($model, 'req_fkper_subdirector') -> dropDownList(ArrayHelper::map($data2, "ID", "Nombre")) ?>
+        <?= $form -> field($model, 'req_fkper_planeacion') -> dropDownList(ArrayHelper::map($data3, "ID", "Nombre")) ?>
+        <?= $form -> field($model, 'req_fkper_director') -> dropDownList(ArrayHelper::map($data4, "ID", "Nombre")) ?>
+    </div>
+
+    <?= $form -> field($model, 'req_fkconfiguracion') -> hiddenInput(['value'=> 1])->label(false); ?><br>
 
     <div class="row form-group col-md-3" style= 'margin-top: 1.0em'>
         <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -156,17 +160,29 @@ use yii\web\User;
 <?php 
 $script = <<< JS
 
-$('.multiple-input').on('afterInit', function(){
+$('.multiple-input').on('afterInit', function() 
+{
     $('.list-cell__det_id').hide();
-}).on('afterAddRow', function(e, row, currentIndex) {
+}).on('afterAddRow', function(e, row, currentIndex) 
+{
     $('.list-cell__det_id').hide();
     var first = $('.js-input-plus').clone();
     var last = $('.js-input-remove').first().clone();
     $('.js-input-plus').replaceWith(last);
     $('.multiple-input-list__btn').first().replaceWith(first);
 
-}).on('beforeDeleteRow', function(e, row, currentIndex){
+}).on('beforeDeleteRow', function(e, row, currentIndex)
+{
     return confirm('¿Seguro que quieres eliminar esta fila?')
+}).on('beforeAddRow', function(e, row, currentIndex)
+{
+   // reqdetalle-temp-1-det_cantidad
+    console.log(row);
+    
+    if (console.log(row[0].cells[1].textContent)== "")
+        return false;
+    else 
+        return true;
 });
 
 JS;
