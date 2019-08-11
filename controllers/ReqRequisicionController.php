@@ -99,17 +99,20 @@ class ReqRequisicionController extends Controller
 
                     $datadet['ReqDetalle'] = $detalle[$i];
                     $datadet['ReqDetalle']['det_fkrequisicion']=$model->req_id;
-                    if ($modeldet->load($datadet) && $modeldet->save()) {
-                        $modeldet = new ReqDetalle();    
-                    } else {
-                        throw new NotFoundHttpException('A OCCURIDO UN ERROR CON LOS DETALLES');
+
+                    if (!$this->isEmpty($datadet)) { 
+
+                        if ($modeldet->load($datadet) && $modeldet->save()) {
+                            $modeldet = new ReqDetalle();    
+                        } else {
+                            throw new ServerErrorHttpException('A OCCURIDO UN ERROR CON LOS DETALLES');
+                        }
                     }
                 }
 
             }else{
-                 throw new NotFoundHttpException('A OCCURIDO UN ERROR CON LA REQUISICION.'); 
+                 throw new ServerErrorHttpException('A OCCURIDO UN ERROR CON LA REQUISICION.'); 
             }
-            $this->deleteEmpty($req_id);
             return $this->redirect(['view', 'id' => $req_id]); 
 
         }else{
@@ -159,15 +162,19 @@ class ReqRequisicionController extends Controller
 
                     $datadet['ReqDetalle']['det_fkrequisicion']=$id;
 
-                    if ($modeldet->load($datadet) && $modeldet->save()) {
+                    if (!$this->isEmpty($datadet)) {
+                        
+                        if ($modeldet->load($datadet) && $modeldet->save()) {
                         $idlist[$i] = $modeldet->det_id;
                         $modeldet = new ReqDetalle();    
-                    } else {
-                        throw new NotFoundHttpException('A OCCURIDO UN ERROR.');
+                        } else {
+                        throw new ServerErrorHttpException('A OCCURIDO UN ERROR.');
+                        }
+
                     }
 
+                    
                 }
-                $this->deleteEmpty($id);
                 $this->deleteNotListed($id,$idlist);
             }   
             return $this->redirect(['view', 'id' => $id]);
@@ -313,7 +320,7 @@ class ReqRequisicionController extends Controller
         if ( ($model = ReqArea::findOne(['are_fkper_responsable' => $id]) ) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('Error al obtener las Areas.');
         }
     }
 
@@ -322,7 +329,7 @@ class ReqRequisicionController extends Controller
         if ( ($model = ReqDetalle::findAll(['det_fkrequisicion' => $id]) ) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('Error al obtener los detalles.');
         }
 
     }
@@ -350,8 +357,15 @@ class ReqRequisicionController extends Controller
 
     }
 
-    public function deleteEmpty($id){
-        ReqDetalle::deleteAll('det_clave ="" AND det_fkrequisicion = '.$id);
+    public function isEmpty($array){
+
+        if ($array['ReqDetalle']['det_clave']=="") {
+            return true;
+        }else{
+            return false;
+        }
+           // ReqDetalle::deleteAll('det_clave ="" AND det_fkrequisicion = '.$id);
+    
     }
 
 }

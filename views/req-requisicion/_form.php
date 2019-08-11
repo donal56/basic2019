@@ -100,6 +100,10 @@ use yii\web\User;
         [
             'allowEmptyList'    => false,
             'addButtonPosition' => MultipleInput::POS_ROW,
+            'addButtonOptions' => [
+            'class' => 'btn btn-success',
+            'label' => '<i class="glyphicon glyphicon-plus"></i>' // also you can use html code
+            ],
             'prepend'   => true,
             'sortable' => false,
             'columns' => 
