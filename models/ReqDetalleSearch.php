@@ -40,9 +40,9 @@ class ReqDetalleSearch extends ReqDetalle
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($id)
     {
-        $query = ReqDetalle::find();
+        $query = ReqDetalle::find()->where(['det_fkrequisicion' => $id]);
 
         // add conditions that should always apply here
 
@@ -50,7 +50,6 @@ class ReqDetalleSearch extends ReqDetalle
             'query' => $query,
         ]);
 
-        $this->load($params);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Requisicion */
@@ -80,5 +81,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
     
     ]) ?>
+<br>
+<h2>Detalles</h2>
+<br>
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            //'det_id',
+            //'det_fkrequisicion',
+            'det_clave',
+            'det_partida',
+            'det_cantidad',
+            'det_unidad',
+            'det_descripcion',
+            [
+              'attribute' => 'det_costo',
+              'label' => 'Costo estimado <br> (Total + IVA)',
+              'encodeLabel' => false,
+            ],   
+        ],
+    ]); ?>
 
 </div>

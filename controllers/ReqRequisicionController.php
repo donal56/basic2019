@@ -15,6 +15,7 @@ use app\models\ReqConfiguracion;
 use app\models\ReqPersonal;
 use app\models\ReqArea;
 use app\models\ReqDetalle;
+use app\models\ReqDetalleSearch;
 /**
  * RequisicionController implements the CRUD actions for Requisicion model.
  */
@@ -57,8 +58,13 @@ class ReqRequisicionController extends Controller
      */
     public function actionView($id)
     {
+        $searchModel = new ReqDetalleSearch();
+        $dataProvider = $searchModel->search($id);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
