@@ -7,22 +7,26 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\base\Model;
-
 use kartik\mpdf\Pdf;
+use app\controllers\ReqRequiscion;
 use app\models\ReqRequisicion;
 use app\models\ReqRequisicionSearch;
 use app\models\ReqConfiguracion;
 use app\models\ReqPersonal;
 use app\models\ReqArea;
 use app\models\ReqDetalle;
+use yii\db\Query;
+
 /**
  * RequisicionController implements the CRUD actions for Requisicion model.
  */
 class ReqRequisicionController extends Controller
-{
+{   
+    
     /**
      * @inheritdoc
      */
+    
     public function behaviors()
     {
         return [
@@ -57,9 +61,16 @@ class ReqRequisicionController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $model= $this->findModel($id);  
+
+        if($this -> getIDUsuarioActual() == $model -> getReqFkperSolicitante() -> asArray() -> one()[per_id])
+        {
+            return $this->render('view', ['model' => $this->findModel($id)]);
+        }
+        else
+        {
+            return $this->redirect('/req-requisicion');
+        }
     }
 
     /**
@@ -126,50 +137,61 @@ class ReqRequisicionController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
-        $modeldet = new ReqDetalle();
-        $modeldet['temp'] = $this->findAllDetalle($model->req_id);
-
-        if($_POST['_csrf']!=""){
-            //update requisicion
-
-            $requisicion = Yii::$app->request->post()['ReqRequisicion'];
-            $detalle=Yii::$app->request->post()['ReqDetalle']['temp'];
-    
-            $datareq['_csrf'] =  Yii::$app->request->post()['_csrf'];
-            $datareq['ReqRequisicion']= $requisicion;
-
+        $model = $this->findModel($id); 
         
-            if ($model->load($datareq) && $model->save()) {
-                
-            //update detalles
-                for ($i=0; $i < sizeof($detalle); $i++) { 
+        if($this -> getIDUsuarioActual() == $model -> getReqFkperSolicitante() -> asArray() -> one()[per_id])
+        {
+            
+            $modeldet = new ReqDetalle();
+            $modeldet['temp'] = $this->findAllDetalle($model->req_id);
 
-                    $datadet['_csrf'] =  Yii::$app->request->post()['_csrf'];
+            if($_POST['_csrf'] != ""){
+                //update requisicion
 
-                    $datadet['ReqDetalle'] = current($detalle);
-                    next($detalle);
+                $requisicion = Yii::$app->request->post()['ReqRequisicion'];
+                $detalle= Yii::$app->request->post()['ReqDetalle']['temp'];
+        
+                $datareq['_csrf'] =  Yii::$app->request->post()['_csrf'];
+                $datareq['ReqRequisicion']= $requisicion;
 
-                    $datadet['ReqDetalle']['det_fkrequisicion']=$id;
+            
+                if ($_POST['ReqRequisicion[req_fkper_solicitante]'] === (String) $this -> getIDUsuarioActual() && $model->load($datareq) && $model->save()) {
+                    
+                //update detalles
+                    for ($i=0; $i < sizeof($detalle); $i++) { 
 
-                    if ($modeldet->load($datadet) && $modeldet->save()) {
-                        $idlist[$i] = $modeldet->det_id;
-                        $modeldet = new ReqDetalle();    
-                    } else {
-                        throw new NotFoundHttpException('A OCCURIDO UN ERROR.');
+                        $datadet['_csrf'] =  Yii::$app->request->post()['_csrf'];
+
+                        $datadet['ReqDetalle'] = current($detalle);
+                        next($detalle);
+
+                        $datadet['ReqDetalle']['det_fkrequisicion']=$id;
+
+                        if ($modeldet->load($datadet) && $modeldet->save()) {
+                            $idlist[$i] = $modeldet->det_id;
+                            $modeldet = new ReqDetalle();    
+                        } else {
+                            throw new NotFoundHttpException('A OCCURIDO UN ERROR.');
+                        }
+
                     }
-
+                    $this->deleteEmpty($id);
+                    $this->deleteNotListed($id,$idlist);
                 }
-                $this->deleteEmpty($id);
-                $this->deleteNotListed($id,$idlist);
-            }   
-            return $this->redirect(['view', 'id' => $id]);
-        }else{
-            return $this->render('update', [
-                'model' => $model,
-                'modeldet' => $modeldet,
-            ]);
+                else {
+                    return $this->redirect('/req-requisicion');
+                } 
+                return $this->redirect(['view', 'id' => $id]);
+            }else{
+                return $this->render('update', [
+                    'model' => $model,
+                    'modeldet' => $modeldet,
+                ]);
+            }
+        }
+        else
+        {
+            return $this->redirect('/req-requisicion');
         }
 
      
@@ -346,6 +368,20 @@ class ReqRequisicionController extends Controller
 
     public function deleteEmpty($id){
         ReqDetalle::deleteAll('det_clave ="" AND det_fkrequisicion = '.$id);
+    }
+
+    public function getIDUsuarioActual()
+    {
+        $query1 = new Query;
+        $query1 -> select(['req_personal.per_id as ID', 
+            'CONCAT(req_personal.per_nombre, " ", req_personal.per_paterno, " ", req_personal.per_materno) as Nombre '])
+                -> from('req_personal')
+                -> join('INNER JOIN', 'user', 'req_personal.per_fkuser = user.id')
+                -> where(['user.id' => Yii::$app->user->identity->id]);
+        $data1 = $query1 -> createCommand() -> queryAll();
+        $usuarioActual = $query1 -> createCommand() -> queryAll()[0][ID];
+
+        return $usuarioActual;
     }
 
 }
