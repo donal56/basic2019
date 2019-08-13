@@ -16,6 +16,9 @@ use app\models\ReqPersonal;
 use app\models\ReqArea;
 use app\models\ReqDetalle;
 use yii\db\Query;
+use app\models\ReqDetalleSearch;
+use yii\web\ServerErrorHttpException;
+use yii\web\UnauthorizedHttpException;
 
 /**
  * RequisicionController implements the CRUD actions for Requisicion model.
@@ -62,14 +65,20 @@ class ReqRequisicionController extends Controller
     public function actionView($id)
     {
         $model= $this->findModel($id);  
+        $searchModel = new ReqDetalleSearch();
+        $dataProvider = $searchModel->search($id);
 
         if($this -> getIDUsuarioActual() == $model -> getReqFkperSolicitante() -> asArray() -> one()[per_id])
         {
-            return $this->render('view', ['model' => $this->findModel($id)]);
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
         }
         else
         {
-            return $this->redirect('/req-requisicion');
+            throw new UnauthorizedHttpException('Acceso no permitido.');
         }
     }
 
@@ -94,7 +103,7 @@ class ReqRequisicionController extends Controller
             $datareq['_csrf'] =  Yii::$app->request->post()['_csrf'];
             $datareq= $req;
             
-            if ($model->load($datareq) && $model->save()) {
+            if ($requisicion['ReqRequisicion']['req_fkper_solicitante'] === (String) $this -> getIDUsuarioActual() && $model->load($datareq) && $model->save()) {
                 $req_id =  $model->req_id;
                 //Save detalles
                 
@@ -104,17 +113,22 @@ class ReqRequisicionController extends Controller
 
                     $datadet['ReqDetalle'] = $detalle[$i];
                     $datadet['ReqDetalle']['det_fkrequisicion']=$model->req_id;
-                    if ($modeldet->load($datadet) && $modeldet->save()) {
-                        $modeldet = new ReqDetalle();    
-                    } else {
-                        throw new NotFoundHttpException('A OCCURIDO UN ERROR CON LOS DETALLES');
+
+                    if (!$this->isEmpty($datadet)) { 
+
+                        if ($modeldet->load($datadet) && $modeldet->save()) {
+                            $modeldet = new ReqDetalle();    
+                        } else {
+                            throw new ServerErrorHttpException('A OCCURIDO UN ERROR CON LOS DETALLES');
+                        }
                     }
                 }
 
-            }else{
-                 throw new NotFoundHttpException('A OCCURIDO UN ERROR CON LA REQUISICION.'); 
             }
-            $this->deleteEmpty($req_id);
+            else
+            {
+                throw new UnauthorizedHttpException('Acción no permitida.');
+            }
             return $this->redirect(['view', 'id' => $req_id]); 
 
         }else{
@@ -137,64 +151,65 @@ class ReqRequisicionController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id); 
-        
+        $model = $this->findModel($id);
+
         if($this -> getIDUsuarioActual() == $model -> getReqFkperSolicitante() -> asArray() -> one()[per_id])
         {
-            
             $modeldet = new ReqDetalle();
             $modeldet['temp'] = $this->findAllDetalle($model->req_id);
 
-            if($_POST['_csrf'] != ""){
+            if($_POST['_csrf'] != "")
+            {
                 //update requisicion
 
                 $requisicion = Yii::$app->request->post()['ReqRequisicion'];
-                $detalle= Yii::$app->request->post()['ReqDetalle']['temp'];
+                $detalle=Yii::$app->request->post()['ReqDetalle']['temp'];
         
                 $datareq['_csrf'] =  Yii::$app->request->post()['_csrf'];
                 $datareq['ReqRequisicion']= $requisicion;
-
             
-                if ($_POST['ReqRequisicion[req_fkper_solicitante]'] === (String) $this -> getIDUsuarioActual() && $model->load($datareq) && $model->save()) {
+                if ($requisicion['req_fkper_solicitante'] === (String) $this -> getIDUsuarioActual()  && $model->load($datareq) && $model->save()) 
+                {
                     
-                //update detalles
-                    for ($i=0; $i < sizeof($detalle); $i++) { 
-
+                    //update detalles
+                    for ($i=0; $i < sizeof($detalle); $i++) 
+                    { 
                         $datadet['_csrf'] =  Yii::$app->request->post()['_csrf'];
-
                         $datadet['ReqDetalle'] = current($detalle);
                         next($detalle);
-
                         $datadet['ReqDetalle']['det_fkrequisicion']=$id;
 
-                        if ($modeldet->load($datadet) && $modeldet->save()) {
-                            $idlist[$i] = $modeldet->det_id;
-                            $modeldet = new ReqDetalle();    
-                        } else {
-                            throw new NotFoundHttpException('A OCCURIDO UN ERROR.');
+                        if (!$this->isEmpty($datadet)) 
+                        {    
+                            if ($modeldet->load($datadet) && $modeldet->save()) 
+                            {
+                                $idlist[$i] = $modeldet->det_id;
+                                $modeldet = new ReqDetalle();    
+                            } 
+                            else 
+                            {
+                                throw new ServerErrorHttpException('A OCCURIDO UN ERROR.');
+                            }
                         }
-
+                        
                     }
-                    $this->deleteEmpty($id);
                     $this->deleteNotListed($id,$idlist);
+                    return $this->redirect(['view', 'id' => $id]);
+                }   
+                else 
+                {
+                    throw new UnauthorizedHttpException('Acción no permitida.');
                 }
-                else {
-                    return $this->redirect('/req-requisicion');
-                } 
-                return $this->redirect(['view', 'id' => $id]);
-            }else{
-                return $this->render('update', [
-                    'model' => $model,
-                    'modeldet' => $modeldet,
-                ]);
             }
+            else
+            {
+                return $this->render('update', ['model' => $model, 'modeldet' => $modeldet]);
+            }   
         }
-        else
+        else 
         {
-            return $this->redirect('/req-requisicion');
+            throw new UnauthorizedHttpException('Acceso no permitido.');
         }
-
-     
     }
 
     /**
@@ -205,86 +220,101 @@ class ReqRequisicionController extends Controller
      */
     public function actionDelete($id)
     {
-    	ReqDetalle::deleteAll('det_fkrequisicion = '.$id);
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        if($this -> getIDUsuarioActual() == $this -> findModel($id)-> getReqFkperSolicitante() -> asArray() -> one()[per_id])
+        {
+    	    ReqDetalle::deleteAll('det_fkrequisicion = '.$id);
+            $this->findModel($id)->delete();
+            return $this->redirect(['index']);
+        }
+        else 
+        {
+            throw new UnauthorizedHttpException('Acción no permitida.');
+        }
+        
     }
 
 
-    public function actionReport($id) {
+    public function actionReport($id) 
+    {
+        $req =  $this->findModel($id);
 
-    $req =  $this->findModel($id);
-    $config = $this->findConfig($req->req_fkconfiguracion);
-    $per_solicitante = $this->findPersona($req->req_fkper_solicitante);
+        if($this -> getIDUsuarioActual() == $req -> getReqFkperSolicitante() -> asArray() -> one()[per_id])
+        {
+            $config = $this->findConfig($req->req_fkconfiguracion);
+            $per_solicitante = $this->findPersona($req->req_fkper_solicitante);
 
-    $per_subdirector = $this->findPersona($req->req_fkper_subdirector);
-    $per_planeacion = $this->findPersona($req->req_fkper_planeacion);
-    $per_director = $this->findPersona($req->req_fkper_director);
+            $per_subdirector = $this->findPersona($req->req_fkper_subdirector);
+            $per_planeacion = $this->findPersona($req->req_fkper_planeacion);
+            $per_director = $this->findPersona($req->req_fkper_director);
 
-    $area_solicitante = $this->findArea(  $per_solicitante->per_id)->are_nombre;
+            $area_solicitante = $this->findArea(  $per_solicitante->per_id)->are_nombre;
 
-    $area_subdirector = $this->findArea(  $per_subdirector->per_id)->are_nombre;
+            $area_subdirector = $this->findArea(  $per_subdirector->per_id)->are_nombre;
 
-    $area_planeacion = $this->findArea(  $per_planeacion->per_id)->are_nombre;
+            $area_planeacion = $this->findArea(  $per_planeacion->per_id)->are_nombre;
 
-     $area_director = $this->findArea( $per_director->per_id)->are_nombre;
-
-
+            $area_director = $this->findArea( $per_director->per_id)->are_nombre;
 
 
-        $pdf = new Pdf([
-            // set to use core fonts only
-            'mode' => Pdf::MODE_CORE, 
-            // A4 paper format
-            'format' => Pdf::FORMAT_A4, 
-            // portrait orientation
-            'orientation' => Pdf::ORIENT_LANDSCAPE, 
-            // stream to browser inline
-            'destination' => Pdf::DEST_BROWSER, 
 
-            'marginTop' => '30',
-             // set mPDF properties on the fly
-            'options' => ['title' => 'Formato para  Requisición de Bienes y Servicios.']
-        ]);
-        
-        $mpdf = $pdf->api;
 
-        $mpdf -> SetHTMLHeader($this->renderPartial('req_header',
-            [   'logo' =>  $config->con_logo,
-                'revision'  =>  $config->con_revision
-            ]
-        ));
+                $pdf = new Pdf([
+                    // set to use core fonts only
+                    'mode' => Pdf::MODE_CORE, 
+                    // A4 paper format
+                    'format' => Pdf::FORMAT_A4, 
+                    // portrait orientation
+                    'orientation' => Pdf::ORIENT_LANDSCAPE, 
+                    // stream to browser inline
+                    'destination' => Pdf::DEST_BROWSER, 
 
-        $mpdf -> SetHTMLFooter(
-        '<table width="100%">
-        <tr>
-            <td style="font: 10px arial;" ><b>TecNM-AD-IT-001-03</b></td>
-            <td style="font: 10px arial;" align="right"><b>Rev.'.$config->con_revision.'</b></td>
-        </tr>
-        </table>');
-        
+                    'marginTop' => '30',
+                    // set mPDF properties on the fly
+                    'options' => ['title' => 'Formato para  Requisición de Bienes y Servicios.']
+                ]);
+                
+                $mpdf = $pdf->api;
 
-        $pdf->content = $this->renderPartial('req_body',
-            [   'instituto' =>  $config->con_instituto,
-                'fecha'  =>  $req->req_fecha ,
-                'folio'  =>  $req->req_folio ,
-                'fechasolicitud'  =>  $req->req_fechasolicitante ,
-                'esoperativo'  =>  $req->req_esoperativo ,
-                'justificacion'  =>  $req->req_justificacion,
-                'solicitante' =>   $this->fullName($per_solicitante),
-                'area_solicitante' =>  $area_solicitante,
-                'area_subdirector' =>  $area_subdirector,
-                'area_planeacion' =>  $area_planeacion,
-                'area_director' =>  $area_director,
-                'subdirector' =>   $this->fullName($per_subdirector),
-                'planeacion' =>  $this->fullName($per_planeacion),
-                'director' =>   $this->fullName($per_director),
-                'detalle' =>  $this-> findDetalle($req->req_id)
-            ]
-        );
+                $mpdf -> SetHTMLHeader($this->renderPartial('req_header',
+                    [   'logo' =>  $config->con_logo,
+                        'revision'  =>  $config->con_revision
+                    ]
+                ));
 
-        return $pdf->render();
+                $mpdf -> SetHTMLFooter(
+                '<table width="100%">
+                <tr>
+                    <td style="font: 10px arial;" ><b>TecNM-AD-IT-001-03</b></td>
+                    <td style="font: 10px arial;" align="right"><b>Rev.'.$config->con_revision.'</b></td>
+                </tr>
+                </table>');
+                
+
+                $pdf->content = $this->renderPartial('req_body',
+                    [   'instituto' =>  $config->con_instituto,
+                        'fecha'  =>  $req->req_fecha ,
+                        'folio'  =>  $req->req_folio ,
+                        'fechasolicitud'  =>  $req->req_fechasolicitante ,
+                        'esoperativo'  =>  $req->req_esoperativo ,
+                        'justificacion'  =>  $req->req_justificacion,
+                        'solicitante' =>   $this->fullName($per_solicitante),
+                        'area_solicitante' =>  $area_solicitante,
+                        'area_subdirector' =>  $area_subdirector,
+                        'area_planeacion' =>  $area_planeacion,
+                        'area_director' =>  $area_director,
+                        'subdirector' =>   $this->fullName($per_subdirector),
+                        'planeacion' =>  $this->fullName($per_planeacion),
+                        'director' =>   $this->fullName($per_director),
+                        'detalle' =>  $this-> findDetalle($req->req_id)
+                    ]
+                );
+
+                return $pdf->render();
+        }
+        else 
+        {
+            throw new UnauthorizedHttpException('Acceso no permitido.');
+        }
     }
     
 
@@ -329,7 +359,7 @@ class ReqRequisicionController extends Controller
         if ( ($model = ReqArea::findOne(['are_fkper_responsable' => $id]) ) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('Error al obtener las Areas.');
         }
     }
 
@@ -338,7 +368,7 @@ class ReqRequisicionController extends Controller
         if ( ($model = ReqDetalle::findAll(['det_fkrequisicion' => $id]) ) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('Error al obtener los detalles.');
         }
 
     }
@@ -366,8 +396,15 @@ class ReqRequisicionController extends Controller
 
     }
 
-    public function deleteEmpty($id){
-        ReqDetalle::deleteAll('det_clave ="" AND det_fkrequisicion = '.$id);
+    public function isEmpty($array){
+
+        if ($array['ReqDetalle']['det_clave']=="") {
+            return true;
+        }else{
+            return false;
+        }
+           // ReqDetalle::deleteAll('det_clave ="" AND det_fkrequisicion = '.$id);
+    
     }
 
     public function getIDUsuarioActual()

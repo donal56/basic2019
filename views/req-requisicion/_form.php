@@ -100,6 +100,10 @@ use yii\web\User;
         [
             'allowEmptyList'    => false,
             'addButtonPosition' => MultipleInput::POS_ROW,
+            'addButtonOptions' => [
+            'class' => 'btn btn-success',
+            'label' => '<i class="glyphicon glyphicon-plus"></i>' // also you can use html code
+            ],
             'prepend'   => true,
             'sortable' => false,
             'columns' => 
@@ -173,16 +177,10 @@ $('.multiple-input').on('afterInit', function()
 
 }).on('beforeDeleteRow', function(e, row, currentIndex)
 {
-    return confirm('¿Seguro que quieres eliminar esta fila?')
-}).on('beforeAddRow', function(e, row, currentIndex)
-{
-   // reqdetalle-temp-1-det_cantidad
-    console.log(row);
-    
-    if (console.log(row[0].cells[1].textContent)== "")
-        return false;
-    else 
+    if ($(row).find('input').eq(1).val()== "")
         return true;
+    else 
+        return confirm('¿Seguro que quieres eliminar esta fila?');
 });
 
 JS;

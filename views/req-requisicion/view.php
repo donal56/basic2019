@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Requisicion */
@@ -39,17 +40,67 @@ $this->params['breadcrumbs'][] = $this->title;
             'req_id',
             'req_fecha',
             'req_folio',
-            'req_fkper_solicitante',
+             [
+                'attribute' => req_fkper_solicitante,
+                'format'    => 'raw',
+                'value'     => function ($model) {
+                    return $model-> fullName($model->req_fkper_solicitante);
+                }
+            ],
             'req_fechasolicitante',
-            'req_esoperativo',
+            [
+                'attribute' =>  req_esoperativo,
+                'format'    => 'raw',
+                'value'     => function ($model) {
+                    return $model->req_esoperativo = 1 ? 'Si' : 'No';
+                }
+            ],
             'req_justificacion:ntext',
-            'req_fkper_subdirector',
-            'req_fkper_planeacion',
-            'req_fkper_director',
-            'req_fkconfiguracion',
+            [
+                'attribute' => req_fkper_subdirector,
+                'format'    => 'raw',
+                'value'     => function ($model) {
+                    return $model-> fullName($model->req_fkper_subdirector);
+                }
+            ],
+            [
+                'attribute' => req_fkper_planeacion,
+                'format'    => 'raw',
+                'value'     => function ($model) {
+                    return $model-> fullName($model->req_fkper_planeacion);
+                }
+            ],
+            [
+                'attribute' => req_fkper_director,
+                'format'    => 'raw',
+                'value'     => function ($model) {
+                    return $model-> fullName($model->req_fkper_director);
+                }
+            ],
         ],
 
     
     ]) ?>
+<br>
+<h2>Detalles</h2>
+<br>
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            //'det_id',
+            //'det_fkrequisicion',
+            'det_clave',
+            'det_partida',
+            'det_cantidad',
+            'det_unidad',
+            'det_descripcion',
+            [
+              'attribute' => 'det_costo',
+              'label' => 'Costo estimado <br> (Total + IVA)',
+              'encodeLabel' => false,
+            ],   
+        ],
+    ]); ?>
 
 </div>
