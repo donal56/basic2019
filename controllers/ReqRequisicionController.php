@@ -7,23 +7,29 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\base\Model;
-
 use kartik\mpdf\Pdf;
+use app\controllers\ReqRequiscion;
 use app\models\ReqRequisicion;
 use app\models\ReqRequisicionSearch;
 use app\models\ReqConfiguracion;
 use app\models\ReqPersonal;
 use app\models\ReqArea;
 use app\models\ReqDetalle;
+use yii\db\Query;
 use app\models\ReqDetalleSearch;
+use yii\web\ServerErrorHttpException;
+use yii\web\UnauthorizedHttpException;
+
 /**
  * RequisicionController implements the CRUD actions for Requisicion model.
  */
 class ReqRequisicionController extends Controller
-{
+{   
+    
     /**
      * @inheritdoc
      */
+    
     public function behaviors()
     {
         return [
@@ -58,14 +64,22 @@ class ReqRequisicionController extends Controller
      */
     public function actionView($id)
     {
+        $model= $this->findModel($id);  
         $searchModel = new ReqDetalleSearch();
         $dataProvider = $searchModel->search($id);
 
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        if($this -> getIDUsuarioActual() == $model -> getReqFkperSolicitante() -> asArray() -> one()[per_id])
+        {
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }
+        else
+        {
+            throw new UnauthorizedHttpException('Acceso no permitido.');
+        }
     }
 
     /**
@@ -89,7 +103,7 @@ class ReqRequisicionController extends Controller
             $datareq['_csrf'] =  Yii::$app->request->post()['_csrf'];
             $datareq= $req;
             
-            if ($model->load($datareq) && $model->save()) {
+            if ($requisicion['ReqRequisicion']['req_fkper_solicitante'] === (String) $this -> getIDUsuarioActual() && $model->load($datareq) && $model->save()) {
                 $req_id =  $model->req_id;
                 //Save detalles
                 
@@ -110,8 +124,10 @@ class ReqRequisicionController extends Controller
                     }
                 }
 
-            }else{
-                 throw new ServerErrorHttpException('A OCCURIDO UN ERROR CON LA REQUISICION.'); 
+            }
+            else
+            {
+                throw new UnauthorizedHttpException('Acción no permitida.');
             }
             return $this->redirect(['view', 'id' => $req_id]); 
 
@@ -137,55 +153,63 @@ class ReqRequisicionController extends Controller
     {
         $model = $this->findModel($id);
 
-        $modeldet = new ReqDetalle();
-        $modeldet['temp'] = $this->findAllDetalle($model->req_id);
+        if($this -> getIDUsuarioActual() == $model -> getReqFkperSolicitante() -> asArray() -> one()[per_id])
+        {
+            $modeldet = new ReqDetalle();
+            $modeldet['temp'] = $this->findAllDetalle($model->req_id);
 
-        if($_POST['_csrf']!=""){
-            //update requisicion
+            if($_POST['_csrf'] != "")
+            {
+                //update requisicion
 
-            $requisicion = Yii::$app->request->post()['ReqRequisicion'];
-            $detalle=Yii::$app->request->post()['ReqDetalle']['temp'];
-    
-            $datareq['_csrf'] =  Yii::$app->request->post()['_csrf'];
-            $datareq['ReqRequisicion']= $requisicion;
-
+                $requisicion = Yii::$app->request->post()['ReqRequisicion'];
+                $detalle=Yii::$app->request->post()['ReqDetalle']['temp'];
         
-            if ($model->load($datareq) && $model->save()) {
-                
-            //update detalles
-                for ($i=0; $i < sizeof($detalle); $i++) { 
-
-                    $datadet['_csrf'] =  Yii::$app->request->post()['_csrf'];
-
-                    $datadet['ReqDetalle'] = current($detalle);
-                    next($detalle);
-
-                    $datadet['ReqDetalle']['det_fkrequisicion']=$id;
-
-                    if (!$this->isEmpty($datadet)) {
-                        
-                        if ($modeldet->load($datadet) && $modeldet->save()) {
-                        $idlist[$i] = $modeldet->det_id;
-                        $modeldet = new ReqDetalle();    
-                        } else {
-                        throw new ServerErrorHttpException('A OCCURIDO UN ERROR.');
-                        }
-
-                    }
-
+                $datareq['_csrf'] =  Yii::$app->request->post()['_csrf'];
+                $datareq['ReqRequisicion']= $requisicion;
+            
+                if ($requisicion['req_fkper_solicitante'] === (String) $this -> getIDUsuarioActual()  && $model->load($datareq) && $model->save()) 
+                {
                     
-                }
-                $this->deleteNotListed($id,$idlist);
-            }   
-            return $this->redirect(['view', 'id' => $id]);
-        }else{
-            return $this->render('update', [
-                'model' => $model,
-                'modeldet' => $modeldet,
-            ]);
-        }
+                    //update detalles
+                    for ($i=0; $i < sizeof($detalle); $i++) 
+                    { 
+                        $datadet['_csrf'] =  Yii::$app->request->post()['_csrf'];
+                        $datadet['ReqDetalle'] = current($detalle);
+                        next($detalle);
+                        $datadet['ReqDetalle']['det_fkrequisicion']=$id;
 
-     
+                        if (!$this->isEmpty($datadet)) 
+                        {    
+                            if ($modeldet->load($datadet) && $modeldet->save()) 
+                            {
+                                $idlist[$i] = $modeldet->det_id;
+                                $modeldet = new ReqDetalle();    
+                            } 
+                            else 
+                            {
+                                throw new ServerErrorHttpException('A OCCURIDO UN ERROR.');
+                            }
+                        }
+                        
+                    }
+                    $this->deleteNotListed($id,$idlist);
+                    return $this->redirect(['view', 'id' => $id]);
+                }   
+                else 
+                {
+                    throw new UnauthorizedHttpException('Acción no permitida.');
+                }
+            }
+            else
+            {
+                return $this->render('update', ['model' => $model, 'modeldet' => $modeldet]);
+            }   
+        }
+        else 
+        {
+            throw new UnauthorizedHttpException('Acceso no permitido.');
+        }
     }
 
     /**
@@ -196,40 +220,49 @@ class ReqRequisicionController extends Controller
      */
     public function actionDelete($id)
     {
-    	ReqDetalle::deleteAll('det_fkrequisicion = '.$id);
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        if($this -> getIDUsuarioActual() == $this -> findModel($id)-> getReqFkperSolicitante() -> asArray() -> one()[per_id])
+        {
+    	    ReqDetalle::deleteAll('det_fkrequisicion = '.$id);
+            $this->findModel($id)->delete();
+            return $this->redirect(['index']);
+        }
+        else 
+        {
+            throw new UnauthorizedHttpException('Acción no permitida.');
+        }
+        
     }
 
 
-    public function actionReport($id) {
+    public function actionReport($id) 
+    {
+        $req =  $this->findModel($id);
 
     $data['req'] =  $this->findModel($id);
-    $data['config'] = $this->findConfig($data['req']->req_fkconfiguracion);
-    $data['per_solicitante'] = $this->findPersona($data['req']->req_fkper_solicitante);
+    if($this -> getIDUsuarioActual() == $data['req'] -> getReqFkperSolicitante() -> asArray() -> one()[per_id])
+    {
+   
+        $data['config'] = $this->findConfig($data['req']->req_fkconfiguracion);
+        $data['per_solicitante'] = $this->findPersona($data['req']->req_fkper_solicitante);
 
-    $data['per_subdirector'] = $this->findPersona($data['req']->req_fkper_subdirector);
-    $data['per_planeacion'] = $this->findPersona($data['req']->req_fkper_planeacion);
-    $data['per_director'] = $this->findPersona($data['req']->req_fkper_director);
+        $data['per_subdirector'] = $this->findPersona($data['req']->req_fkper_subdirector);
+        $data['per_planeacion'] = $this->findPersona($data['req']->req_fkper_planeacion);
+        $data['per_director'] = $this->findPersona($data['req']->req_fkper_director);
 
-    $data['area_solicitante'] = $this->findArea($data['per_solicitante']->per_id)->are_nombre;
+        $data['area_solicitante'] = $this->findArea($data['per_solicitante']->per_id)->are_nombre;
 
-    $data['area_subdirector'] = $this->findArea($data['per_subdirector']->per_id)->are_nombre;
+        $data['area_subdirector'] = $this->findArea($data['per_subdirector']->per_id)->are_nombre;
 
-    $data['area_planeacion'] = $this->findArea($data['per_planeacion']->per_id)->are_nombre;
+        $data['area_planeacion'] = $this->findArea($data['per_planeacion']->per_id)->are_nombre;
 
-    $data['area_director'] = $this->findArea($data['per_director']->per_id)->are_nombre;
+        $data['area_director'] = $this->findArea($data['per_director']->per_id)->are_nombre;
+        
+        $data['per_solicitante'] = $this->fullName( $data['per_solicitante']);
+        $data['per_subdirector'] = $this->fullName( $data['per_subdirector']);
+        $data['per_planeacion'] = $this->fullName($data['per_planeacion']);
+        $data['per_director'] = $this->fullName($data['per_director']);
 
-    
-    $data['per_solicitante'] = $this->fullName( $data['per_solicitante']);
-    $data['per_subdirector'] = $this->fullName( $data['per_subdirector']);
-    $data['per_planeacion'] = $this->fullName($data['per_planeacion']);
-    $data['per_director'] = $this->fullName($data['per_director']);
-
-     $data['detalles']= $this-> findDetalle($data['req']->req_id);
-
-
+        $data['detalles']= $this-> findDetalle($data['req']->req_id);
 
 
         $pdf = new Pdf([
@@ -262,7 +295,14 @@ class ReqRequisicionController extends Controller
             [ 'data' =>   $data,]
         ));
 
-        return $pdf->render();
+            return $pdf->render();
+
+        }
+        else 
+        {
+            throw new UnauthorizedHttpException('Acceso no permitido.');
+        }
+
     }
     
 
@@ -353,6 +393,20 @@ class ReqRequisicionController extends Controller
         }
            // ReqDetalle::deleteAll('det_clave ="" AND det_fkrequisicion = '.$id);
     
+    }
+
+    public function getIDUsuarioActual()
+    {
+        $query1 = new Query;
+        $query1 -> select(['req_personal.per_id as ID', 
+            'CONCAT(req_personal.per_nombre, " ", req_personal.per_paterno, " ", req_personal.per_materno) as Nombre '])
+                -> from('req_personal')
+                -> join('INNER JOIN', 'user', 'req_personal.per_fkuser = user.id')
+                -> where(['user.id' => Yii::$app->user->identity->id]);
+        $data1 = $query1 -> createCommand() -> queryAll();
+        $usuarioActual = $query1 -> createCommand() -> queryAll()[0][ID];
+
+        return $usuarioActual;
     }
 
 }

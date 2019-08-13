@@ -50,8 +50,8 @@ class ReqRequisicionSearch extends ReqRequisicion
             -> from('req_personal')
             -> join('INNER JOIN', 'user', 'req_personal.per_fkuser = user.id')
             -> where(['user.id' => Yii::$app->user->identity->id]);
-        $usuarioActual = $query1 -> createCommand() -> queryAll();
-
+        $data1 = $query1 -> createCommand() -> queryAll();
+        $usuarioActual = $query1 -> createCommand() -> queryAll()[0][ID];
 
         // add conditions that should always apply here
 
@@ -72,7 +72,7 @@ class ReqRequisicionSearch extends ReqRequisicion
         $query->andFilterWhere([
             'req_id' => $this->req_id,
             'req_fecha' => $this->req_fecha,
-            'req_fkper_solicitante' => $usuarioActual[0][Nombre],
+            'req_fkper_solicitante' => $usuarioActual,
             'req_fechasolicitante' => $this->req_fechasolicitante,
             'req_esoperativo' => $this->req_esoperativo,
             'req_fkper_subdirector' => $this->req_fkper_subdirector,
