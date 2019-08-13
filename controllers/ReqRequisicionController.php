@@ -205,21 +205,29 @@ class ReqRequisicionController extends Controller
 
     public function actionReport($id) {
 
-    $req =  $this->findModel($id);
-    $config = $this->findConfig($req->req_fkconfiguracion);
-    $per_solicitante = $this->findPersona($req->req_fkper_solicitante);
+    $data['req'] =  $this->findModel($id);
+    $data['config'] = $this->findConfig($data['req']->req_fkconfiguracion);
+    $data['per_solicitante'] = $this->findPersona($data['req']->req_fkper_solicitante);
 
-    $per_subdirector = $this->findPersona($req->req_fkper_subdirector);
-    $per_planeacion = $this->findPersona($req->req_fkper_planeacion);
-    $per_director = $this->findPersona($req->req_fkper_director);
+    $data['per_subdirector'] = $this->findPersona($data['req']->req_fkper_subdirector);
+    $data['per_planeacion'] = $this->findPersona($data['req']->req_fkper_planeacion);
+    $data['per_director'] = $this->findPersona($data['req']->req_fkper_director);
 
-    $area_solicitante = $this->findArea(  $per_solicitante->per_id)->are_nombre;
+    $data['area_solicitante'] = $this->findArea($data['per_solicitante']->per_id)->are_nombre;
 
-    $area_subdirector = $this->findArea(  $per_subdirector->per_id)->are_nombre;
+    $data['area_subdirector'] = $this->findArea($data['per_subdirector']->per_id)->are_nombre;
 
-    $area_planeacion = $this->findArea(  $per_planeacion->per_id)->are_nombre;
+    $data['area_planeacion'] = $this->findArea($data['per_planeacion']->per_id)->are_nombre;
 
-     $area_director = $this->findArea( $per_director->per_id)->are_nombre;
+    $data['area_director'] = $this->findArea($data['per_director']->per_id)->are_nombre;
+
+    
+    $data['per_solicitante'] = $this->fullName( $data['per_solicitante']);
+    $data['per_subdirector'] = $this->fullName( $data['per_subdirector']);
+    $data['per_planeacion'] = $this->fullName($data['per_planeacion']);
+    $data['per_director'] = $this->fullName($data['per_director']);
+
+     $data['detalles']= $this-> findDetalle($data['req']->req_id);
 
 
 
@@ -234,7 +242,8 @@ class ReqRequisicionController extends Controller
             // stream to browser inline
             'destination' => Pdf::DEST_BROWSER, 
 
-            'marginTop' => '30',
+            'marginTop' => '65',
+            'marginBottom' => '15',
              // set mPDF properties on the fly
             'options' => ['title' => 'Formato para  Requisición de Bienes y Servicios.']
         ]);
@@ -242,38 +251,16 @@ class ReqRequisicionController extends Controller
         $mpdf = $pdf->api;
 
         $mpdf -> SetHTMLHeader($this->renderPartial('req_header',
-            [   'logo' =>  $config->con_logo,
-                'revision'  =>  $config->con_revision
-            ]
+            [ 'data' =>   $data,]
         ));
 
-        $mpdf -> SetHTMLFooter(
-        '<table width="100%">
-        <tr>
-            <td style="font: 10px arial;" ><b>TecNM-AD-IT-001-03</b></td>
-            <td style="font: 10px arial;" align="right"><b>Rev.'.$config->con_revision.'</b></td>
-        </tr>
-        </table>');
-        
-
         $pdf->content = $this->renderPartial('req_body',
-            [   'instituto' =>  $config->con_instituto,
-                'fecha'  =>  $req->req_fecha ,
-                'folio'  =>  $req->req_folio ,
-                'fechasolicitud'  =>  $req->req_fechasolicitante ,
-                'esoperativo'  =>  $req->req_esoperativo ,
-                'justificacion'  =>  $req->req_justificacion,
-                'solicitante' =>   $this->fullName($per_solicitante),
-                'area_solicitante' =>  $area_solicitante,
-                'area_subdirector' =>  $area_subdirector,
-                'area_planeacion' =>  $area_planeacion,
-                'area_director' =>  $area_director,
-                'subdirector' =>   $this->fullName($per_subdirector),
-                'planeacion' =>  $this->fullName($per_planeacion),
-                'director' =>   $this->fullName($per_director),
-                'detalle' =>  $this-> findDetalle($req->req_id)
-            ]
-        );
+            [ 'data' =>   $data, ]
+        ); 
+
+        $mpdf -> SetHTMLFooter($this->renderPartial('req_footer',
+            [ 'data' =>   $data,]
+        ));
 
         return $pdf->render();
     }

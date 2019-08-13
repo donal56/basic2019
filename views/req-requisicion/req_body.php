@@ -4,51 +4,27 @@
 <body>
 <!-- cuerpo -->
 
-	<div style="font: 12px arial;text-align: center;padding-top: 5mm;">
-		<b>INSTITUTO TECNOLOGICO DE <?= $instituto ?> <br>
-		REQUISICIÓN DE BIENES Y SERVICIOS</b>
-	</div>
-
-	<table width="100%">
-		<tr>
-			<td style="font: 10px arial;">FECHA:&nbsp;<u><?= $fecha ?></u></td>
-			<td style="font: 10px arial;" align="right">FOLIO No:&nbsp;<u><?= $folio ?></u></td>
-		</tr>
-	</table>
-
-	<table width="100%" border="1" cellpadding="4" cellspacing="0" bordercolor="#000000">
-		<tr>
-			<td style="font: 10px arial;">NOMBRE Y FIRMA DEL ÁREA SOLICITANTE:&nbsp;
-				<?= $solicitante ?>	
-			</td>
-		</tr>
-		<tr>
-			<td style="font: 10px arial;">FECHA Y ÁREA SOLICITANTE:&nbsp;
-				<?= $fechasolicitud ?>
-				&nbsp; 	<?= $area_solicitante ?>
-			</td>
-		</tr>
-	</table>
-
 	<div style="font: 12px arial; margin: 3mm 0 3mm 0">¿Los Bienes o Servicios están contemplados en el Programa Operativo Anual?  &nbsp;
-		<b><?php echo ($esoperativo=="1") ? "Sí" : "No"; ?></b>
+		<b><?php echo ($data['req']->req_esoperativo=="1") ? "Sí" : "No"; ?></b>
 	</div>
 
 <!-- bienes -->
 
-	<table width="100%" border="1" cellpadding="4" cellspacing="0" bordercolor="#000000">
-		<tr>
-		  <th align="center" style="font: 10px arial;"><b>CLAVE <br> PRESUPUESTAL</b></th>
-		  <th align="center" style="font: 10px arial;"><b>PARTIDA</b></th>
-		  <th align="center" style="font: 10px arial;"><b>CANTIDAD</b></th>
-		  <th align="center" style="font: 10px arial;"><b>UNIDAD</b></th>
-		  <th align="center" style="font: 10px arial;"><b>DESCRIPCIÒN DE LOS BIENES O SERVICIOS</b></th>
-		  <th align="center" style="font-size: 10px;"><b>COSTO ESTIMADO<br>TOTAL + IVA</b></th>
-		</tr>
+	<table  style="page-break-inside:auto" width="100%" border="1" cellpadding="3" cellspacing="0" bordercolor="#000000">
+		<thead style=" display:table-header-group ">
+			<tr style="page-break-inside:avoid; page-break-after:auto">
+				<th align="center" style="font: 10px arial;"><b>CLAVE <br> PRESUPUESTAL</b></th>
+				<th align="center" style="font: 10px arial;"><b>PARTIDA</b></th>
+				<th align="center" style="font: 10px arial;"><b>CANTIDAD</b></th>
+				<th align="center" style="font: 10px arial;"><b>UNIDAD</b></th>
+				<th align="center" style="font: 10px arial;"><b>DESCRIPCIÒN DE LOS BIENES O SERVICIOS</b></th>
+				<th align="center" style="font-size: 10px;"><b>COSTO ESTIMADO<br>TOTAL + IVA</b></th>
+			</tr>
+		</thead>	
 	
 	<?php
 		$total = 0;
-		foreach ($detalle as $column)
+		foreach ($data['detalles'] as $column)
 		{
 			echo '<tr>';
 
@@ -85,13 +61,13 @@
 	    <th style="font: 10px arial;"><b>LO ANTERIOR PARA SER UTILIZADO EN LA ACCIÓN:</b></th>
 	  </tr>
 	  <tr>
-	    <td style="font: 10px arial;"><?= $justificacion ?></td>
+	    <td style="font: 10px arial;"><?= $data['req']->req_justificacion ?></td>
 	  </tr>
 	</table><br>
 
 
 <!-- Firmas -->
-<table  width="100%" >
+<table  autosize="1" width="100%"  style="page-break-inside:avoid">
 	<tr>
 		<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;padding-bottom: 10mm;border-bottom: 1px solid #000;"><b>NOMBRE Y FIRMA DEL SUBDIRECTOR(A)
 
@@ -106,14 +82,14 @@
 	</tr>
 
 	<tr>
-		<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?= $subdirector ?>
-			<br>&nbsp; 	<?= $area_subdirector ?>
+		<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?= $data['per_subdirector'] ?>
+			<br>&nbsp; 	<?=  $data['area_subdirector'] ?>
 		</td>
-		<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?= $planeacion ?>
-			<br>&nbsp; 	<?= $area_planeacion ?>
+		<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?=$data['per_planeacion'] ?>
+			<br>&nbsp; 	<?=  $data['area_planeacion']?>
 		</td>
-		<td align="center" style="font-size: 10px;"><?= $director ?>
-			<br>&nbsp; 	<?= $area_director ?>
+		<td align="center" style="font-size: 10px;"><?= $data['per_director'] ?>
+			<br>&nbsp; 	<?=   $data['area_director'] ?>
 		</td>
 
 	</tr>
