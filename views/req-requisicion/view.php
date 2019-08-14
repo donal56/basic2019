@@ -99,6 +99,9 @@ $this->params['breadcrumbs'][] = $this->title;
               'attribute' => 'det_costo',
               'label' => 'Costo estimado <br> (Total + IVA)',
               'encodeLabel' => false,
+              'value' =>  function ($model) {
+                    return '$'.number_format($model->det_costo, 2, '.', ',');
+                },
             ],   
         ],
     ]); ?>

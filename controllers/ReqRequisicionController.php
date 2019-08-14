@@ -102,7 +102,6 @@ class ReqRequisicionController extends Controller
 
             $datareq['_csrf'] =  Yii::$app->request->post()['_csrf'];
             $datareq= $req;
-            echo "<pre>" .print_r($requisicion['ReqRequisicion']['req_fkper_solicitante'],true)."</pre>";
             
             if ($requisicion['ReqRequisicion']['req_fkper_solicitante'] === (String) $this -> getIDUsuarioActual() && $model->load($datareq) && $model->save()) {
                 $req_id =  $model->req_id;
