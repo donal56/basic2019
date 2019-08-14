@@ -58,9 +58,10 @@ use yii\web\User;
 ]); ?>
     <div class= 'row' style= 'margin-top: 1.0em'>
         <?php
+
             echo $form->field($model, 'req_fecha') -> widget(DatePicker::classname(), 
             [
-                'options' => ['value' => $model->isNewRecord ? date('Y-m-d') : ""],
+                'options' => ['value' => $model->isNewRecord ? date('Y-m-d') :  $model -> req_fecha],
                 'language' => 'es',
                 'removeButton' => false,
                 'pluginOptions' => [
@@ -75,7 +76,7 @@ use yii\web\User;
         <?php
             echo $form->field($model, 'req_fechasolicitante') -> widget(DatePicker::classname(), 
             [
-                'options' => ['value' => date('Y-m-d')],
+                'options' => ['value' => $model->isNewRecord ? date('Y-m-d') :  $model -> req_fecha],
                 'language' => 'es',
                 'removeButton' => false,
                 'pluginOptions' => [
@@ -85,13 +86,13 @@ use yii\web\User;
                     'format' => 'yyyy-mm-dd']
             ]); 
         ?>  
-        <?= $form -> field($model, 'req_esoperativo') -> checkbox(['label' => '¿Los bienes o servicios estan contemplados en el programa operativo anual?']); ?>
+        <?= $form ->field($model, 'req_esoperativo') -> checkbox(['labelOptions' => ['class' => 'text-justify']]); ?>
    
 
     </div>
 
     <div class= 'row'>
-        <?= $form -> field($model, 'req_justificacion') -> textarea(['label' => 'Justificación', 'rows' => 1, 'placeholder' => 'LO ANTERIOR PARA SER UTILIZADO EN LA ACCIÓN:']); ?>
+        <?= $form -> field($model, 'req_justificacion') -> textarea(['label' => 'Justificación', 'rows' => 2, 'placeholder' => 'LO ANTERIOR PARA SER UTILIZADO EN LA ACCIÓN:']); ?>
     </div>
         
     <div class="row req-detalle-form">
@@ -190,7 +191,10 @@ $('.multiple-input').on('afterInit', function()
         return true;
     else 
         return confirm('¿Seguro que quieres eliminar esta fila?');
-}).on('beforeAddRow', function(e, row, currentIndex)
+});
+
+/*
+.on('beforeAddRow', function(e, row, currentIndex)
 {
     var clave = $('.multiple-input').find('td.list-cell__det_clave:first').find('input[type=text]').val();
     var partida = $('.multiple-input').find('td.list-cell__det_partida:first').find('input[type=text]').val();
@@ -249,6 +253,8 @@ function isFloat(n)
     n= parseFloat(n);
     return Number(n) === n;
 }
+
+*/
 
 JS;
 
