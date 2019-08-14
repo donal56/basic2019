@@ -27,6 +27,7 @@ use yii\db\Query;
             'req_area.are_fkper_responsable = req_personal.per_id');
     $command = $query->createCommand();
     $data1 = $command->queryAll();
+
 ?>
 
 
@@ -36,7 +37,7 @@ use yii\db\Query;
 
 <?= $form->field($model, 'are_fkper_responsable')->dropDownList(ArrayHelper::map($data1, "ID", "Nombre")) ?>
 
-<?= $form->field($model, 'are_fkper_superior')->textInput() ?>
+<?= $form->field($model, 'are_fkper_superior')->dropDownList(ArrayHelper::map($data1, "ID", "Nombre")) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
