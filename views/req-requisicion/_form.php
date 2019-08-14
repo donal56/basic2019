@@ -102,7 +102,7 @@ use yii\web\User;
             'addButtonPosition' => MultipleInput::POS_ROW,
             'addButtonOptions' => [
             'class' => 'btn btn-success',
-            'label' => '<i class="glyphicon glyphicon-plus"></i>' // also you can use html code
+            'label' => '<i class="glyphicon glyphicon-plus"></i>' 
             ],
             'prepend'   => true,
             'sortable' => false,
@@ -130,7 +130,12 @@ use yii\web\User;
                 ],
                 [
                     'name'  => 'det_descripcion',
-                    'title' => 'Descripcion'
+                    'title' => 'Descripcion',
+                    'type' => 'textarea',
+                    'options'=> [
+                        'style' => 'height:34px; !important;'
+                    ]
+                  
                 ],
                 [
                     'name'  => 'det_costo',
