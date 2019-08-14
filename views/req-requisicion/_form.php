@@ -60,7 +60,7 @@ use yii\web\User;
         <?php
             echo $form->field($model, 'req_fecha') -> widget(DatePicker::classname(), 
             [
-                'options' => ['value' => date('Y-m-d')],
+                'options' => ['value' => $model->isNewRecord ? date('Y-m-d') : ""],
                 'language' => 'es',
                 'removeButton' => false,
                 'pluginOptions' => [
@@ -111,7 +111,6 @@ use yii\web\User;
                 [
                     'name'  => 'det_id',
                     'title' => 'ID'
-
                 ],
                 [
                     'name'  => 'det_clave',
@@ -166,10 +165,15 @@ $script = <<< JS
 
 $('.multiple-input').on('afterInit', function() 
 {
+    if($('.list-cell__det_clave').find('input').val()!="")
+    {
+        $('.btn-success').click();
+    }
     $('.list-cell__det_id').hide();
 }).on('afterAddRow', function(e, row, currentIndex) 
 {
     $('.list-cell__det_id').hide();
+
     var first = $('.js-input-plus').clone();
     var last = $('.js-input-remove').first().clone();
     $('.js-input-plus').replaceWith(last);
@@ -181,7 +185,65 @@ $('.multiple-input').on('afterInit', function()
         return true;
     else 
         return confirm('¿Seguro que quieres eliminar esta fila?');
+}).on('beforeAddRow', function(e, row, currentIndex)
+{
+    var clave = $('.multiple-input').find('td.list-cell__det_clave:first').find('input[type=text]').val();
+    var partida = $('.multiple-input').find('td.list-cell__det_partida:first').find('input[type=text]').val();
+    var cantidad = $('.multiple-input').find('td.list-cell__det_cantidad:first').find('input[type=text]').val();
+    var unidad = $('.multiple-input').find('td.list-cell__det_unidad:first').find('input[type=text]').val();
+    var descripcion = $('.multiple-input').find('td.list-cell__det_descripcion:first').find('input[type=text]').val();
+    var costo = $('.multiple-input').find('td.list-cell__det_costo:first').find('input[type=text]').val();
+    var mensaje= "Se han encontrado los siguientes errores: \n";
+    var esCorrecto= true;
+
+    if(clave.length > 30)
+    {
+        mensaje+= "La clave debe ser menor o igual a 30 caracteres.\n";
+        esCorrecto= false;
+    }
+    
+    if(partida.length > 6)
+    {
+        mensaje+= "La partida debe ser menor o igual a 6 caracteres.\n";
+        esCorrecto= false;
+    }
+
+    if(cantidad.length > 14 || !isFloat(cantidad))
+    {
+        mensaje+= "La cantidad debe ser un numero de hasta 2 decimales.\n";
+        esCorrecto= false;
+    }
+
+    if(unidad.length > 20)
+    {
+        mensaje+= "La unidad debe ser menor o igual a 20 caracteres.\n";
+        esCorrecto= false;
+    }
+
+    if(descripcion.length > 500)
+    {
+        mensaje+= "La descripción debe ser menor o igual a 500 caracteres.\n";
+        esCorrecto= false;
+    }
+
+    if(costo.length > 14 || !isFloat(costo))
+    {
+        mensaje+= "El costo debe ser un numero de hasta 2 decimales.\n";
+        esCorrecto= false;
+    }
+
+    alert(mensaje);
+    console.log(mensaje);
+    console.log(esCorrecto);
+    return esCorrecto;
 });
+
+function isFloat(n)
+{
+    //No puede ser una cadena vacia
+    n= parseFloat(n);
+    return Number(n) === n;
+}
 
 JS;
 
