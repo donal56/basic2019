@@ -102,7 +102,7 @@ use yii\web\User;
             'addButtonPosition' => MultipleInput::POS_ROW,
             'addButtonOptions' => [
             'class' => 'btn btn-success',
-            'label' => '<i class="glyphicon glyphicon-plus"></i>' // also you can use html code
+            'label' => '<i class="glyphicon glyphicon-plus"></i>' 
             ],
             'prepend'   => true,
             'sortable' => false,
@@ -131,7 +131,8 @@ use yii\web\User;
                 ],
                 [
                     'name'  => 'det_descripcion',
-                    'title' => 'Descripcion'
+                    'title' => 'Descripcion',
+                    'type' => 'textarea',
                 ],
                 [
                     'name'  => 'det_costo',
@@ -166,10 +167,14 @@ $script = <<< JS
 
 $('.multiple-input').on('afterInit', function() 
 {
+    if($('.list-cell__det_clave').find('input').val()!=""){
+        $('.btn-success').click();
+    }
     $('.list-cell__det_id').hide();
 }).on('afterAddRow', function(e, row, currentIndex) 
 {
     $('.list-cell__det_id').hide();
+
     var first = $('.js-input-plus').clone();
     var last = $('.js-input-remove').first().clone();
     $('.js-input-plus').replaceWith(last);
