@@ -51,7 +51,7 @@ class ReqRequisicionSearch extends ReqRequisicion
             -> join('INNER JOIN', 'user', 'req_personal.per_fkuser = user.id')
             -> where(['user.id' => Yii::$app->user->identity->id]);
         $data1 = $query1 -> createCommand() -> queryAll();
-        $usuarioActual = $query1 -> createCommand() -> queryAll()[0][ID];
+        $usuarioActual = $query1 -> createCommand() -> queryAll()[0]['ID'];
 
         // add conditions that should always apply here
 

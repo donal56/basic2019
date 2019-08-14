@@ -68,7 +68,7 @@ class ReqRequisicionController extends Controller
         $searchModel = new ReqDetalleSearch();
         $dataProvider = $searchModel->search($id);
 
-        if($this -> getIDUsuarioActual() == $model -> getReqFkperSolicitante() -> asArray() -> one()[per_id])
+        if($this -> getIDUsuarioActual() == $model -> getReqFkperSolicitante() -> asArray() -> one()['per_id'])
         {
             return $this->render('view', [
                 'model' => $this->findModel($id),
@@ -93,7 +93,7 @@ class ReqRequisicionController extends Controller
         $model = new ReqRequisicion();
         $modeldet = new ReqDetalle();
 
-        if($_POST['_csrf']!=""){
+        if(isset($_POST['_csrf'])){
 
         //Save requisicion
             $req = Yii::$app->request->post();
@@ -102,6 +102,7 @@ class ReqRequisicionController extends Controller
 
             $datareq['_csrf'] =  Yii::$app->request->post()['_csrf'];
             $datareq= $req;
+            echo "<pre>" .print_r($requisicion['ReqRequisicion']['req_fkper_solicitante'],true)."</pre>";
             
             if ($requisicion['ReqRequisicion']['req_fkper_solicitante'] === (String) $this -> getIDUsuarioActual() && $model->load($datareq) && $model->save()) {
                 $req_id =  $model->req_id;
@@ -153,12 +154,12 @@ class ReqRequisicionController extends Controller
     {
         $model = $this->findModel($id);
 
-        if($this -> getIDUsuarioActual() == $model -> getReqFkperSolicitante() -> asArray() -> one()[per_id])
+        if($this -> getIDUsuarioActual() == $model -> getReqFkperSolicitante() -> asArray() -> one()['per_id'])
         {
             $modeldet = new ReqDetalle();
             $modeldet['temp'] = $this->findAllDetalle($model->req_id);
 
-            if($_POST['_csrf'] != "")
+            if(isset($_POST['_csrf']))
             {
                 //update requisicion
 
@@ -220,7 +221,7 @@ class ReqRequisicionController extends Controller
      */
     public function actionDelete($id)
     {
-        if($this -> getIDUsuarioActual() == $this -> findModel($id)-> getReqFkperSolicitante() -> asArray() -> one()[per_id])
+        if($this -> getIDUsuarioActual() == $this -> findModel($id)-> getReqFkperSolicitante() -> asArray() -> one()['per_id'])
         {
     	    ReqDetalle::deleteAll('det_fkrequisicion = '.$id);
             $this->findModel($id)->delete();
@@ -239,7 +240,7 @@ class ReqRequisicionController extends Controller
         $req =  $this->findModel($id);
 
     $data['req'] =  $this->findModel($id);
-    if($this -> getIDUsuarioActual() == $data['req'] -> getReqFkperSolicitante() -> asArray() -> one()[per_id])
+    if($this -> getIDUsuarioActual() == $data['req'] -> getReqFkperSolicitante() -> asArray() -> one()['per_id'])
     {
    
         $data['config'] = $this->findConfig($data['req']->req_fkconfiguracion);
@@ -404,7 +405,7 @@ class ReqRequisicionController extends Controller
                 -> join('INNER JOIN', 'user', 'req_personal.per_fkuser = user.id')
                 -> where(['user.id' => Yii::$app->user->identity->id]);
         $data1 = $query1 -> createCommand() -> queryAll();
-        $usuarioActual = $query1 -> createCommand() -> queryAll()[0][ID];
+        $usuarioActual = $query1 -> createCommand() -> queryAll()[0]['ID'];
 
         return $usuarioActual;
     }
