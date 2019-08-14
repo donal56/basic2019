@@ -133,6 +133,10 @@ use yii\web\User;
                     'name'  => 'det_descripcion',
                     'title' => 'Descripcion',
                     'type' => 'textarea',
+                    'options'=> [
+                        'style' => 'height:34px; !important;'
+                    ]
+                  
                 ],
                 [
                     'name'  => 'det_costo',
