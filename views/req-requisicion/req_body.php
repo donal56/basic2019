@@ -40,7 +40,7 @@
 
 			$total = $total+$column->det_costo;
 
-			echo '<td style="font: 10px arial;">'.'$ '.$column->det_costo.'</td>';
+			echo '<td style="font: 10px arial;">'.'$'.number_format($column->det_costo, 2, '.', ',').'</td>';
 
 
 			echo '</tr>';
@@ -49,7 +49,7 @@
 	?>
 		<tr>
 			<td colspan="5" align="right" style="font-size: 10px;">TOTAL</td>
-			<td align="left" style="font-size: 10px;">$ <?= $total ?></td>
+			<td align="left" style="font-size: 10px;">$<?= number_format($total, 2, '.', ',') ?></td>
 		</tr>
 
 
