@@ -26,6 +26,20 @@ class SwsDashboardController extends Controller
             'ghost-access' => [
                 'class' => 'webvimark\modules\UserManagement\components\GhostAccessControl',
             ],
+            'access' => 
+            [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['index','create','update','view'],
+                'rules' => 
+                [
+                    // allow authenticated users
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    // everything else is denied
+                ],
+            ],       
         /*return [
             'access' => [
                 'class' => AccessControl::className(),

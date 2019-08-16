@@ -20,9 +20,9 @@ use yii\web\User;
         -> where(['user.id' => Yii::$app->user->identity->id]);
     $data1 = $query1 -> createCommand() -> queryAll();
 
-    $query0 = new Query;
-    $query0 -> select(['are_fkper_superior']) -> from('req_area') -> where(['are_fkper_responsable' => $data1[0]['ID']]);
-    $data0 = $query0 -> createCommand() -> queryAll();
+    // $query0 = new Query;
+    // $query0 -> select(['are_fkper_superior']) -> from('req_area') -> where(['are_fkper_responsable' => $data1[0]['ID']]);
+    // $data0 = $query0 -> createCommand() -> queryAll();
 
     $query2 = new Query;
     $query2  ->select([ 'req_area.are_id as ID' , 
@@ -30,7 +30,8 @@ use yii\web\User;
         ->from('req_area')
         ->join('INNER JOIN', 'req_personal', 'req_area.are_fkper_responsable = req_personal.per_id');
     
-    $data2 = $query2 -> where(['req_area.are_nivel' => '2']) -> andWhere(['req_area.are_fkper_responsable' => $data0[0]['are_fkper_superior']]) -> createCommand() -> queryAll();
+    $data2 = $query2 -> where(['req_area.are_nivel' => '2']) -> createCommand() -> queryAll();
+    // -> andWhere(['req_area.are_fkper_responsable' => $data0[0]['are_fkper_superior']])
     $data3 = $query2 ->where(['req_area.are_nivel' => '1']) -> createCommand() -> queryAll();
     $data4 = $query2 ->where(['req_area.are_nivel' => '0']) -> createCommand() -> queryAll();
 
