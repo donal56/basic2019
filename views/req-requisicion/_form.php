@@ -55,7 +55,7 @@ use yii\web\User;
             return ['options' => ['class' => 'col-md-2']];
         }
     },
-]); ?>
+ 'id' => 'requisicion-form']); ?>
     <div class= 'row' style= 'margin-top: 1.0em'>
         <?php
 
@@ -115,19 +115,23 @@ use yii\web\User;
                 ],
                 [
                     'name'  => 'det_clave',
-                    'title' => 'Clave'
+                    'title' => 'Clave',
+            'enableError' => true
                 ],
                 [
                     'name'  => 'det_partida',
-                    'title' => 'Partida'
+                    'title' => 'Partida',
+            'enableError' => true
                 ],
                 [
                     'name'  => 'det_cantidad',
-                    'title' => 'Cantidad'
+                    'title' => 'Cantidad',
+            'enableError' => true
                 ],
                 [
                     'name'  => 'det_unidad',
-                    'title' => 'Unidad'
+                    'title' => 'Unidad',
+            'enableError' => true
                 ],
                 [
                     'name'  => 'det_descripcion',
@@ -135,12 +139,14 @@ use yii\web\User;
                     'type' => 'textarea',
                     'options'=> [
                         'style' => 'height:34px; !important;'
-                    ]
+                    ],
+            'enableError' => true
                   
                 ],
                 [
                     'name'  => 'det_costo',
-                    'title' => 'Costo'
+                    'title' => 'Costo',
+            'enableError' => true
                 ]
             ]
         ])->label(false);
@@ -168,6 +174,7 @@ use yii\web\User;
 
 <?php 
 $script = <<< JS
+var esCorrecto = true;
 
 $('.multiple-input').on('afterInit', function() 
 {
@@ -176,6 +183,7 @@ $('.multiple-input').on('afterInit', function()
         $('.btn-success').click();
     }
     $('.list-cell__det_id').hide();
+
 }).on('afterAddRow', function(e, row, currentIndex) 
 {
     $('.list-cell__det_id').hide();
@@ -185,6 +193,8 @@ $('.multiple-input').on('afterInit', function()
     $('.js-input-plus').replaceWith(last);
     $('.multiple-input-list__btn').first().replaceWith(first);
 
+    validateDetalles();
+
 }).on('beforeDeleteRow', function(e, row, currentIndex)
 {
     if ($(row).find('input').eq(1).val()== "")
@@ -193,68 +203,114 @@ $('.multiple-input').on('afterInit', function()
         return confirm('¿Seguro que quieres eliminar esta fila?');
 });
 
-/*
-.on('beforeAddRow', function(e, row, currentIndex)
-{
-    var clave = $('.multiple-input').find('td.list-cell__det_clave:first').find('input[type=text]').val();
-    var partida = $('.multiple-input').find('td.list-cell__det_partida:first').find('input[type=text]').val();
-    var cantidad = $('.multiple-input').find('td.list-cell__det_cantidad:first').find('input[type=text]').val();
-    var unidad = $('.multiple-input').find('td.list-cell__det_unidad:first').find('input[type=text]').val();
-    var descripcion = $('.multiple-input').find('td.list-cell__det_descripcion:first').find('input[type=text]').val();
-    var costo = $('.multiple-input').find('td.list-cell__det_costo:first').find('input[type=text]').val();
-    var mensaje= "Se han encontrado los siguientes errores: \n";
-    var esCorrecto= true;
+//on change
+function validateDetalles(){
 
-    if(clave.length > 30)
-    {
-        mensaje+= "La clave debe ser menor o igual a 30 caracteres.\n";
-        esCorrecto= false;
-    }
-    
-    if(partida.length > 6)
-    {
-        mensaje+= "La partida debe ser menor o igual a 6 caracteres.\n";
-        esCorrecto= false;
-    }
+    $("[id^='reqdetalle-temp']").on('change.yii',function(){
+    var detalle =$(this).attr('id');
 
-    if(cantidad.length > 14 || !isFloat(cantidad))
-    {
-        mensaje+= "La cantidad debe ser un numero de hasta 2 decimales.\n";
-        esCorrecto= false;
-    }
+        if (detalle.includes('det_clave')){
+            if($(this).val().length > 100)
+            {
 
-    if(unidad.length > 20)
-    {
-        mensaje+= "La unidad debe ser menor o igual a 20 caracteres.\n";
-        esCorrecto= false;
-    }
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
+                ["Se excede el máximo de 100 caracteres"]);
+                esCorrecto = false;
 
-    if(descripcion.length > 500)
-    {
-        mensaje+= "La descripción debe ser menor o igual a 500 caracteres.\n";
-        esCorrecto= false;
-    }
+            }else{
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
+                esCorrecto =  true;
+            }
 
-    if(costo.length > 14 || !isFloat(costo))
-    {
-        mensaje+= "El costo debe ser un numero de hasta 2 decimales.\n";
-        esCorrecto= false;
-    }
+        }
+        if (detalle.includes('det_partida')){
 
-    alert(mensaje);
-    console.log(mensaje);
-    console.log(esCorrecto);
-    return esCorrecto;
-});
+            if($(this).val().length > 6)
+            {
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
+                ["Se excede el máximo de 6 caracteres"]);
+                esCorrecto =  false;
+            }else{
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
+                esCorrecto =  true;
+            }
 
-function isFloat(n)
-{
-    //No puede ser una cadena vacia
-    n= parseFloat(n);
-    return Number(n) === n;
+        }
+        if (detalle.includes('det_cantidad')){
+            
+            if($(this).val().length > 14)
+            {
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
+                ["Se excede el máximo de 14 caracteres"]);
+                alert('here1');
+                esCorrecto =  false;
+            }else if (isNaN($(this).val())){
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
+                ["Debe ser un numero sin simbolos"]);
+                  alert('here2');
+                esCorrecto =  false;
+            }else{
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
+                  alert('heretrue');
+                esCorrecto =  true;
+            }
+
+        }
+        if (detalle.includes('det_unidad')){
+            if($(this).val().length > 20)
+            {
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
+                ["Se excede el máximo de 20 caracteres"]);
+                esCorrecto =  false;
+            }else{
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
+                esCorrecto =  true;
+            }
+
+        }
+        if (detalle.includes('det_descripcion')){
+            if($(this).val().length > 500)
+            {
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
+                ["Se excede el máximo de 500 caracteres"]);
+                esCorrecto =  false;
+            }else{
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
+                esCorrecto =  true;
+            }
+        
+        }
+        if (detalle.includes('det_costo')){
+            
+            if($(this).val().length > 14)
+            {
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
+                ["Se excede el máximo de 14 caracteres"]);
+                esCorrecto =  false;
+            }else if (isNaN($(this).val())){
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
+                ["Debe ser un numero sin simbolos"]);
+                esCorrecto = false;
+            }else{
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
+                esCorrecto =  true;
+            }
+        }
+
+    });
 }
 
-*/
+$('#requisicion-form').on('beforeSubmit', function (e) {
+   
+   alert(esCorrecto);
+    return false;
+   e.preventDefault();
+   e.stopImmediatePropagation();
+    window.history.back();
+   
+
+}); 
+
 
 JS;
 
