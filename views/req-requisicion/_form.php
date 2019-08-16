@@ -186,6 +186,9 @@ $('.multiple-input').on('afterInit', function()
     if($('.list-cell__det_clave').find('input').val()!="")
     {
         $('.btn-success').click();
+
+    }else{
+        validateDetalles();
     }
     $('.list-cell__det_id').hide();
 
