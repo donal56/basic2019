@@ -202,7 +202,12 @@ $('.multiple-input').on('afterInit', function()
     $('.multiple-input-list__btn').first().replaceWith(first);
 
     validateDetalles();
-
+ 
+}).on('beforeAddRow', function(e, row, currentIndex)
+{
+    if(!esCorrecto){
+        return false;
+    }
 }).on('beforeDeleteRow', function(e, row, currentIndex)
 {
     if ($(row).find('input').eq(1).val()== "")
