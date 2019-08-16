@@ -60,7 +60,7 @@ use yii\web\User;
             return ['options' => ['class' => 'col-md-2']];
         }
     },
- 'id' => 'requisicion-form']); ?>
+ 'id' => 'requisicion-form', 'validateOnSubmit' => false]); ?>
     <div class= 'row' style= 'margin-top: 1.0em'>
         <?php
 
@@ -247,16 +247,13 @@ function validateDetalles(){
             {
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
                 ["Se excede el máximo de 14 caracteres"]);
-                alert('here1');
                 esCorrecto =  false;
             }else if (isNaN($(this).val())){
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
                 ["Debe ser un numero sin simbolos"]);
-                  alert('here2');
                 esCorrecto =  false;
             }else{
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
-                  alert('heretrue');
                 esCorrecto =  true;
             }
 
@@ -307,13 +304,9 @@ function validateDetalles(){
 
 $('#requisicion-form').on('beforeSubmit', function (e) {
    
-   alert(esCorrecto);
-    return false;
-   e.preventDefault();
-   e.stopImmediatePropagation();
-    window.history.back();
-   
 
+    return false;
+ 
 }); 
 
 
