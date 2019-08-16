@@ -20,13 +20,18 @@ use yii\web\User;
         -> where(['user.id' => Yii::$app->user->identity->id]);
     $data1 = $query1 -> createCommand() -> queryAll();
 
+    // $query0 = new Query;
+    // $query0 -> select(['are_fkper_superior']) -> from('req_area') -> where(['are_fkper_responsable' => $data1[0]['ID']]);
+    // $data0 = $query0 -> createCommand() -> queryAll();
+
     $query2 = new Query;
     $query2  ->select([ 'req_area.are_id as ID' , 
         'CONCAT(req_personal.per_nombre, " ", req_personal.per_paterno, " ", req_personal.per_materno) as Nombre '])  
         ->from('req_area')
         ->join('INNER JOIN', 'req_personal', 'req_area.are_fkper_responsable = req_personal.per_id');
     
-    $data2 = $query2 ->where(['req_area.are_nivel' => '2']) -> createCommand() -> queryAll();
+    $data2 = $query2 -> where(['req_area.are_nivel' => '2']) -> createCommand() -> queryAll();
+    // -> andWhere(['req_area.are_fkper_responsable' => $data0[0]['are_fkper_superior']])
     $data3 = $query2 ->where(['req_area.are_nivel' => '1']) -> createCommand() -> queryAll();
     $data4 = $query2 ->where(['req_area.are_nivel' => '0']) -> createCommand() -> queryAll();
 
@@ -55,12 +60,13 @@ use yii\web\User;
             return ['options' => ['class' => 'col-md-2']];
         }
     },
-]); ?>
+ 'id' => 'requisicion-form']); ?>
     <div class= 'row' style= 'margin-top: 1.0em'>
         <?php
+
             echo $form->field($model, 'req_fecha') -> widget(DatePicker::classname(), 
             [
-                'options' => ['value' => $model->isNewRecord ? date('Y-m-d') : ""],
+                'options' => ['value' => $model->isNewRecord ? date('Y-m-d') :  $model -> req_fecha],
                 'language' => 'es',
                 'removeButton' => false,
                 'pluginOptions' => [
@@ -75,7 +81,7 @@ use yii\web\User;
         <?php
             echo $form->field($model, 'req_fechasolicitante') -> widget(DatePicker::classname(), 
             [
-                'options' => ['value' => date('Y-m-d')],
+                'options' => ['value' => $model->isNewRecord ? date('Y-m-d') :  $model -> req_fecha],
                 'language' => 'es',
                 'removeButton' => false,
                 'pluginOptions' => [
@@ -85,13 +91,13 @@ use yii\web\User;
                     'format' => 'yyyy-mm-dd']
             ]); 
         ?>  
-        <?= $form -> field($model, 'req_esoperativo') -> checkbox(['label' => '¿Los bienes o servicios estan contemplados en el programa operativo anual?']); ?>
+        <?= $form ->field($model, 'req_esoperativo') -> checkbox(['labelOptions' => ['class' => 'text-justify']]); ?>
    
 
     </div>
 
     <div class= 'row'>
-        <?= $form -> field($model, 'req_justificacion') -> textarea(['label' => 'Justificación', 'rows' => 1, 'placeholder' => 'LO ANTERIOR PARA SER UTILIZADO EN LA ACCIÓN:']); ?>
+        <?= $form -> field($model, 'req_justificacion') -> textarea(['label' => 'Justificación', 'rows' => 2, 'placeholder' => 'LO ANTERIOR PARA SER UTILIZADO EN LA ACCIÓN:']); ?>
     </div>
         
     <div class="row req-detalle-form">
@@ -114,19 +120,23 @@ use yii\web\User;
                 ],
                 [
                     'name'  => 'det_clave',
-                    'title' => 'Clave'
+                    'title' => 'Clave',
+            'enableError' => true
                 ],
                 [
                     'name'  => 'det_partida',
-                    'title' => 'Partida'
+                    'title' => 'Partida',
+            'enableError' => true
                 ],
                 [
                     'name'  => 'det_cantidad',
-                    'title' => 'Cantidad'
+                    'title' => 'Cantidad',
+            'enableError' => true
                 ],
                 [
                     'name'  => 'det_unidad',
-                    'title' => 'Unidad'
+                    'title' => 'Unidad',
+            'enableError' => true
                 ],
                 [
                     'name'  => 'det_descripcion',
@@ -134,12 +144,14 @@ use yii\web\User;
                     'type' => 'textarea',
                     'options'=> [
                         'style' => 'height:34px; !important;'
-                    ]
+                    ],
+            'enableError' => true
                   
                 ],
                 [
                     'name'  => 'det_costo',
-                    'title' => 'Costo'
+                    'title' => 'Costo',
+            'enableError' => true
                 ]
             ]
         ])->label(false);
@@ -167,6 +179,7 @@ use yii\web\User;
 
 <?php 
 $script = <<< JS
+var esCorrecto = true;
 
 $('.multiple-input').on('afterInit', function() 
 {
@@ -175,6 +188,7 @@ $('.multiple-input').on('afterInit', function()
         $('.btn-success').click();
     }
     $('.list-cell__det_id').hide();
+
 }).on('afterAddRow', function(e, row, currentIndex) 
 {
     $('.list-cell__det_id').hide();
@@ -184,71 +198,124 @@ $('.multiple-input').on('afterInit', function()
     $('.js-input-plus').replaceWith(last);
     $('.multiple-input-list__btn').first().replaceWith(first);
 
+    validateDetalles();
+
 }).on('beforeDeleteRow', function(e, row, currentIndex)
 {
     if ($(row).find('input').eq(1).val()== "")
         return true;
     else 
         return confirm('¿Seguro que quieres eliminar esta fila?');
-}).on('beforeAddRow', function(e, row, currentIndex)
-{
-    var clave = $('.multiple-input').find('td.list-cell__det_clave:first').find('input[type=text]').val();
-    var partida = $('.multiple-input').find('td.list-cell__det_partida:first').find('input[type=text]').val();
-    var cantidad = $('.multiple-input').find('td.list-cell__det_cantidad:first').find('input[type=text]').val();
-    var unidad = $('.multiple-input').find('td.list-cell__det_unidad:first').find('input[type=text]').val();
-    var descripcion = $('.multiple-input').find('td.list-cell__det_descripcion:first').find('input[type=text]').val();
-    var costo = $('.multiple-input').find('td.list-cell__det_costo:first').find('input[type=text]').val();
-    var mensaje= "Se han encontrado los siguientes errores: \n";
-    var esCorrecto= true;
-
-    if(clave.length > 30)
-    {
-        mensaje+= "La clave debe ser menor o igual a 30 caracteres.\n";
-        esCorrecto= false;
-    }
-    
-    if(partida.length > 6)
-    {
-        mensaje+= "La partida debe ser menor o igual a 6 caracteres.\n";
-        esCorrecto= false;
-    }
-
-    if(cantidad.length > 14 || !isFloat(cantidad))
-    {
-        mensaje+= "La cantidad debe ser un numero de hasta 2 decimales.\n";
-        esCorrecto= false;
-    }
-
-    if(unidad.length > 20)
-    {
-        mensaje+= "La unidad debe ser menor o igual a 20 caracteres.\n";
-        esCorrecto= false;
-    }
-
-    if(descripcion.length > 500)
-    {
-        mensaje+= "La descripción debe ser menor o igual a 500 caracteres.\n";
-        esCorrecto= false;
-    }
-
-    if(costo.length > 14 || !isFloat(costo))
-    {
-        mensaje+= "El costo debe ser un numero de hasta 2 decimales.\n";
-        esCorrecto= false;
-    }
-
-    alert(mensaje);
-    console.log(mensaje);
-    console.log(esCorrecto);
-    return esCorrecto;
 });
 
-function isFloat(n)
-{
-    //No puede ser una cadena vacia
-    n= parseFloat(n);
-    return Number(n) === n;
+//on change
+function validateDetalles(){
+
+    $("[id^='reqdetalle-temp']").on('change.yii',function(){
+    var detalle =$(this).attr('id');
+
+        if (detalle.includes('det_clave')){
+            if($(this).val().length > 100)
+            {
+
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
+                ["Se excede el máximo de 100 caracteres"]);
+                esCorrecto = false;
+
+            }else{
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
+                esCorrecto =  true;
+            }
+
+        }
+        if (detalle.includes('det_partida')){
+
+            if($(this).val().length > 6)
+            {
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
+                ["Se excede el máximo de 6 caracteres"]);
+                esCorrecto =  false;
+            }else{
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
+                esCorrecto =  true;
+            }
+
+        }
+        if (detalle.includes('det_cantidad')){
+            
+            if($(this).val().length > 14)
+            {
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
+                ["Se excede el máximo de 14 caracteres"]);
+                alert('here1');
+                esCorrecto =  false;
+            }else if (isNaN($(this).val())){
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
+                ["Debe ser un numero sin simbolos"]);
+                  alert('here2');
+                esCorrecto =  false;
+            }else{
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
+                  alert('heretrue');
+                esCorrecto =  true;
+            }
+
+        }
+        if (detalle.includes('det_unidad')){
+            if($(this).val().length > 20)
+            {
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
+                ["Se excede el máximo de 20 caracteres"]);
+                esCorrecto =  false;
+            }else{
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
+                esCorrecto =  true;
+            }
+
+        }
+        if (detalle.includes('det_descripcion')){
+            if($(this).val().length > 500)
+            {
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
+                ["Se excede el máximo de 500 caracteres"]);
+                esCorrecto =  false;
+            }else{
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
+                esCorrecto =  true;
+            }
+        
+        }
+        if (detalle.includes('det_costo')){
+            
+            if($(this).val().length > 14)
+            {
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
+                ["Se excede el máximo de 14 caracteres"]);
+                esCorrecto =  false;
+            }else if (isNaN($(this).val())){
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
+                ["Debe ser un numero sin simbolos"]);
+                esCorrecto = false;
+            }else{
+                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
+                esCorrecto =  true;
+            }
+        }
+
+    });
 }
+
+$('#requisicion-form').on('beforeSubmit', function (e) {
+   
+   alert(esCorrecto);
+    return false;
+   e.preventDefault();
+   e.stopImmediatePropagation();
+    window.history.back();
+   
+
+}); 
+
 
 JS;
 

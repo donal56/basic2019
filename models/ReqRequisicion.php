@@ -66,7 +66,7 @@ class ReqRequisicion extends \yii\db\ActiveRecord
             'req_folio' => 'Folio',
             'req_fkper_solicitante' => 'Solicitante',
             'req_fechasolicitante' => 'Fecha de solicitud',
-            'req_esoperativo' => '¿Esta contemplado en el plan operativo anual?',
+            'req_esoperativo' => '¿Los bienes o servicios estan contemplados en el programa operativo anual?',
             'req_justificacion' => 'Justificación',
             'req_fkper_subdirector' => 'Subdirector',
             'req_fkper_planeacion' => 'Jefe de planeación',

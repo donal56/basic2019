@@ -42,8 +42,16 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'req_fkper_planeacion',
             // 'req_fkper_director',
             // 'req_fkconfiguracion',
+            ['class' => 'yii\grid\ActionColumn',
+            'buttons' => [
+                'additional_icon' => function ($url, $model, $key) {
+                    return Html::a ( '<span class="glyphicon glyphicon-print"></span> ', ['req-requisicion/report', 'id' => $model->req_id],['title'=>'Imprimir']);
+                },
+            ],
+            'template' => '{update} {view} {delete} {additional_icon}'
 
-            ['class' => 'yii\grid\ActionColumn'],
+
+            ],
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

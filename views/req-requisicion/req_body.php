@@ -65,35 +65,35 @@
 	  </tr>
 	</table><br>
 
-
+<div style="position: absolute;bottom: 70px; left: 0px;padding: 0px 55px 0px 55px">
 <!-- Firmas -->
-<table  autosize="1" width="100%"  style="page-break-inside:avoid">
-	<tr>
-		<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;padding-bottom: 10mm;border-bottom: 1px solid #000;"><b>NOMBRE Y FIRMA DEL SUBDIRECTOR(A)
+	<table  width="100%"  style="page-break-inside:avoid;">
+		<tr>
+			<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;padding-bottom: 10mm;border-bottom: 1px solid #000;"><b>NOMBRE Y FIRMA DEL SUBDIRECTOR(A)
 
-		</td> 
-		<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;padding-bottom: 10mm;border-bottom: 1px solid #000;">
-			<b>Vo. Bo. <br>NOMBRE Y FIRMA DEL JEFE(A) DE <br> DEPTO. DE PLANEACIÓN, PROGRAMACIÓN Y PRESUPUESTACIÓN
+			</td> 
+			<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;padding-bottom: 10mm;border-bottom: 1px solid #000;">
+				<b>Vo. Bo. <br>NOMBRE Y FIRMA DEL JEFE(A) DE <br> DEPTO. DE PLANEACIÓN, PROGRAMACIÓN Y PRESUPUESTACIÓN
 
-		</td> 
-		<td align="center" style="font-size: 10px;padding-bottom: 10mm;border-bottom: 1px solid #000;"><b>Vo. Bo.<br>NOMBRE Y FIRMA DEL DIRECTOR(A)
+			</td> 
+			<td align="center" style="font-size: 10px;padding-bottom: 10mm;border-bottom: 1px solid #000;"><b>Vo. Bo.<br>NOMBRE Y FIRMA DEL DIRECTOR(A)
 
-		</td> 
-	</tr>
+			</td> 
+		</tr>
 
-	<tr>
-		<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?= $data['per_subdirector'] ?>
-			<br>&nbsp; 	<?=  $data['area_subdirector'] ?>
-		</td>
-		<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?=$data['per_planeacion'] ?>
-			<br>&nbsp; 	<?=  $data['area_planeacion']?>
-		</td>
-		<td align="center" style="font-size: 10px;"><?= $data['per_director'] ?>
-			<br>&nbsp; 	<?=   $data['area_director'] ?>
-		</td>
+		<tr>
+			<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?= $data['per_subdirector'] ?>
+				<br>&nbsp; 	<?=  $data['area_subdirector'] ?>
+			</td>
+			<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?=$data['per_planeacion'] ?>
+				<br>&nbsp; 	<?=  $data['area_planeacion']?>
+			</td>
+			<td align="center" style="font-size: 10px;"><?= $data['per_director'] ?>
+				<br>&nbsp; 	<?=   $data['area_director'] ?>
+			</td>
 
-	</tr>
-</table>
-                                                                                                                                                                                       
+		</tr>
+	</table>
+</div>                                                                                                                                                                                     
 </body>
 </html>
