@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\models\ReqPersonal;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\ReqArea */
@@ -34,8 +35,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'are_id',
             'are_nivel',
             'are_nombre',
-            'are_fkper_responsable',
-            'are_fkper_superior',
+            [
+                'attribute' => 'are_fkper_responsable',
+                'format'    => 'raw',
+                'value'     => function ($model) {
+                    return $model-> fullName($model->are_fkper_responsable);
+                }
+            ],
+            [
+                'attribute' => 'are_fkper_superior',
+                'format'    => 'raw',
+                'value'     => function ($model) 
+                {
+                    return $model-> fullNameS($model->are_fkper_superior,$model->are_nivel);
+                }, 
+            ],
         ],
     ]) ?>
 

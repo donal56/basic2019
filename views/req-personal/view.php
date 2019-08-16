@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\models\ReqPersonal;
+use app\models\User;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\ReqPersonal */
@@ -35,7 +37,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'per_nombre',
             'per_paterno',
             'per_materno',
-            'per_fkuser',
+             [
+                'attribute' => 'per_fkuser',
+                'format'    => 'raw',
+                'value'     => function ($model) {
+                    return $model-> fillUserName($model->per_fkuser);
+                }
+            ],
         ],
     ]) ?>
 
