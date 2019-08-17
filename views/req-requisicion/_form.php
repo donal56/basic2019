@@ -258,7 +258,7 @@ function validateDetalles(){
 
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
                 ["Clave  debería contener hasta 100 caracteres."]);
-                errorDet.push(detalle);
+                addError(detalle);
 
             }else{
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
@@ -272,7 +272,7 @@ function validateDetalles(){
             {
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
                 ["Partida  debería contener hasta 6 caracteres."]);
-                errorDet.push(detalle);
+                addError(detalle);
             }else{
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
                 removeError(detalle);
@@ -285,11 +285,11 @@ function validateDetalles(){
             {
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
                 ["Cantidad debería contener hasta 14 numeros"]);
-                errorDet.push(detalle);
+                addError(detalle);
             }else if (isNaN($(this).val())){
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
                 ["Cantidad debería ser un numero sin simbolos"]);
-                errorDet.push(detalle);
+                addError(detalle);
             }else{
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
                 removeError(detalle);
@@ -301,10 +301,10 @@ function validateDetalles(){
             {
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
                 ["Unidad debería contener hasta 20 caracteres"]);
-                errorDet.push(detalle);
+                addError(detalle);
             }else{
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
-                 removeError(detalle);
+                removeError(detalle);
             }
 
         }
@@ -313,7 +313,7 @@ function validateDetalles(){
             {
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
                 ["Descripcion debería contener hasta 500 caracteres"]);
-                errorDet.push(detalle);
+                addError(detalle);
             }else{
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
                 removeError(detalle);
@@ -326,11 +326,11 @@ function validateDetalles(){
             {
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
                 ["Costo debería contener hasta 14 numeros"]);
-                errorDet.push(detalle);
+                addError(detalle);
             }else if (isNaN($(this).val())){
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
                 ["Costo debería ser un numero sin simbolos"]);
-                errorDet.push(detalle);
+                addError(detalle);
             }else{
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
                 removeError(detalle);
@@ -348,6 +348,16 @@ function removeError(detalle){
     }
 
 }
+
+function addError(detalle){
+    var index = errorDet.indexOf(detalle);
+
+    if(index==-1){
+       errorDet.push(detalle);
+    }
+
+}
+
 
 
 $('#requisicion-form').on('submit', function (e) {

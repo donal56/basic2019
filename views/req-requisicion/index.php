@@ -57,5 +57,5 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php Pjax::end(); ?></div>
 
 <?php 
-$this->registerCssFile("css/req.css");
+$this->registerCssFile("/css/req.css");
  ?>
