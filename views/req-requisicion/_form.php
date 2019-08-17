@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use unclead\multipleinput\MultipleInput;
 use kartik\date\DatePicker;
+use kartik\alert\Alert;
 use yii\db\Query;
 use yii\web\User;
 
@@ -177,9 +178,24 @@ use yii\web\User;
 </div>
 
 
+<!-- Modal -->
+<div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+       <?php echo Alert::widget([
+            'type' => Alert::TYPE_DANGER,
+            'title' => 'Error!',
+            'body' => 'Revisa los campos con errores e intenta de nuevo ',
+            'showSeparator' => true,
+            'delay' => 0,
+            'options'=>['id'=>'alert-id']
+        ]); ?>
+  </div>
+</div>
+
+
 <?php 
 $script = <<< JS
-var esCorrecto = true;
+window.errorDet = [];
 
 $('.multiple-input').on('afterInit', function() 
 {
@@ -191,6 +207,7 @@ $('.multiple-input').on('afterInit', function()
         validateDetalles();
     }
     $('.list-cell__det_id').hide();
+    $('#alert-id').find('.close').attr("data-dismiss","modal");  
 
 }).on('afterAddRow', function(e, row, currentIndex) 
 {
@@ -205,15 +222,28 @@ $('.multiple-input').on('afterInit', function()
  
 }).on('beforeAddRow', function(e, row, currentIndex)
 {
-    if(!esCorrecto){
+    if(errorDet.length!=0){
         return false;
     }
 }).on('beforeDeleteRow', function(e, row, currentIndex)
 {
-    if ($(row).find('input').eq(1).val()== "")
-        return true;
-    else 
-        return confirm('¿Seguro que quieres eliminar esta fila?');
+    var conf;
+
+    if ($(row).find('input').eq(1).val()== ""){
+        conf = true;
+    }
+    else {
+        conf =  confirm('¿Seguro que quieres eliminar esta fila?');
+    }
+
+    if(conf){
+        $(row).find('input').each(
+            function(index,det) {
+              removeError($(det).attr('id'));
+            }
+        );
+    }
+    return conf;
 });
 
 //on change
@@ -227,12 +257,12 @@ function validateDetalles(){
             {
 
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
-                ["Se excede el máximo de 100 caracteres"]);
-                esCorrecto = false;
+                ["Clave  debería contener hasta 100 caracteres."]);
+                errorDet.push(detalle);
 
             }else{
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
-                esCorrecto =  true;
+                removeError(detalle);
             }
 
         }
@@ -241,11 +271,11 @@ function validateDetalles(){
             if($(this).val().length > 6)
             {
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
-                ["Se excede el máximo de 6 caracteres"]);
-                esCorrecto =  false;
+                ["Partida  debería contener hasta 6 caracteres."]);
+                errorDet.push(detalle);
             }else{
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
-                esCorrecto =  true;
+                removeError(detalle);
             }
 
         }
@@ -254,15 +284,15 @@ function validateDetalles(){
             if($(this).val().length > 14)
             {
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
-                ["Se excede el máximo de 14 caracteres"]);
-                esCorrecto =  false;
+                ["Cantidad debería contener hasta 14 numeros"]);
+                errorDet.push(detalle);
             }else if (isNaN($(this).val())){
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
-                ["Debe ser un numero sin simbolos"]);
-                esCorrecto =  false;
+                ["Cantidad debería ser un numero sin simbolos"]);
+                errorDet.push(detalle);
             }else{
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
-                esCorrecto =  true;
+                removeError(detalle);
             }
 
         }
@@ -270,11 +300,11 @@ function validateDetalles(){
             if($(this).val().length > 20)
             {
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
-                ["Se excede el máximo de 20 caracteres"]);
-                esCorrecto =  false;
+                ["Unidad debería contener hasta 20 caracteres"]);
+                errorDet.push(detalle);
             }else{
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
-                esCorrecto =  true;
+                 removeError(detalle);
             }
 
         }
@@ -282,11 +312,11 @@ function validateDetalles(){
             if($(this).val().length > 500)
             {
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
-                ["Se excede el máximo de 500 caracteres"]);
-                esCorrecto =  false;
+                ["Descripcion debería contener hasta 500 caracteres"]);
+                errorDet.push(detalle);
             }else{
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
-                esCorrecto =  true;
+                removeError(detalle);
             }
         
         }
@@ -295,25 +325,44 @@ function validateDetalles(){
             if($(this).val().length > 14)
             {
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
-                ["Se excede el máximo de 14 caracteres"]);
-                esCorrecto =  false;
+                ["Costo debería contener hasta 14 numeros"]);
+                errorDet.push(detalle);
             }else if (isNaN($(this).val())){
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
-                ["Debe ser un numero sin simbolos"]);
-                esCorrecto = false;
+                ["Costo debería ser un numero sin simbolos"]);
+                errorDet.push(detalle);
             }else{
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
-                esCorrecto =  true;
+                removeError(detalle);
             }
         }
 
     });
 }
 
-$('#requisicion-form').on('beforeSubmit', function (e) {
-   
+function removeError(detalle){
+    var index = errorDet.indexOf(detalle);
+    
+    if(index!=-1){
+        errorDet.splice(index);
+    }
 
-    return false;
+}
+
+
+$('#requisicion-form').on('submit', function (e) {
+   
+    if(errorDet.length!=0){
+
+        $('#ModalCenter').modal('toggle');
+        
+        setTimeout(function() {
+            $('#ModalCenter').modal('hide');
+        }, 1500);
+        e.preventDefault();
+        
+        return false;
+   }
  
 }); 
 
