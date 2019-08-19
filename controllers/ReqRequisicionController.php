@@ -114,15 +114,19 @@ class ReqRequisicionController extends Controller
         //Save requisicion
             $req = Yii::$app->request->post();
             $detalle=array_pop($req)['temp'];
-            $requisicion = $req;
 
             $datareq['_csrf'] =  Yii::$app->request->post()['_csrf'];
             $datareq= $req;
-            
-            if ($requisicion['ReqRequisicion']['req_fkper_solicitante'] === (String) $this -> getIDUsuarioActual() && $model->load($datareq) && $model->save()) {
+
+            //transaction
+            $connection = \Yii::$app->db;
+            $transaction = $connection->beginTransaction();
+            $countDet = 0;
+
+            if ($req['ReqRequisicion']['req_fkper_solicitante'] === (String) $this -> getIDUsuarioActual() && $model->load($datareq) && $model->save()) {
                 $req_id =  $model->req_id;
                 //Save detalles
-                
+
                 for ($i=0; $i < count($detalle); $i++) { 
 
                     $datadet['_csrf'] =  Yii::$app->request->post()['_csrf'];
@@ -135,15 +139,34 @@ class ReqRequisicionController extends Controller
                         if ($modeldet->load($datadet) && $modeldet->save()) {
                             $modeldet = new ReqDetalle();    
                         } else {
+                            $transaction->rollback();
                             throw new ServerErrorHttpException('A OCCURIDO UN ERROR CON LOS DETALLES');
                         }
+                        $countDet++;
                     }
+                }
+
+                if ($countDet==0) {
+                    $transaction->rollback();
+                    $model->isNewRecord = true;
+                    $this->view->params['empty'] = 'true';
+                    return $this->render('create', [
+                    'model' => $model,
+                    'modeldet'  => $modeldet,
+                    ]); 
+
+                }else{
+                    $transaction->commit();
                 }
 
             }
             else
             {
-                throw new UnauthorizedHttpException('Acción no permitida.');
+                $transaction->rollback();
+                return $this->render('create', [
+                    'model' => $model,
+                    'modeldet'  => $modeldet,
+                ]);   
             }
             return $this->redirect(['view', 'id' => $req_id]); 
 
@@ -183,6 +206,10 @@ class ReqRequisicionController extends Controller
         
                 $datareq['_csrf'] =  Yii::$app->request->post()['_csrf'];
                 $datareq['ReqRequisicion']= $requisicion;
+
+                 //transaction
+                $connection = \Yii::$app->db;
+                $transaction = $connection->beginTransaction();
             
                 if ($requisicion['req_fkper_solicitante'] === (String) $this -> getIDUsuarioActual()  && $model->load($datareq) && $model->save()) 
                 {
@@ -209,8 +236,19 @@ class ReqRequisicionController extends Controller
                         }
                         
                     }
-                    $this->deleteNotListed($id,$idlist);
-                    return $this->redirect(['view', 'id' => $id]);
+                    if(!empty($idlist)){
+                        $this->deleteNotListed($id,$idlist);
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $id]);
+                    }else{
+                        $transaction->rollback();
+                        $this->view->params['empty'] = 'true';
+                        return $this->render('update', [
+                        'model' => $model,
+                        'modeldet'  => $modeldet,
+                        ]); 
+                    }
+        
                 }   
                 else 
                 {

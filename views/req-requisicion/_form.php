@@ -192,6 +192,27 @@ use yii\web\User;
   </div>
 </div>
 
+<?php if ($this->params['empty']=="true") { ?>
+
+<div class="modal fade" id="ModalDet" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+       <?php echo Alert::widget([
+            'type' => Alert::TYPE_DANGER,
+            'title' => 'Error!',
+            'body' => 'Es necesario registrar algun bien o servicio para generar una requisición',
+            'showSeparator' => true,
+            'delay' => 0,
+            'options'=>['id'=>'alert-det']
+        ]); ?>
+  </div>
+</div>
+
+<?php $this->registerJs("$(window).on('load',function(){
+        $('#ModalDet').modal('show');
+    });"
+
+    );
+} ?>
 
 <?php 
 $script = <<< JS
