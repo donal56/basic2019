@@ -209,7 +209,15 @@ use yii\web\User;
 
 <?php $this->registerJs("$(window).on('load',function(){
         $('#ModalDet').modal('show');
-    });"
+    });
+    setTimeout(function() {
+            $('#ModalDet').modal('hide');
+    }, 2500);
+
+    $('#alert-det').find('.close').attr('data-dismiss','modal');  
+
+      
+    "
 
     );
 } ?>
@@ -389,7 +397,7 @@ $('#requisicion-form').on('submit', function (e) {
         
         setTimeout(function() {
             $('#ModalCenter').modal('hide');
-        }, 1500);
+        }, 2500);
         e.preventDefault();
         
         return false;
