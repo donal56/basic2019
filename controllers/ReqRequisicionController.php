@@ -122,11 +122,11 @@ class ReqRequisicionController extends Controller
             $connection = \Yii::$app->db;
             $transaction = $connection->beginTransaction();
             $countDet = 0;
-            
+
             if ($req['ReqRequisicion']['req_fkper_solicitante'] === (String) $this -> getIDUsuarioActual() && $model->load($datareq) && $model->save()) {
                 $req_id =  $model->req_id;
                 //Save detalles
-                
+
                 for ($i=0; $i < count($detalle); $i++) { 
 
                     $datadet['_csrf'] =  Yii::$app->request->post()['_csrf'];

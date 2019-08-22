@@ -6,6 +6,7 @@ use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use unclead\multipleinput\MultipleInput;
 use kartik\date\DatePicker;
+use kartik\alert\Alert;
 use yii\db\Query;
 use yii\web\User;
 
@@ -202,9 +203,6 @@ use yii\web\User;
         ]); ?>
   </div>
 </div>
-
-<?php 
-} ?>
 
 <?php 
 $script = <<< JS
