@@ -31,14 +31,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'are_nivel',
             'are_nombre',
             [
-                'attribute' => are_fkper_responsable,
+                'attribute' => 'are_fkper_responsable',
                 'format'    => 'raw',
                 'value'     => function ($model) {
                     return $model-> fullName($model->are_fkper_responsable);
                 }
             ],
             [
-                'attribute' => are_fkper_superior,
+                'attribute' => 'are_fkper_superior',
                 'format'    => 'raw',
                 'value'     => function ($model) 
                 {

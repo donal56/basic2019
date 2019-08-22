@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Requisicion */
 
-$this->title = 'GENERAR REQUISICION';
+$this->title = 'GENERAR REQUISICIÓN';
 $this->params['breadcrumbs'][] = ['label' => 'Requisiciones', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

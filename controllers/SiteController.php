@@ -161,5 +161,12 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
-    }  
+    }
+
+    public function actionTablas()
+    {
+        $req_areas =  \app\models\ReqArea::find()->all();
+        print_r("<pre>");
+        var_dump($req_areas);
+    }
 }

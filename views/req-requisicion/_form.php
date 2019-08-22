@@ -1,11 +1,11 @@
 <?php
 use yii\helpers\Html;
+use kartik\alert\Alert;
 use yii\widgets\ActiveForm;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use unclead\multipleinput\MultipleInput;
 use kartik\date\DatePicker;
-use kartik\alert\Alert;
 use yii\db\Query;
 use yii\web\User;
 
@@ -19,28 +19,24 @@ use yii\web\User;
         -> from('req_personal')
         -> join('INNER JOIN', 'user', 'req_personal.per_fkuser = user.id')
         -> where(['user.id' => Yii::$app->user->identity->id]);
-    $data1 = $query1 -> createCommand() -> queryAll();
-
-    // $query0 = new Query;
-    // $query0 -> select(['are_fkper_superior']) -> from('req_area') -> where(['are_fkper_responsable' => $data1[0]['ID']]);
-    // $data0 = $query0 -> createCommand() -> queryAll();
+    $data = $query1 -> createCommand() -> queryAll();
 
     $query2 = new Query;
-    $query2  ->select([ 'req_area.are_id as ID' , 
+    $query2  ->select([ 'req_personal.per_id as ID' , 
         'CONCAT(req_personal.per_nombre, " ", req_personal.per_paterno, " ", req_personal.per_materno) as Nombre '])  
-        ->from('req_area')
-        ->join('INNER JOIN', 'req_personal', 'req_area.are_fkper_responsable = req_personal.per_id');
+        ->from('req_personal')
+        ->join('INNER JOIN', 'req_area', 'req_area.are_fkper_responsable = req_personal.per_id');
     
-    $data2 = $query2 -> where(['req_area.are_nivel' => '2']) -> createCommand() -> queryAll();
-    // -> andWhere(['req_area.are_fkper_responsable' => $data0[0]['are_fkper_superior']])
-    $data3 = $query2 ->where(['req_area.are_nivel' => '1']) -> createCommand() -> queryAll();
-    $data4 = $query2 ->where(['req_area.are_nivel' => '0']) -> createCommand() -> queryAll();
+    $data2 = $query2 ->where(['req_area.are_nivel' => '2']) -> createCommand() -> queryAll();
+    $data1 = $query2 ->where(['req_area.are_nivel' => '1']) -> createCommand() -> queryAll();
+    $data0 = $query2 ->where(['req_area.are_nombre' => 'DEPTO. DE PLAN., PROG. Y PRESUPUESTACIÓN']) -> createCommand() -> queryAll();
 
     $query3 = new Query;
     $data5 = $query3->select(['con_id as ID' , 'CONCAT("INSTITUTO TECNOLÓGICO DE ", con_instituto) as Instituto'])->from('req_configuracion')->createCommand()->queryAll();
 ?>
 
 <div class="requisicion-form">
+
 
     <?php $form = ActiveForm::begin(['fieldConfig' => function ($model, $attribute) 
     {
@@ -61,13 +57,13 @@ use yii\web\User;
             return ['options' => ['class' => 'col-md-2']];
         }
     },
- 'id' => 'requisicion-form', 'validateOnSubmit' => false]); ?>
+'id' => 'requisicion-form', 'validateOnSubmit' => false]); ?>
+
     <div class= 'row' style= 'margin-top: 1.0em'>
         <?php
-
             echo $form->field($model, 'req_fecha') -> widget(DatePicker::classname(), 
             [
-                'options' => ['value' => $model->isNewRecord ? date('Y-m-d') :  $model -> req_fecha],
+                 'options' => ['value' => $model->isNewRecord ? date('Y-m-d') :  $model -> req_fecha], 
                 'language' => 'es',
                 'removeButton' => false,
                 'pluginOptions' => [
@@ -78,11 +74,11 @@ use yii\web\User;
             ]); 
         ?>  
         <?= $form -> field($model, 'req_folio'); ?>
-        <?= $form -> field($model, 'req_fkper_solicitante') -> dropDownList(ArrayHelper::map($data1, "ID", "Nombre"), ['readonly' => true]); ?>
+        <?= $form -> field($model, 'req_fkper_solicitante') -> dropDownList(ArrayHelper::map($data, "ID", "Nombre"), ['readonly' => true]); ?>
         <?php
             echo $form->field($model, 'req_fechasolicitante') -> widget(DatePicker::classname(), 
             [
-                'options' => ['value' => $model->isNewRecord ? date('Y-m-d') :  $model -> req_fecha],
+                'options' => ['value' => $model -> isNewRecord ? date('Y-m-d') : $model -> req_fecha],
                 'language' => 'es',
                 'removeButton' => false,
                 'pluginOptions' => [
@@ -92,7 +88,7 @@ use yii\web\User;
                     'format' => 'yyyy-mm-dd']
             ]); 
         ?>  
-        <?= $form ->field($model, 'req_esoperativo') -> checkbox(['labelOptions' => ['class' => 'text-justify']]); ?>
+        <?= $form ->field($model, 'req_esoperativo') -> checkbox(['labelOptions' => ['class' => 'text-justify']]); ?> 
    
 
     </div>
@@ -161,9 +157,9 @@ use yii\web\User;
     </div>
 
     <div class= 'row'>
-        <?= $form -> field($model, 'req_fkper_subdirector') -> dropDownList(ArrayHelper::map($data2, "ID", "Nombre")) ?>
-        <?= $form -> field($model, 'req_fkper_planeacion') -> dropDownList(ArrayHelper::map($data3, "ID", "Nombre")) ?>
-        <?= $form -> field($model, 'req_fkper_director') -> dropDownList(ArrayHelper::map($data4, "ID", "Nombre")) ?>
+        <?= $form -> field($model, 'req_fkper_subdirector') -> dropDownList(ArrayHelper::map($data1, "ID", "Nombre")) ?>
+        <?= $form -> field($model, 'req_fkper_planeacion') -> dropDownList(ArrayHelper::map($data0, "ID", "Nombre")) ?>
+        <?= $form -> field($model, 'req_fkper_director') -> dropDownList(ArrayHelper::map($data2, "ID", "Nombre")) ?>
     </div>
 
     <?= $form -> field($model, 'req_fkconfiguracion') -> hiddenInput(['value'=> 1])->label(false); ?><br>
@@ -207,19 +203,7 @@ use yii\web\User;
   </div>
 </div>
 
-<?php $this->registerJs("$(window).on('load',function(){
-        $('#ModalDet').modal('show');
-    });
-    setTimeout(function() {
-            $('#ModalDet').modal('hide');
-    }, 2500);
-
-    $('#alert-det').find('.close').attr('data-dismiss','modal');  
-
-      
-    "
-
-    );
+<?php 
 } ?>
 
 <?php 
@@ -236,7 +220,18 @@ $('.multiple-input').on('afterInit', function()
         validateDetalles();
     }
     $('.list-cell__det_id').hide();
-    $('#alert-id').find('.close').attr("data-dismiss","modal");  
+    $('#alert-id').find('.close').attr("data-dismiss","modal"); 
+
+
+   
+    $('#ModalDet').modal('show');
+    setTimeout(function() {
+            $('#ModalDet').modal('hide');
+    }, 2500);
+
+    $('#alert-det').find('.close').attr('data-dismiss','modal');
+
+
 
 }).on('afterAddRow', function(e, row, currentIndex) 
 {

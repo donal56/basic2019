@@ -37,7 +37,7 @@
 	<table width="100%">
 		<tr>
 			<td style="font: 10px arial;">FECHA:&nbsp;<u><?= $data['req']->req_fecha; ?></u></td>
-			<td style="font: 10px arial;" align="right">FOLIO No:&nbsp;<u><?= $data['req']->req_folio ?></u></td>
+			<td style="font: 10px arial;" align="right">FOLIO No:&nbsp;<u><?=($data['req']->req_folio!=""?$data['req']->req_folio!="":"___________")?></u></td>
 		</tr>
 	</table>
 

@@ -19,15 +19,12 @@ use yii\db\Query;
 <?php
 	$query = new Query;
     $query	->select([
-        'req_area.are_id as ID' , 
+        'req_personal.per_id as ID' , 
         'CONCAT(req_personal.per_nombre, " ", req_personal.per_paterno, " ", req_personal.per_materno) as Nombre ']
         )  
-        ->from('req_area')
-        ->join('INNER JOIN', 'req_personal',
-            'req_area.are_fkper_responsable = req_personal.per_id');
+        ->from('req_personal');
     $command = $query->createCommand();
     $data1 = $command->queryAll();
-
 ?>
 
 
@@ -41,7 +38,7 @@ use yii\db\Query;
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-        <?= Html::a('Cancelar', '/req-requisicion', ['Class' => 'btn btn-danger']); ?>
+        <?= Html::a('Cancelar', '/req-area', ['Class' => 'btn btn-danger']); ?>
     </div>
 
     <?php ActiveForm::end(); ?>

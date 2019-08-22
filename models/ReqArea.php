@@ -94,7 +94,7 @@ class ReqArea extends \yii\db\ActiveRecord
     public static function fullNameS($id,$nivel)
     { 
         $per = ReqArea::findSuperior($id);
-        if($nivel!=0)
+        if($nivel!=2)
         {
             return $per->per_nombre." ".
                    $per->per_paterno." ".
