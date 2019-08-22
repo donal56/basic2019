@@ -397,10 +397,7 @@ $('#requisicion-form').on('submit', function (e) {
    }
  
 }); 
-
-
 JS;
 
 $this->registerJs($script);
-
 ?>
