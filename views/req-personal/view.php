@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'per_nombre',
             'per_paterno',
             'per_materno',
-             [
+            [
                 'attribute' => 'per_fkuser',
                 'format'    => 'raw',
                 'value'     => function ($model) {
@@ -45,6 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
         ],
+
     ]) ?>
 
 </div>

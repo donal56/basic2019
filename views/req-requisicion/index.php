@@ -22,14 +22,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <br><br>
     </p>
 
-<?php Pjax::begin(); ?>    <?= GridView::widget([
+<?php Pjax::begin(['enablePushState'=>false]); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             'req_folio',
             'req_fecha',
             [
-                'attribute' => req_fkper_solicitante,
+                'attribute' => 'req_fkper_solicitante',
                 'format'    => 'raw',
                 'value'     => function ($model) {
                     return $model-> fullName($model->req_fkper_solicitante);
@@ -37,18 +37,27 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'req_fechasolicitante',
             // 'req_esoperativo',
-            // 'req_justificacion:ntext',
+            [
+                'attribute' => 'req_justificacion',
+                'format' => 'raw',
+                'value' => function($model)
+                {
+                    return substr($model->req_justificacion, 0, 60) . "...";
+                }
+            ],
             // 'req_fkper_subdirector',
             // 'req_fkper_planeacion',
             // 'req_fkper_director',
             // 'req_fkconfiguracion',
+
             ['class' => 'yii\grid\ActionColumn',
             'buttons' => [
-                'additional_icon' => function ($url, $model, $key) {
-                    return Html::a ( '<span class="glyphicon glyphicon-print"></span> ', ['req-requisicion/report', 'id' => $model->req_id],['title'=>'Imprimir']);
+                'print' => function ($url, $model, $key) {
+                    return Html::a ( '<span class="glyphicon glyphicon-print"></span> ', ['req-requisicion/report', 'id' => $model->req_id],['data-pjax'=>"0"]);
+
                 },
             ],
-            'template' => '{update} {view} {delete} {additional_icon}'
+            'template' => '{print} {view} {update} {delete} '
 
 
             ],
@@ -57,5 +66,5 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php Pjax::end(); ?></div>
 
 <?php 
-$this->registerCssFile("css/req.css");
+    $this->registerCssFile("/css/req.css"); 
  ?>

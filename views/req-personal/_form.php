@@ -14,13 +14,12 @@ use yii\helpers\ArrayHelper;
 
 <?php
     $query = new Query;
-    $query  ->select(['user.id as ID','user.username as USERNAME'])
+    $query -> select(['user.id as ID','user.username as USERNAME'])
     ->from('user')
     ->join('INNER JOIN', 'req_personal',
-            'req_personal.per_fkuser = user.id');
-
+           'req_personal.per_fkuser =user.id');
     $command = $query->createCommand();
-    $data1 = $command->queryAll();
+    $data1= $command->queryAll();
 ?>
 
     <?php $form = ActiveForm::begin(); ?>
@@ -31,7 +30,7 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'per_materno')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'per_fkuser')->dropDownList(ArrayHelper::map($data1, "ID", "USERNAME")) ?>
+    <?= $form->field($model, 'per_fkuser')->dropDownList(ArrayHelper::map($data1,"ID","USERNAME")) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

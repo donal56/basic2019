@@ -25,20 +25,21 @@ class SwsDashboardgruposController extends Controller
                 'actions' => [
                     'delete' => ['POST'],
                 ],
-                'access' => 
-            [
-                'class' => \yii\filters\AccessControl::className(),
-                'only' => ['index','create','update','view'],
-                'rules' => 
-                [
+            ],
+            'access' =>  
+            [ 
+ 
+                'class' => \yii\filters\AccessControl::className(), 
+                'only' => ['index','create','update','view'], 
+                'rules' =>  
+                [ 
                     // allow authenticated users
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                    // everything else is denied
-                ],
-            ],       
+                    [ 
+                        'allow' => true, 
+                        'roles' => ['@'], 
+                    ], 
+                    // everything else is denied 
+                ], 
             ],
         ];
     }

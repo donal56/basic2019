@@ -41,7 +41,7 @@ class ReqDetalle extends \yii\db\ActiveRecord
             [['det_fkrequisicion'], 'required'],
             [['det_fkrequisicion'], 'integer'],
             [['det_cantidad', 'det_costo'], 'number'],
-            [['det_clave'], 'string', 'max' => 30],
+            [['det_clave'], 'string', 'max' => 100],
             [['det_partida'], 'string', 'max' => 6],
             [['det_unidad'], 'string', 'max' => 20],
             [['det_descripcion'], 'string', 'max' => 500],

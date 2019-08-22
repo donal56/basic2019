@@ -33,28 +33,27 @@ class ReqRequisicionController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => 
-            [
+            'verbs' => [
                 'class' => VerbFilter::className(),
-                'actions' => 
-                [
+                'actions' => [
                     'delete' => ['POST'],
                 ],
             ],
-            'access' => 
-            [
-                'class' => \yii\filters\AccessControl::className(),
-                'only' => ['index','create','update','view'],
-                'rules' => 
-                [
+            'access' =>  
+            [ 
+ 
+                'class' => \yii\filters\AccessControl::className(), 
+                'only' => ['index','create','update','view'], 
+                'rules' =>  
+                [ 
                     // allow authenticated users
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                    // everything else is denied
-                ],
-            ],            
+                    [ 
+                        'allow' => true, 
+                        'roles' => ['@'], 
+                    ], 
+                    // everything else is denied 
+                ], 
+            ],
         ];
     }
 
@@ -108,18 +107,23 @@ class ReqRequisicionController extends Controller
     {
         $model = new ReqRequisicion();
         $modeldet = new ReqDetalle();
+        $this->view->params['empty'] = '';
 
         if(isset($_POST['_csrf'])){
 
         //Save requisicion
             $req = Yii::$app->request->post();
             $detalle=array_pop($req)['temp'];
-            $requisicion = $req;
 
             $datareq['_csrf'] =  Yii::$app->request->post()['_csrf'];
             $datareq= $req;
+
+            //transaction
+            $connection = \Yii::$app->db;
+            $transaction = $connection->beginTransaction();
+            $countDet = 0;
             
-            if ($requisicion['ReqRequisicion']['req_fkper_solicitante'] === (String) $this -> getIDUsuarioActual() && $model->load($datareq) && $model->save()) {
+            if ($req['ReqRequisicion']['req_fkper_solicitante'] === (String) $this -> getIDUsuarioActual() && $model->load($datareq) && $model->save()) {
                 $req_id =  $model->req_id;
                 //Save detalles
                 
@@ -135,15 +139,34 @@ class ReqRequisicionController extends Controller
                         if ($modeldet->load($datadet) && $modeldet->save()) {
                             $modeldet = new ReqDetalle();    
                         } else {
+                            $transaction->rollback();
                             throw new ServerErrorHttpException('A OCCURIDO UN ERROR CON LOS DETALLES');
                         }
+                        $countDet++;
                     }
+                }
+
+                if ($countDet==0) {
+                    $transaction->rollback();
+                    $model->isNewRecord = true;
+                    $this->view->params['empty'] = 'true';
+                    return $this->render('create', [
+                    'model' => $model,
+                    'modeldet'  => $modeldet,
+                    ]); 
+
+                }else{
+                    $transaction->commit();
                 }
 
             }
             else
             {
-                throw new UnauthorizedHttpException('Acción no permitida.');
+                $transaction->rollback();
+                return $this->render('create', [
+                    'model' => $model,
+                    'modeldet'  => $modeldet,
+                ]);   
             }
             return $this->redirect(['view', 'id' => $req_id]); 
 
@@ -168,6 +191,9 @@ class ReqRequisicionController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $idlist;
+
+        $this->view->params['empty'] = '';
 
         if($this -> getIDUsuarioActual() == $model -> getReqFkperSolicitante() -> asArray() -> one()['per_id'])
         {
@@ -183,10 +209,13 @@ class ReqRequisicionController extends Controller
         
                 $datareq['_csrf'] =  Yii::$app->request->post()['_csrf'];
                 $datareq['ReqRequisicion']= $requisicion;
+
+                 //transaction
+                $connection = \Yii::$app->db;
+                $transaction = $connection->beginTransaction();
             
                 if ($requisicion['req_fkper_solicitante'] === (String) $this -> getIDUsuarioActual()  && $model->load($datareq) && $model->save()) 
                 {
-                    
                     //update detalles
                     for ($i=0; $i < sizeof($detalle); $i++) 
                     { 
@@ -209,8 +238,19 @@ class ReqRequisicionController extends Controller
                         }
                         
                     }
-                    $this->deleteNotListed($id,$idlist);
-                    return $this->redirect(['view', 'id' => $id]);
+                    if(!empty($idlist)){
+                        $this->deleteNotListed($id,$idlist);
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $id]);
+                    }else{
+                        $transaction->rollback();
+                        $this->view->params['empty'] = 'true';
+                        return $this->render('update', [
+                        'model' => $model,
+                        'modeldet'  => $modeldet,
+                        ]); 
+                    }
+        
                 }   
                 else 
                 {
@@ -227,6 +267,7 @@ class ReqRequisicionController extends Controller
             throw new UnauthorizedHttpException('Acceso no permitido.');
         }
     }
+
 
     /**
      * Deletes an existing Requisicion model.
@@ -279,7 +320,6 @@ class ReqRequisicionController extends Controller
         $data['per_director'] = $this->fullName($data['per_director']);
 
         $data['detalles']= $this-> findDetalle($data['req']->req_id);
-
 
         $pdf = new Pdf([
             // set to use core fonts only

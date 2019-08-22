@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'per_paterno',
             'per_materno',
             [
-                'attribute' => per_fkuser,
+                'attribute' => 'per_fkuser',
                 'format'    => 'raw',
                 'value'     => function ($model) {
                     return $model-> fillUserName($model->per_fkuser);

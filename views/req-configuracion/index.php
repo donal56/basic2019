@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'con_id',
             'con_instituto',
             [
-                'attribute' => con_logo,
+                'attribute' => 'con_logo',
                 'format'    => 'raw',
                 'contentOptions' => ['style'=>'vertical-align: middle; width:65px;'],
                 'value'     => function ($model) {
@@ -30,8 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             [
-                'attribute' => con_revision,
-                'format'    => 'boolean'
+                'attribute' => 'con_revision',
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
