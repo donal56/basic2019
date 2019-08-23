@@ -6,7 +6,6 @@ use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use unclead\multipleinput\MultipleInput;
 use kartik\date\DatePicker;
-use kartik\alert\Alert;
 use yii\db\Query;
 use yii\web\User;
 
@@ -205,6 +204,9 @@ use yii\web\User;
 </div>
 
 <?php 
+} ?>
+
+<?php 
 $script = <<< JS
 window.errorDet = [];
 
@@ -397,7 +399,10 @@ $('#requisicion-form').on('submit', function (e) {
    }
  
 }); 
+
+
 JS;
 
 $this->registerJs($script);
+
 ?>

@@ -67,5 +67,4 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php 
     $this->registerCssFile("/css/req.css"); 
-
  ?>
