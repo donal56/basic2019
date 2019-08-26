@@ -169,4 +169,8 @@ class SiteController extends Controller
         print_r("<pre>");
         var_dump($req_areas);
     }
+    public function actionAcceso()
+    {
+        return $this->render('acceso');
+    }
 }

@@ -118,22 +118,22 @@ use yii\web\User;
                 [
                     'name'  => 'det_clave',
                     'title' => 'Clave',
-            'enableError' => true
+                    'enableError' => true
                 ],
                 [
                     'name'  => 'det_partida',
                     'title' => 'Partida',
-            'enableError' => true
+                    'enableError' => true
                 ],
                 [
                     'name'  => 'det_cantidad',
                     'title' => 'Cantidad',
-            'enableError' => true
+                    'enableError' => true
                 ],
                 [
                     'name'  => 'det_unidad',
                     'title' => 'Unidad',
-            'enableError' => true
+                    'enableError' => true
                 ],
                 [
                     'name'  => 'det_descripcion',
@@ -142,13 +142,13 @@ use yii\web\User;
                     'options'=> [
                         'style' => 'height:34px; !important;'
                     ],
-            'enableError' => true
+                    'enableError' => true
                   
                 ],
                 [
                     'name'  => 'det_costo',
                     'title' => 'Costo',
-            'enableError' => true
+                    'enableError' => true
                 ]
             ]
         ])->label(false);
@@ -333,7 +333,7 @@ function validateDetalles(){
 
         }
         if (detalle.includes('det_descripcion')){
-            if($(this).val().length > 500)
+            if($(this).val().length > 5000)
             {
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
                 ["Descripcion debería contener hasta 500 caracteres"]);
@@ -344,7 +344,7 @@ function validateDetalles(){
             }
         
         }
-        if (detalle.includes('det_costo')){
+        /*if (detalle.includes('det_costo')){
             
             if($(this).val().length > 14)
             {
@@ -359,7 +359,7 @@ function validateDetalles(){
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
                 removeError(detalle);
             }
-        }
+        }*/
 
     });
 }

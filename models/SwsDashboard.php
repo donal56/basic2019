@@ -94,15 +94,15 @@ class SwsDashboard extends \yii\db\ActiveRecord
             foreach($roles as $r):
                $pos = strpos($d->rol,$r);
                 if($pos !== false) {
-                    if (!Yii::$app->user->isSuperAdmin){
+                    //if (!Yii::$app->user->isSuperAdmin){
                         foreach (explode(',',$d->rol) as $key => $value) {
                             if ($value == $r) {
                                 $encontrado = true;
                             }
                         }
-                    } else {
+                    /*} else {
                         $encontrado = true;
-                    }
+                    }*/
                 }
             endforeach; 
             if($encontrado || strpos($d->rol,'Todos') !== false){
