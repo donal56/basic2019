@@ -56,14 +56,14 @@ use yii\web\User;
         {
             return ['options' => ['class' => 'col-md-2']];
         }
-    },
-'id' => 'requisicion-form', 'validateOnSubmit' => false]); ?>
+    }, 'id' => 'requisicion-form', 'validateOnSubmit' => false]); ?>
 
     <div class= 'row' style= 'margin-top: 1.0em'>
         <?php
             echo $form->field($model, 'req_fecha') -> widget(DatePicker::classname(), 
             [
-                 'options' => ['value' => $model->isNewRecord ? date('Y-m-d') :  $model -> req_fecha], 
+                 'options' => ['value' => $model->isNewRecord ? date('Y-m-d') :  $model -> req_fecha,
+                                 'style' => 'font-size: 0.8vw'], 
                 'language' => 'es',
                 'removeButton' => false,
                 'pluginOptions' => [
@@ -73,12 +73,13 @@ use yii\web\User;
                     'format' => 'yyyy-mm-dd']
             ]); 
         ?>  
-        <?= $form -> field($model, 'req_folio'); ?>
-        <?= $form -> field($model, 'req_fkper_solicitante') -> dropDownList(ArrayHelper::map($data, "ID", "Nombre"), ['readonly' => true]); ?>
+        <?= $form -> field($model, 'req_folio') -> textInput(['style' => 'font-size: 0.8vw']);; ?>
+        <?= $form -> field($model, 'req_fkper_solicitante') -> dropDownList(ArrayHelper::map($data, "ID", "Nombre"), ['readonly' => true, 'style' => 'font-size: 0.8vw']); ?>
         <?php
             echo $form->field($model, 'req_fechasolicitante') -> widget(DatePicker::classname(), 
             [
-                'options' => ['value' => $model -> isNewRecord ? date('Y-m-d') : $model -> req_fecha],
+                'options' => ['value' => $model -> isNewRecord ? date('Y-m-d') : $model -> req_fecha,
+                                'style' => 'font-size: 0.8vw'],
                 'language' => 'es',
                 'removeButton' => false,
                 'pluginOptions' => [
@@ -88,13 +89,13 @@ use yii\web\User;
                     'format' => 'yyyy-mm-dd']
             ]); 
         ?>  
-        <?= $form ->field($model, 'req_esoperativo') -> checkbox(['labelOptions' => ['class' => 'text-justify']]); ?> 
+        <?= $form ->field($model, 'req_esoperativo') -> checkbox(['labelOptions' => ['class' => 'text-justify', 'style' => 'font-size: 0.8vw']]); ?> 
    
 
     </div>
 
     <div class= 'row'>
-        <?= $form -> field($model, 'req_justificacion') -> textarea(['label' => 'Justificación', 'rows' => 2, 'placeholder' => 'LO ANTERIOR PARA SER UTILIZADO EN LA ACCIÓN:']); ?>
+        <?= $form -> field($model, 'req_justificacion') -> textarea(['label' => 'Justificación', 'rows' => 2, 'placeholder' => 'LO ANTERIOR PARA SER UTILIZADO EN LA ACCIÓN:', 'style' => 'font-size: 0.8vw']); ?>
     </div>
         
     <div class="row req-detalle-form">
@@ -103,9 +104,10 @@ use yii\web\User;
         [
             'allowEmptyList'    => false,
             'addButtonPosition' => MultipleInput::POS_ROW,
-            'addButtonOptions' => [
-            'class' => 'btn btn-success',
-            'label' => '<i class="glyphicon glyphicon-plus"></i>' 
+            'addButtonOptions' => 
+            [
+                'class' => 'btn btn-success',
+                'label' => '<i class="glyphicon glyphicon-plus"></i>' 
             ],
             'prepend'   => true,
             'sortable' => false,
@@ -113,42 +115,63 @@ use yii\web\User;
             [
                 [
                     'name'  => 'det_id',
-                    'title' => 'ID'
+                    'title' => 'ID',
                 ],
                 [
                     'name'  => 'det_clave',
                     'title' => 'Clave',
-            'enableError' => true
+                    'enableError' => true,
+                    'options'=> 
+                    [
+                        'style' => 'width: 15vw; font-size: 0.8vw',
+                    ],
                 ],
                 [
                     'name'  => 'det_partida',
                     'title' => 'Partida',
-            'enableError' => true
+                    'enableError' => true,
+                    'options'=> 
+                    [
+                        'style' => 'width: 5vw; font-size: 0.8vw',
+                    ],
                 ],
                 [
                     'name'  => 'det_cantidad',
                     'title' => 'Cantidad',
-            'enableError' => true
+                    'enableError' => true,
+                    'options'=> 
+                    [
+                        'style' => 'width: 5vw; font-size: 0.8vw',
+                    ],
                 ],
                 [
                     'name'  => 'det_unidad',
                     'title' => 'Unidad',
-            'enableError' => true
+                    'enableError' => true,
+                    'options'=> 
+                    [
+                        'style' => 'width: 5vw; font-size: 0.8vw',
+                    ],
                 ],
                 [
                     'name'  => 'det_descripcion',
                     'title' => 'Descripcion',
                     'type' => 'textarea',
-                    'options'=> [
-                        'style' => 'height:34px; !important;'
+                    'options'=> 
+                    [
+                        'style' => 'height: 70px; !important; width: 40vw; font-size: 0.8vw',
                     ],
-            'enableError' => true
-                  
+                    'enableError' => true 
                 ],
                 [
                     'name'  => 'det_costo',
                     'title' => 'Costo',
-            'enableError' => true
+                    'enableError' => true,
+                    'options'=> 
+                    [
+                        'style' => 'width: 7vw; font-size: 0.8vw',
+                        'placeholder' => '$0.00',
+                    ],
                 ]
             ]
         ])->label(false);
@@ -157,9 +180,9 @@ use yii\web\User;
     </div>
 
     <div class= 'row'>
-        <?= $form -> field($model, 'req_fkper_subdirector') -> dropDownList(ArrayHelper::map($data1, "ID", "Nombre")) ?>
-        <?= $form -> field($model, 'req_fkper_planeacion') -> dropDownList(ArrayHelper::map($data0, "ID", "Nombre")) ?>
-        <?= $form -> field($model, 'req_fkper_director') -> dropDownList(ArrayHelper::map($data2, "ID", "Nombre")) ?>
+        <?= $form -> field($model, 'req_fkper_subdirector') -> dropDownList(ArrayHelper::map($data1, "ID", "Nombre"),  ['style' => 'font-size: 0.8vw']) ?>
+        <?= $form -> field($model, 'req_fkper_planeacion') -> dropDownList(ArrayHelper::map($data0, "ID", "Nombre"), ['style' => 'font-size: 0.8vw']) ?>
+        <?= $form -> field($model, 'req_fkper_director') -> dropDownList(ArrayHelper::map($data2, "ID", "Nombre"), ['style' => 'font-size: 0.8vw']) ?>
     </div>
 
     <?= $form -> field($model, 'req_fkconfiguracion') -> hiddenInput(['value'=> 1])->label(false); ?><br>

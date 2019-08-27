@@ -29,27 +29,22 @@ $this->params['breadcrumbs'][] = $this->title;
             'req_folio',
             'req_fecha',
             [
-                'attribute' => 'req_fkper_solicitante',
-                'format'    => 'raw',
-                'value'     => function ($model) {
-                    return $model-> fullName($model->req_fkper_solicitante);
-                }
-            ],
-            'req_fechasolicitante',
-            // 'req_esoperativo',
-            [
                 'attribute' => 'req_justificacion',
                 'format' => 'raw',
                 'value' => function($model)
                 {
-                    return substr($model->req_justificacion, 0, 60) . "...";
-                }
+                    $text= $model->req_justificacion;
+                    $limit= 13;
+                    if (str_word_count($text, 0) > $limit) 
+                    {
+                        $words = str_word_count($text, 2, 'óÓñÑéÉáÁ');
+                        $pos = array_keys($words);
+                        $text = substr($text, 0, $pos[$limit]) . '...';
+                    }
+                    return $text;
+                },
+                'contentOptions' => ['style' => 'font-size: 0.8vw'],
             ],
-            // 'req_fkper_subdirector',
-            // 'req_fkper_planeacion',
-            // 'req_fkper_director',
-            // 'req_fkconfiguracion',
-
             ['class' => 'yii\grid\ActionColumn',
             'buttons' => [
                 'print' => function ($url, $model, $key) {
@@ -58,9 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             'template' => '{print} {view} {update} {delete} '
-
-
-            ],
+            ]
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>
