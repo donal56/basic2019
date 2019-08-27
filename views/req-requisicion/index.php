@@ -33,19 +33,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function($model)
                 {
-                    $text= $model->req_justificacion;
-                    $limit= 95;
-                    
-                    $words = str_word_count($text, 2, 'óÓñÑéÉáÁ');
-                    $pos = array_keys($words);
-                    
-                    while(!in_array($limit, $pos))
-                    {
-                        $limit--;
-                    }   
-                    
-                    $text = substr($text, 0, $limit) . '...';
-                    return $text;
+                    return mb_substr($model->req_justificacion,0,85)."...";
+                
                 },
                 'contentOptions' => ['style' => 'font-size: 0.8vw'],
             ],
