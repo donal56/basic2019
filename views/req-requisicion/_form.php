@@ -356,7 +356,7 @@ function validateDetalles(){
 
         }
         if (detalle.includes('det_descripcion')){
-            if($(this).val().length > 500)
+            if($(this).val().length > 5000)
             {
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
                 ["Descripcion debería contener hasta 500 caracteres"]);
@@ -367,7 +367,7 @@ function validateDetalles(){
             }
         
         }
-        if (detalle.includes('det_costo')){
+        /*if (detalle.includes('det_costo')){
             
             if($(this).val().length > 14)
             {
@@ -382,7 +382,7 @@ function validateDetalles(){
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
                 removeError(detalle);
             }
-        }
+        }*/
 
     });
 }

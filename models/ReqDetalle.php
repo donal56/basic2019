@@ -44,7 +44,7 @@ class ReqDetalle extends \yii\db\ActiveRecord
             [['det_clave'], 'string', 'max' => 100],
             [['det_partida'], 'string', 'max' => 6],
             [['det_unidad'], 'string', 'max' => 20],
-            [['det_descripcion'], 'string', 'max' => 500],
+            [['det_descripcion'], 'string'],
             [['det_fkrequisicion'], 'exist', 'skipOnError' => true, 'targetClass' => ReqRequisicion::className(), 'targetAttribute' => ['det_fkrequisicion' => 'req_id']],
         ];
     }
