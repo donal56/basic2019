@@ -34,13 +34,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($model)
                 {
                     $text= $model->req_justificacion;
-                    $limit= 13;
-                    if (str_word_count($text, 0) > $limit) 
+                    $limit= 95;
+                    
+                    $words = str_word_count($text, 2, 'óÓñÑéÉáÁ');
+                    $pos = array_keys($words);
+                    
+                    while(!in_array($limit, $pos))
                     {
-                        $words = str_word_count($text, 2, 'óÓñÑéÉáÁ');
-                        $pos = array_keys($words);
-                        $text = substr($text, 0, $pos[$limit]) . '...';
-                    }
+                        $limit--;
+                    }   
+                    
+                    $text = substr($text, 0, $limit) . '...';
                     return $text;
                 },
                 'contentOptions' => ['style' => 'font-size: 0.8vw'],
