@@ -367,7 +367,7 @@ function validateDetalles(){
             }
         
         }
-        /*if (detalle.includes('det_costo')){
+        if (detalle.includes('det_costo')){
             
             if($(this).val().length > 14)
             {
@@ -382,7 +382,7 @@ function validateDetalles(){
                 $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
                 removeError(detalle);
             }
-        }*/
+        }
 
     });
 }
