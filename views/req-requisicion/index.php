@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return mb_substr($model->req_justificacion,0,85)."...";
                 
                 },
-                'contentOptions' => ['style' => 'font-size: 0.8vw'],
+                'contentOptions' => ['style' => 'font-size: 0.85em'],
             ],
             ['class' => 'yii\grid\ActionColumn',
             'buttons' => [

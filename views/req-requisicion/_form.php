@@ -63,7 +63,7 @@ use yii\web\User;
             echo $form->field($model, 'req_fecha') -> widget(DatePicker::classname(), 
             [
                  'options' => ['value' => $model->isNewRecord ? date('Y-m-d') :  $model -> req_fecha,
-                                 'style' => 'font-size: 0.8vw'], 
+                                 'style' => 'font-size: 0.9em'], 
                 'language' => 'es',
                 'removeButton' => false,
                 'pluginOptions' => [
@@ -73,13 +73,13 @@ use yii\web\User;
                     'format' => 'yyyy-mm-dd']
             ]); 
         ?>  
-        <?= $form -> field($model, 'req_folio') -> textInput(['style' => 'font-size: 0.8vw']);; ?>
-        <?= $form -> field($model, 'req_fkper_solicitante') -> dropDownList(ArrayHelper::map($data, "ID", "Nombre"), ['readonly' => true, 'style' => 'font-size: 0.8vw']); ?>
+        <?= $form -> field($model, 'req_folio') -> textInput(['style' => 'font-size: 0.9em']);; ?>
+        <?= $form -> field($model, 'req_fkper_solicitante') -> dropDownList(ArrayHelper::map($data, "ID", "Nombre"), ['readonly' => true, 'style' => 'font-size: 0.9em']); ?>
         <?php
             echo $form->field($model, 'req_fechasolicitante') -> widget(DatePicker::classname(), 
             [
                 'options' => ['value' => $model -> isNewRecord ? date('Y-m-d') : $model -> req_fecha,
-                                'style' => 'font-size: 0.8vw'],
+                                'style' => 'font-size: 0.9em'],
                 'language' => 'es',
                 'removeButton' => false,
                 'pluginOptions' => [
@@ -89,13 +89,13 @@ use yii\web\User;
                     'format' => 'yyyy-mm-dd']
             ]); 
         ?>  
-        <?= $form ->field($model, 'req_esoperativo') -> checkbox(['labelOptions' => ['class' => 'text-justify', 'style' => 'font-size: 0.8vw']]); ?> 
+        <?= $form ->field($model, 'req_esoperativo') -> checkbox(['labelOptions' => ['class' => 'text-justify', 'style' => 'font-size: 0.9em']]); ?> 
    
 
     </div>
 
     <div class= 'row'>
-        <?= $form -> field($model, 'req_justificacion') -> textarea(['label' => 'Justificación', 'rows' => 2, 'placeholder' => 'LO ANTERIOR PARA SER UTILIZADO EN LA ACCIÓN:', 'style' => 'font-size: 0.8vw']); ?>
+        <?= $form -> field($model, 'req_justificacion') -> textarea(['label' => 'Justificación', 'rows' => 2, 'placeholder' => 'LO ANTERIOR PARA SER UTILIZADO EN LA ACCIÓN:', 'style' => 'font-size: 0.9em']); ?>
     </div>
         
     <div class="row req-detalle-form">
@@ -123,7 +123,7 @@ use yii\web\User;
                     'enableError' => true,
                     'options'=> 
                     [
-                        'style' => 'width: 15vw; font-size: 0.8vw',
+                        'style' => 'width: 15em; font-size: 0.9em',
                     ],
                 ],
                 [
@@ -132,7 +132,7 @@ use yii\web\User;
                     'enableError' => true,
                     'options'=> 
                     [
-                        'style' => 'width: 5vw; font-size: 0.8vw',
+                        'style' => 'width: 5em; font-size: 0.9em',
                     ],
                 ],
                 [
@@ -141,7 +141,7 @@ use yii\web\User;
                     'enableError' => true,
                     'options'=> 
                     [
-                        'style' => 'width: 5vw; font-size: 0.8vw',
+                        'style' => 'width: 5em; font-size: 0.9em',
                     ],
                 ],
                 [
@@ -150,7 +150,7 @@ use yii\web\User;
                     'enableError' => true,
                     'options'=> 
                     [
-                        'style' => 'width: 5vw; font-size: 0.8vw',
+                        'style' => 'width: 5em; font-size: 0.9em',
                     ],
                 ],
                 [
@@ -159,7 +159,7 @@ use yii\web\User;
                     'type' => 'textarea',
                     'options'=> 
                     [
-                        'style' => 'height: 70px; !important; width: 40vw; font-size: 0.8vw',
+                        'style' => 'height: 70px; !important; width: 47em; font-size: 0.9em',
                     ],
                     'enableError' => true 
                 ],
@@ -169,7 +169,7 @@ use yii\web\User;
                     'enableError' => true,
                     'options'=> 
                     [
-                        'style' => 'width: 7vw; font-size: 0.8vw',
+                        'style' => 'width: 7em; font-size: 0.9em',
                         'placeholder' => '$0.00',
                     ],
                 ]
@@ -180,9 +180,9 @@ use yii\web\User;
     </div>
 
     <div class= 'row'>
-        <?= $form -> field($model, 'req_fkper_subdirector') -> dropDownList(ArrayHelper::map($data1, "ID", "Nombre"),  ['style' => 'font-size: 0.8vw']) ?>
-        <?= $form -> field($model, 'req_fkper_planeacion') -> dropDownList(ArrayHelper::map($data0, "ID", "Nombre"), ['style' => 'font-size: 0.8vw']) ?>
-        <?= $form -> field($model, 'req_fkper_director') -> dropDownList(ArrayHelper::map($data2, "ID", "Nombre"), ['style' => 'font-size: 0.8vw']) ?>
+        <?= $form -> field($model, 'req_fkper_subdirector') -> dropDownList(ArrayHelper::map($data1, "ID", "Nombre"),  ['style' => 'font-size: 0.9em']) ?>
+        <?= $form -> field($model, 'req_fkper_planeacion') -> dropDownList(ArrayHelper::map($data0, "ID", "Nombre"), ['style' => 'font-size: 0.9em']) ?>
+        <?= $form -> field($model, 'req_fkper_director') -> dropDownList(ArrayHelper::map($data2, "ID", "Nombre"), ['style' => 'font-size: 0.9em']) ?>
     </div>
 
     <?= $form -> field($model, 'req_fkconfiguracion') -> hiddenInput(['value'=> 1])->label(false); ?><br>
