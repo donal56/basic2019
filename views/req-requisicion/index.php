@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\components\SWS_API;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\RequisicionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -48,7 +50,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'template' => '{print} {view} {update} {delete} '
             ]
         ],
-    ]); ?>
+    ]); 
+    
+        echo SWS_API::getNombre() . '<br>';
+        echo SWS_API::getRFC() . '<br>';
+        echo SWS_API::getDepartamento();
+
+    ?>
 <?php Pjax::end(); ?></div>
 
 <?php 

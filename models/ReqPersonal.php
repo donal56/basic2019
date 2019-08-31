@@ -128,4 +128,9 @@ class ReqPersonal extends \yii\db\ActiveRecord
         $result = ArrayHelper::getColumn($data1,'username');
         return $result[0];
     }
+
+    public function fullName()
+    {
+        return $this->per_nombre . " " . $this->per_paterno . " " . $this->per_materno;
+    }
 }
