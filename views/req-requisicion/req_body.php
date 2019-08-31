@@ -36,7 +36,7 @@
 
 			echo '<td style="font: 10px arial;">'.$column->det_unidad.'</td>';
 
-			echo '<td style="font: 10px arial;">'.$column->det_descripcion.'</td>';
+			echo '<td align="justify" style="font: 10px arial;">'.$column->det_descripcion.'</td>';
 
 			$total = $total+$column->det_costo;
 
