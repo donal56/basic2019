@@ -28,7 +28,7 @@ use yii\db\Query;
 ?>
 
 
-<?= $form->field($model, 'are_nivel')->textInput() ?>
+<?= $form->field($model, 'are_nivel')->dropDownList(['0' => 'Dirección', '1' => 'Subdirección', '2' => "Departamento"])?>
 
 <?= $form->field($model, 'are_nombre')->textInput(['maxlength' => true]) ?>
 

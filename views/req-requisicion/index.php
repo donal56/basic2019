@@ -51,10 +51,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ]
         ],
     ]); 
-    
-        echo SWS_API::getNombre() . '<br>';
-        echo SWS_API::getRFC() . '<br>';
-        echo SWS_API::getDepartamento();
 
     ?>
 <?php Pjax::end(); ?></div>
