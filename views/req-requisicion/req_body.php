@@ -5,7 +5,7 @@
 <!-- cuerpo -->
 
 	<div style="font: 12px arial; margin: 3mm 0 3mm 0">¿Los Bienes o Servicios están contemplados en el Programa Operativo Anual?  &nbsp;
-		<b><?php echo ($data['req']->req_esoperativo=="1") ? "Sí" : "No"; ?></b>
+		<b><?php echo ($model->req_esoperativo=="1") ? "Sí" : "No"; ?></b>
 	</div>
 
 <!-- bienes -->
@@ -24,7 +24,7 @@
 	
 	<?php
 		$total = 0;
-		foreach ($data['detalles'] as $column)
+		foreach ($model->getDetalle() as $column)
 		{
 			echo '<tr>';
 
@@ -61,7 +61,7 @@
 	    <th style="font: 10px arial;"><b>LO ANTERIOR PARA SER UTILIZADO EN LA ACCIÓN:</b></th>
 	  </tr>
 	  <tr>
-	    <td style="font: 10px arial;"><?= $data['req']->req_justificacion ?></td>
+	    <td style="font: 10px arial;"><?= $model->req_justificacion ?></td>
 	  </tr>
 	</table><br>
 
@@ -82,14 +82,14 @@
 		</tr>
 
 		<tr>
-			<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?= $data['per_subdirector'] ?>
-				<br>&nbsp; 	<?=  $data['area_subdirector'] ?>
+			<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?= $model->getSubdirector()->fullName() ?>
+				<br>&nbsp; 	<?=  $model->getSubdirector()->getArea()->are_nombre ?>
 			</td>
-			<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?=$data['per_planeacion'] ?>
-				<br>&nbsp; 	<?=  $data['area_planeacion']?>
+			<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?=$model->getPlaneacion()->fullName() ?>
+				<br>&nbsp; 	<?=  $model->getPlaneacion()->getArea()->are_nombre ?>
 			</td>
-			<td align="center" style="font-size: 10px;"><?= $data['per_director'] ?>
-				<br>&nbsp; 	<?=   $data['area_director'] ?>
+			<td align="center" style="font-size: 10px;"><?= $model->getDirector()->fullName()?>
+				<br>&nbsp; 	<?=  $model->getDirector()->getArea()->are_nombre ?>
 			</td>
 
 		</tr>

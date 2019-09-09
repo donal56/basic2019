@@ -3,7 +3,7 @@
         <td style="font: 10px arial;" ><b>TecNM-AD-IT-001-03</b></td>
         <td style="font: 10px arial;" align="right">
         	<b>
-        	Rev.&nbsp;<?= $data['config']->con_revision ?>
+        	Rev.&nbsp;<?= $model->getConfig()->con_revision ?>
         	</b>
         </td>
     </tr>

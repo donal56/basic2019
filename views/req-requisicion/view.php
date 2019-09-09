@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'req_fkper_solicitante',
                 'format'    => 'raw',
                 'value'     => function ($model) {
-                    return $model-> fullName($model->req_fkper_solicitante);
+                    return $model->getSolicitante()->fullName();
                 }
             ],
             'req_fechasolicitante',
@@ -60,21 +60,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'req_fkper_subdirector',
                 'format'    => 'raw',
                 'value'     => function ($model) {
-                    return $model-> fullName($model->req_fkper_subdirector);
+                    return $model->getSubdirector()->fullName();
                 }
             ],
             [
                 'attribute' => 'req_fkper_planeacion',
                 'format'    => 'raw',
                 'value'     => function ($model) {
-                    return $model-> fullName($model->req_fkper_planeacion);
+                    return $model->getPlaneacion()->fullName();
                 }
             ],
             [
                 'attribute' => 'req_fkper_director',
                 'format'    => 'raw',
                 'value'     => function ($model) {
-                    return $model-> fullName($model->req_fkper_director);
+                    return $model->getDirector()->fullName();
                 }
             ],
         ],

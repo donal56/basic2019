@@ -198,7 +198,7 @@ class ReqRequisicionController extends Controller
         if($this -> getIDUsuarioActual() == $model -> getReqFkperSolicitante() -> asArray() -> one()['per_id'])
         {
             $modeldet = new ReqDetalle();
-            $modeldet['temp'] = $this->findAllDetalle($model->req_id);
+            $modeldet['temp'] = $model->getDetalle();
 
             if(isset($_POST['_csrf']))
             {
@@ -293,70 +293,39 @@ class ReqRequisicionController extends Controller
 
     public function actionReport($id) 
     {
-        $req =  $this->findModel($id);
+        $model =  $this->findModel($id);
 
-    $data['req'] =  $this->findModel($id);
-    if($this -> getIDUsuarioActual() == $data['req'] -> getReqFkperSolicitante() -> asArray() -> one()['per_id'])
-    {
-   
-        $data['config'] = $this->findConfig($data['req']->req_fkconfiguracion);
-        $data['per_solicitante'] = $this->findPersona($data['req']->req_fkper_solicitante);
-
-        $data['per_subdirector'] = $this->findPersona($data['req']->req_fkper_subdirector);
-        $data['per_planeacion'] = $this->findPersona($data['req']->req_fkper_planeacion);
-        $data['per_director'] = $this->findPersona($data['req']->req_fkper_director);
-
-        $data['area_solicitante'] = $this->findArea($data['per_solicitante']->per_id)->are_nombre;
-
-        $data['area_subdirector'] = $this->findArea($data['per_subdirector']->per_id)->are_nombre;
-
-        $data['area_planeacion'] = $this->findArea($data['per_planeacion']->per_id)->are_nombre;
-
-        $data['area_director'] = $this->findArea($data['per_director']->per_id)->are_nombre;
-        
-        $data['per_solicitante'] = $this->fullName( $data['per_solicitante']);
-        $data['per_subdirector'] = $this->fullName( $data['per_subdirector']);
-        $data['per_planeacion'] = $this->fullName($data['per_planeacion']);
-        $data['per_director'] = $this->fullName($data['per_director']);
-
-        $data['detalles']= $this-> findDetalle($data['req']->req_id);
-
-        $pdf = new Pdf([
-            // set to use core fonts only
-            'mode' => Pdf::MODE_CORE, 
-            // A4 paper format
-            'format' => Pdf::FORMAT_A4, 
-            // portrait orientation
-            'orientation' => Pdf::ORIENT_LANDSCAPE, 
-            // stream to browser inline
-            'destination' => Pdf::DEST_BROWSER, 
-
-            'marginTop' => '65',
-            'marginBottom' => '15',
-             // set mPDF properties on the fly
-            'options' => ['title' => 'Formato para  Requisición de Bienes y Servicios.']
-        ]);
-        
-        $mpdf = $pdf->api;
-
-        $mpdf -> SetHTMLHeader($this->renderPartial('req_header',
-            [ 'data' =>   $data,]
-        ));
-
-        $pdf->content = $this->renderPartial('req_body',
-            [ 'data' =>   $data, ]
-        ); 
-
-        $mpdf -> SetHTMLFooter($this->renderPartial('req_footer',
-            [ 'data' =>   $data,]
-        ));
-
-            return $pdf->render();
-
-        }
-        else 
+        if($this -> getIDUsuarioActual() == $model->getSolicitanteID())
         {
-            throw new UnauthorizedHttpException('Acceso no permitido.');
+
+            $pdf = new Pdf([
+                // set to use core fonts only
+                'mode' => Pdf::MODE_CORE, 
+                // A4 paper format
+                'format' => Pdf::FORMAT_A4, 
+                // portrait orientation
+                'orientation' => Pdf::ORIENT_LANDSCAPE, 
+                // stream to browser inline
+                'destination' => Pdf::DEST_BROWSER, 
+
+                'marginTop' => '65',
+                'marginBottom' => '15',
+                 // set mPDF properties on the fly
+                'options' => ['title' => 'Formato para  Requisición de Bienes y Servicios.']
+            ]);
+            
+            $mpdf = $pdf->api;
+
+            $mpdf -> SetHTMLHeader($this->renderPartial('req_header', [ 'model' =>   $model ]));
+
+            $pdf->content = $this->renderPartial('req_body', [ 'model' =>   $model ]);
+         
+            $mpdf -> SetHTMLFooter($this->renderPartial('req_footer', [ 'model' =>   $model ]));
+       
+                return $pdf->render();
+
+        }else {
+                throw new UnauthorizedHttpException('Acceso no permitido.');
         }
 
     }
@@ -377,60 +346,6 @@ class ReqRequisicionController extends Controller
             return $model;
         } else {
             throw new NotFoundHttpException('La requesicion solicitada no existe.');
-        }
-    }
-
-    protected function findConfig($id)
-    {
-        if (($model = ReqConfiguracion::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('Error en la configuracion de la requisición.');
-        }
-    }
-
-    protected function findPersona($id)
-    {
-        if (($model = ReqPersonal::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('Error en el registro del personal');
-        }
-    }
-
-    protected function findArea($id)
-    {     
-        if ( ($model = ReqArea::findOne(['are_fkper_responsable' => $id]) ) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('Error al obtener las Areas.');
-        }
-    }
-
-    protected function findDetalle($id)
-    {    
-        if ( ($model = ReqDetalle::findAll(['det_fkrequisicion' => $id]) ) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('Error al obtener los detalles.');
-        }
-
-    }
-    protected function fullName($per)
-    { 
-        return  $per->per_nombre." ".
-                $per->per_paterno." ".
-                $per->per_materno;
-    }
-
-
-
-    protected function findAllDetalle($id)
-    {
-        if (($model = ReqDetalle::find()->where(['det_fkrequisicion' => $id])->asArray()->all()) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 

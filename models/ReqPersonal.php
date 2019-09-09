@@ -133,4 +133,15 @@ class ReqPersonal extends \yii\db\ActiveRecord
     {
         return $this->per_nombre . " " . $this->per_paterno . " " . $this->per_materno;
     }
+
+
+    public function getArea()
+    {     
+        if ( ($model = ReqArea::findOne(['are_fkper_responsable' => $this->per_id]) ) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('Error al obtener las Areas.');
+        }
+    }
+
 }

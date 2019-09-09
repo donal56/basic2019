@@ -91,6 +91,12 @@ class ReqRequisicion extends \yii\db\ActiveRecord
         return $this->hasOne(ReqPersonal::className(), ['per_id' => 'req_fkper_solicitante']);
     }
 
+    public function getSolicitanteID()
+    {
+        return $this->getReqFkperSolicitante() -> asArray() -> one()['per_id'];
+    }
+
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -123,13 +129,17 @@ class ReqRequisicion extends \yii\db\ActiveRecord
         return $this->hasOne(ReqConfiguracion::className(), ['con_id' => 'req_fkconfiguracion']);
     }
 
-    public static function fullName($id)
-    { 
-        $per = ReqRequisicion::findPersona($id);
-        return  $per->per_nombre." ".
-                $per->per_paterno." ".
-                $per->per_materno;
+
+
+    public function getConfig()
+    {
+        if (($model = ReqConfiguracion::findOne($this->req_fkconfiguracion)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('Error en la configuracion de la requisición.');
+        }
     }
+
 
     public static function findPersona($id)
     {
@@ -139,4 +149,35 @@ class ReqRequisicion extends \yii\db\ActiveRecord
             throw new NotFoundHttpException('Error en el registro del personal');
         }
     }
+
+    public function getSolicitante()
+    {
+        return $this->findPersona($this->req_fkper_solicitante);
+    }
+
+    public function getSubdirector()
+    {
+        return $this->findPersona($this->req_fkper_subdirector);
+    }
+
+    public function getPlaneacion()
+    {
+        return $this->findPersona($this->req_fkper_planeacion);
+    }
+
+    public function getDirector()
+    {
+        return $this->findPersona($this->req_fkper_director);
+    }
+
+    public function getDetalle()
+    {    
+        if ( ($model = ReqDetalle::findAll(['det_fkrequisicion' => $this->req_id]) ) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('Error al obtener los detalles.');
+        }
+
+    }
+
 }
