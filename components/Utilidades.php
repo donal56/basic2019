@@ -317,4 +317,27 @@ class Utilidades
        var_dump($thing);
        echo('</pre>');
    }
+
+   public static function lazyCompare($p1, $p2)
+   {
+       #Compara sin importar espacios, acentos y mayúsculas
+       #Termina siendo redundante
+
+       $p1 = mb_strtoupper($p1);
+       $p2 = mb_strtoupper($p2);
+       $p1 = trim($p1, "\t\n\r");
+       $p2 = trim($p2, "\t\n\r");
+       $p1 = preg_replace('/Á/', 'A', $p1);
+       $p2 = preg_replace('/Á/', 'A', $p2);
+       $p1 = preg_replace('/É/', 'E', $p1);
+       $p2 = preg_replace('/É/', 'E', $p2);
+       $p1 = preg_replace('/Í/', 'I', $p1);
+       $p2 = preg_replace('/Í/', 'I', $p2);
+       $p1 = preg_replace('/Ó/', 'O', $p1);
+       $p2 = preg_replace('/Ó/', 'O', $p2);
+       $p1 = preg_replace('/Ú/', 'U', $p1);
+       $p2 = preg_replace('/Ú/', 'U', $p2);
+
+       return ($p1 == $p2);
+   }
 }

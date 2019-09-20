@@ -82,14 +82,14 @@
 		</tr>
 
 		<tr>
-			<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?= $model->getSubdirector()->fullName() ?>
-				<br>&nbsp; 	<?=  $model->getSubdirector()->getArea()->are_nombre ?>
+			<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?= $sws::getSuperior()[2] ?>
+				<br>&nbsp; 	<?=  $sws::getSuperior()[0]?>
 			</td>
-			<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?=$model->getPlaneacion()->fullName() ?>
-				<br>&nbsp; 	<?=  $model->getPlaneacion()->getArea()->are_nombre ?>
+			<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?= $sws::getJefePlaneacion()[2] ?>
+				<br>&nbsp; 	<?=  $sws::getJefePlaneacion()[0] ?>
 			</td>
-			<td align="center" style="font-size: 10px;"><?= $model->getDirector()->fullName()?>
-				<br>&nbsp; 	<?=  $model->getDirector()->getArea()->are_nombre ?>
+			<td align="center" style="font-size: 10px;"><?= $sws::getDirector()[2]?>
+				<br>&nbsp; 	<?=  $sws::getDirector()[0] ?>
 			</td>
 
 		</tr>

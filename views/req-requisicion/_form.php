@@ -8,6 +8,7 @@ use unclead\multipleinput\MultipleInput;
 use kartik\date\DatePicker;
 use yii\db\Query;
 use yii\web\User;
+use app\components\SWS_API;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Requisicion */
@@ -74,7 +75,7 @@ use yii\web\User;
             ]); 
         ?>  
         <?= $form -> field($model, 'req_folio') -> textInput(['style' => 'font-size: 0.9em']);; ?>
-        <?= $form -> field($model, 'req_fkper_solicitante') -> dropDownList(ArrayHelper::map($data, "ID", "Nombre"), ['readonly' => true, 'style' => 'font-size: 0.9em']); ?>
+        <?= $form -> field($model, 'req_fkper_solicitante') -> dropDownList([SWS_API::getNombre(), Yii::$app->user->identity->id], ['readonly' => true, 'style' => 'font-size: 0.9em']); ?>
         <?php
             echo $form->field($model, 'req_fechasolicitante') -> widget(DatePicker::classname(), 
             [

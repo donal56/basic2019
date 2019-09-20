@@ -15,8 +15,6 @@ use yii\helpers\ArrayHelper;
  * @property string $per_materno
  * @property integer $per_fkuser
  *
- * @property ReqArea[] $reqAreas
- * @property ReqArea[] $reqAreas0
  * @property User $perFkuser
  * @property ReqRequisicion[] $reqRequisicions
  * @property ReqRequisicion[] $reqRequisicions0
@@ -60,21 +58,6 @@ class ReqPersonal extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getReqAreas()
-    {
-        return $this->hasMany(ReqArea::className(), ['are_fkper_responsable' => 'per_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getReqAreas0()
-    {
-        return $this->hasMany(ReqArea::className(), ['are_fkper_superior' => 'per_id']);
-    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -133,15 +116,4 @@ class ReqPersonal extends \yii\db\ActiveRecord
     {
         return $this->per_nombre . " " . $this->per_paterno . " " . $this->per_materno;
     }
-
-
-    public function getArea()
-    {     
-        if ( ($model = ReqArea::findOne(['are_fkper_responsable' => $this->per_id]) ) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('Error al obtener las Areas.');
-        }
-    }
-
 }

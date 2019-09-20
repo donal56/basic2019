@@ -44,13 +44,13 @@
 	<table width="100%" border="1" cellpadding="4" cellspacing="0" bordercolor="#000000">
 		<tr>
 			<td style="font: 10px arial;">NOMBRE Y FIRMA DEL ÁREA SOLICITANTE:&nbsp;
-				<?= $model->getSolicitante()->fullName()  ?>	
+				<?= $sws::getNombre()  ?>	
 			</td>
 		</tr>
 		<tr>
 			<td style="font: 10px arial;">FECHA Y ÁREA SOLICITANTE:&nbsp;
 				<?= $model->req_fechasolicitante ?>
-				&nbsp; 	<?=  $model->getSolicitante()->getArea()->are_nombre ?>
+				&nbsp; 	<?=  $sws::getDepartamento() ?>
 			</td>
 		</tr>
 	</table>

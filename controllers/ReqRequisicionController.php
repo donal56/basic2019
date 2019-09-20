@@ -19,6 +19,7 @@ use yii\db\Query;
 use app\models\ReqDetalleSearch;
 use yii\web\ServerErrorHttpException;
 use yii\web\UnauthorizedHttpException;
+use app\components\SWS_API;
 
 /**
  * RequisicionController implements the CRUD actions for Requisicion model.
@@ -295,7 +296,7 @@ class ReqRequisicionController extends Controller
     {
         $model =  $this->findModel($id);
 
-        if($this -> getIDUsuarioActual() == $model->getSolicitanteID())
+        if($this -> getIDUsuarioActual() == $model->getSolicitanteID() && SWS_API::find())
         {
 
             $pdf = new Pdf([
@@ -316,11 +317,11 @@ class ReqRequisicionController extends Controller
             
             $mpdf = $pdf->api;
 
-            $mpdf -> SetHTMLHeader($this->renderPartial('req_header', [ 'model' =>   $model ]));
+            $mpdf -> SetHTMLHeader($this->renderPartial('req_header', [ 'model' =>   $model, 'sws' => new SWS_API() ]));
 
-            $pdf->content = $this->renderPartial('req_body', [ 'model' =>   $model ]);
+            $pdf->content = $this->renderPartial('req_body', [ 'model' =>   $model, 'sws' => new SWS_API() ]);
          
-            $mpdf -> SetHTMLFooter($this->renderPartial('req_footer', [ 'model' =>   $model ]));
+            $mpdf -> SetHTMLFooter($this->renderPartial('req_footer', [ 'model' =>   $model, 'sws' => new SWS_API() ]));
        
                 return $pdf->render();
 
