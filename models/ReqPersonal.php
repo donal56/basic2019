@@ -23,6 +23,7 @@ use yii\helpers\ArrayHelper;
  */
 class ReqPersonal extends \yii\db\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -54,7 +55,7 @@ class ReqPersonal extends \yii\db\ActiveRecord
             'per_nombre' => 'Nombre',
             'per_paterno' => 'Apellido Paterno',
             'per_materno' => 'Apellido Materno',
-            'per_fkuser' => 'Username',
+            'per_fkuser' => 'Username'
         ];
     }
 
@@ -112,8 +113,8 @@ class ReqPersonal extends \yii\db\ActiveRecord
         return $result[0];
     }
 
-    public function fullName()
+    public function getFullName() 
     {
-        return $this->per_nombre . " " . $this->per_paterno . " " . $this->per_materno;
+        return $this->per_nombre . " " . $this->per_paterno . " " . $this->per_materno;                
     }
 }

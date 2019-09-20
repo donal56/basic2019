@@ -69,7 +69,7 @@
 <!-- Firmas -->
 	<table  width="100%"  style="page-break-inside:avoid;">
 		<tr>
-			<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;padding-bottom: 10mm;border-bottom: 1px solid #000;"><b>NOMBRE Y FIRMA DEL SUBDIRECTOR(A)
+			<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;padding-bottom: 10mm;border-bottom: 1px solid #000;"><b>NOMBRE Y FIRMA DEL <?=  $sws::getSuperior()[4]?>
 
 			</td> 
 			<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;padding-bottom: 10mm;border-bottom: 1px solid #000;">
@@ -88,8 +88,8 @@
 			<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?= $sws::getJefePlaneacion()[2] ?>
 				<br>&nbsp; 	<?=  $sws::getJefePlaneacion()[0] ?>
 			</td>
-			<td align="center" style="font-size: 10px;"><?= $sws::getDirector()[2]?>
-				<br>&nbsp; 	<?=  $sws::getDirector()[0] ?>
+			<td align="center" style="font-size: 10px;"><?= $sws::getDirector()[0]?>
+				<br>&nbsp; 	<?=  $sws::getDirector()[2] ?>
 			</td>
 
 		</tr>
