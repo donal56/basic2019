@@ -337,6 +337,10 @@ class Utilidades
        $p2 = preg_replace('/Ó/', 'O', $p2);
        $p1 = preg_replace('/Ú/', 'U', $p1);
        $p2 = preg_replace('/Ú/', 'U', $p2);
+       $p1 = preg_replace('/\./', '', $p1);
+       $p2 = preg_replace('/\./', '', $p2);
+       $p1 = preg_replace('/\s/', '', $p1);
+       $p2 = preg_replace('/\s/', '', $p2);
 
        return ($p1 == $p2);
    }

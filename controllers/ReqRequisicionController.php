@@ -321,7 +321,7 @@ class ReqRequisicionController extends Controller
 
             $pdf->content = $this->renderPartial('req_body', [ 'model' =>   $model, 'sws' => new SWS_API() ]);
          
-            $mpdf -> SetHTMLFooter($this->renderPartial('req_footer', [ 'model' =>   $model, 'sws' => new SWS_API() ]));
+            $mpdf -> SetHTMLFooter($this->renderPartial('req_footer', [ 'model' =>   $model ]));
        
                 return $pdf->render();
 

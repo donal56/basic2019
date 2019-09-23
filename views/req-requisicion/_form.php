@@ -9,33 +9,16 @@ use kartik\date\DatePicker;
 use yii\db\Query;
 use yii\web\User;
 use app\components\SWS_API;
+use app\models\ReqConfiguracion;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Requisicion */
 /* @var $form yii\widgets\ActiveForm */
 
-    $query1 = new Query;
-    $query1 -> select(['req_personal.per_id as ID', 
-    'CONCAT(req_personal.per_nombre, " ", req_personal.per_paterno, " ", req_personal.per_materno) as Nombre '])
-        -> from('req_personal')
-        -> join('INNER JOIN', 'user', 'req_personal.per_fkuser = user.id')
-        -> where(['user.id' => Yii::$app->user->identity->id]);
-    $data = $query1 -> createCommand() -> queryAll();
-
-    $query2 = new Query;
-    $query2  ->select([ 'req_personal.per_id as ID' , 
-        'CONCAT(req_personal.per_nombre, " ", req_personal.per_paterno, " ", req_personal.per_materno) as Nombre '])  
-        ->from('req_personal')
-        ->join('INNER JOIN', 'req_area', 'req_area.are_fkper_responsable = req_personal.per_id');
-    
-    $data2 = $query2 ->where(['req_area.are_nivel' => '2']) -> createCommand() -> queryAll();
-    $data1 = $query2 ->where(['req_area.are_nivel' => '1']) -> createCommand() -> queryAll();
-    $data0 = $query2 ->where(['req_area.are_nombre' => 'DEPTO. DE PLAN., PROG. Y PRESUPUESTACIÓN']) -> createCommand() -> queryAll();
-
     $query3 = new Query;
     $data5 = $query3->select(['con_id as ID' , 'CONCAT("INSTITUTO TECNOLÓGICO DE ", con_instituto) as Instituto'])->from('req_configuracion')->createCommand()->queryAll();
 ?>
-
+<br>
 <div class="requisicion-form">
 
 
@@ -45,17 +28,9 @@ use app\components\SWS_API;
         {
             return ['options' => ['class' => 'col-md-12']];
         }
-        else if($attribute == 'req_esoperativo'  || $attribute == 'req_fkper_solicitante') 
-        {
-            return ['options' => ['class' => 'col-md-3']];
-        }
-        else if ($attribute == 'req_fkper_subdirector' || $attribute == 'req_fkper_planeacion' || $attribute == 'req_fkper_director') 
-        {
-            return ['options' => ['class' => 'col-md-4']];
-        }
         else 
         {
-            return ['options' => ['class' => 'col-md-2']];
+            return ['options' => ['class' => 'col-md-3']];
         }
     }, 'id' => 'requisicion-form', 'validateOnSubmit' => false]); ?>
 
@@ -75,7 +50,6 @@ use app\components\SWS_API;
             ]); 
         ?>  
         <?= $form -> field($model, 'req_folio') -> textInput(['style' => 'font-size: 0.9em']);; ?>
-        <?= $form -> field($model, 'req_fkper_solicitante') -> dropDownList([SWS_API::getNombre(), Yii::$app->user->identity->id], ['readonly' => true, 'style' => 'font-size: 0.9em']); ?>
         <?php
             echo $form->field($model, 'req_fechasolicitante') -> widget(DatePicker::classname(), 
             [
@@ -181,12 +155,13 @@ use app\components\SWS_API;
     </div>
 
     <div class= 'row'>
-        <?= $form -> field($model, 'req_fkper_subdirector') -> dropDownList(ArrayHelper::map($data1, "ID", "Nombre"),  ['style' => 'font-size: 0.9em']) ?>
-        <?= $form -> field($model, 'req_fkper_planeacion') -> dropDownList(ArrayHelper::map($data0, "ID", "Nombre"), ['style' => 'font-size: 0.9em']) ?>
-        <?= $form -> field($model, 'req_fkper_director') -> dropDownList(ArrayHelper::map($data2, "ID", "Nombre"), ['style' => 'font-size: 0.9em']) ?>
+        <?= $form -> field($model, 'req_fkper_solicitante') -> hiddenInput(['value' => SWS_API::getID()])->label(false); ?>
+        <?= $form -> field($model, 'req_fkper_subdirector') -> hiddenInput(['value' => SWS_API::getSuperior()[3]])->label(false) ?>
+        <?= $form -> field($model, 'req_fkper_planeacion') -> hiddenInput(['value' => SWS_API::getJefePlaneacion()[3]])->label(false) ?>
+        <?= $form -> field($model, 'req_fkper_director') -> hiddenInput(['value' => SWS_API::getDirector()[3]])->label(false) ?>
     </div>
 
-    <?= $form -> field($model, 'req_fkconfiguracion') -> hiddenInput(['value'=> 1])->label(false); ?><br>
+    <?= $form -> field($model, 'req_fkconfiguracion') -> hiddenInput(['value'=> ReqConfiguracion::find()->one()->con_id])->label(false); ?><br>
 
     <div class="row form-group col-md-3" style= 'margin-top: 1.0em'>
         <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
