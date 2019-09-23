@@ -11,7 +11,7 @@
  Target Server Version : 80016
  File Encoding         : 65001
 
- Date: 23/09/2019 16:37:41
+ Date: 23/09/2019 18:50:38
 */
 
 SET NAMES utf8mb4;
@@ -387,7 +387,7 @@ CREATE TABLE `req_area`  (
   INDEX `are_fkper_superior`(`are_fkper_superior`) USING BTREE,
   CONSTRAINT `fk_req_departamento_req_personal1` FOREIGN KEY (`are_fkper_responsable`) REFERENCES `req_personal` (`per_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `req_area_ibfk_1` FOREIGN KEY (`are_fkper_superior`) REFERENCES `req_personal` (`per_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of req_area
@@ -437,22 +437,20 @@ CREATE TABLE `req_detalle`  (
 -- ----------------------------
 -- Records of req_detalle
 -- ----------------------------
-INSERT INTO `req_detalle` VALUES (9, 5, '1', '1', 1.00, '1', '1', 1.00);
-INSERT INTO `req_detalle` VALUES (10, 6, '1', '1', 1.00, '1', '1', 1.00);
 INSERT INTO `req_detalle` VALUES (21, 9, '11 M00 PIA 2 5 3 2530', '21401', 1.00, 'PZA', 'TONER CANON 1025N', 1550.00);
 INSERT INTO `req_detalle` VALUES (35, 17, '2  5 3  2530 5 E010  1 14 127 7 3 1 7.1 20 31401', '31401', 1.00, 'SERVICIO', 'SERVICIO DE INTERNET DEL MES DE AGOSTO', 33742.98);
 INSERT INTO `req_detalle` VALUES (37, 19, '2 5 3 2530 5 E010 1 14 127 7 3 1 7.1 20 31401', '31401', 1.00, 'SERVICIO', 'SERVICIO TELEFONICO DEL MES DE AGOSTO', 6984.06);
 INSERT INTO `req_detalle` VALUES (39, 21, '11 M00 PIA 2 5 3 2530 5 E010 1 14 127 7 3 1 7.1 20 21401', '21401', 1.00, 'PZA', 'KIT FUSOR PARA IMPRESORA MARCA HP MODELO LASERJET 5550 Q3984-\r\n67901/Q3984A', 14400.00);
-INSERT INTO `req_detalle` VALUES (41, 23, '11 M00 PIA 2 5 3 2530 5 E010 1 14 127 7 3 1 7.1 20 31603', '31603', 1.00, 'SERVICIO', 'SERVICIO DE INTERNET DE 200 MEGAS DEL MES DE AGOSTO', 45351.36);
 INSERT INTO `req_detalle` VALUES (54, 26, '11 M00 PIA 2 5 3 2530 5 E010 1 14 127 5 2 1 5.3 24 35102', '35102 ', 1.00, 'SERVICIO', 'Instalación de canalización y colocación de tubería subterránea y en edificios, para telecomunicaciones. La instalación subterránea incluye tritubo de polietileno de alta densidad (PEAD/HDPE), de 3x40 mm de diámetro y 3 mm de espesor, formado por tres tubos iguales, unidos entre sí por medio de una membrana y dispuestos paralelamente en un mismo plano, ejecutada en zanja, ubicaciones: desde edificio laboratorio de investigación II a parte central de área de económico administrativo, desde industrial a jardín de parte lateral, de ciencias de la tierra a ingeniería petrolera, desde edificio de centro de cómputo al edificio de informática, para la instalación de red inalámbrica. Incluye Tuberia conduit delgada, registros de concreto de 1 x 1 con orificios para instalación de tubería, Cajas de Registros tipo condulet. Incluye cableado UTP cat 6 multipar para alcance de 10 gigabits. La ubicación de tubería conduit delgada incluye cableado UTP cat 6 MULTIPAR en los edificios de : Edificio de Centro de Cómputo, Edificio posgrado, centro de información, dirección, Edificio J, Edificio H, Edificio M, Edificio E, Edificio EAULA, Edificio Extraescolares, Edificio Petrolera, Edificio Industrial, Edificio Gimnasio Auditorio. Edificio Z, Edificio Incubadora, Edificio Cafetería, Segundo pago\r\n', 814665.40);
-INSERT INTO `req_detalle` VALUES (58, 27, '11 M00 PIA 2 5 3 2530 5 E010 1 14 127 5 2 1 5.3 24 35102', '24801', 22.00, 'PZA', 'Suministro de platabandas a base de tablarocas de 13 mm. de espesor de 10cm. de altura hasta 0.90cm. de ancho  color blanco, incluye instalación', 76999.96);
-INSERT INTO `req_detalle` VALUES (59, 27, '11 M00 PIA 2 5 3 2530 5 E010 1 14 127 5 2 1 5.3 24 35102', '24801', 21.00, 'PZA', 'Suministro de plafón falso. modulado en placas de 0.61 cms. x 0.61 cms. incluye instalación', 50063.94);
-INSERT INTO `req_detalle` VALUES (60, 27, '11 M00 PIA 2 5 3 2530 5 E010 1 14 127 5 2 1 5.3 24 35102', '24801', 5.00, 'PZA', 'suministro de ventana de aluminio de 1.20Mtrs x 1.40Mtrs en color blanco que incluye vidrio, marcos de aluminio, pegamento e instalación', 35686.10);
 INSERT INTO `req_detalle` VALUES (71, 28, '11 M00 PIA 2 5 3 2530 5 E010 1 14 127 7 3 1 7.1 20 24601', '24601', 45.00, 'PZA', 'canaleta 13x7 mm 2 mtrs de largo', 70868.28);
 INSERT INTO `req_detalle` VALUES (72, 28, '11 M00 PIA 2 5 3 2530 5 E010 1 14 127 7 3 1 7.1 20 24601', '24601', 5.00, 'PZA', 'Bobina de cable de 205 metros Cat5e blindado negro, evita descargar', 32058.98);
 INSERT INTO `req_detalle` VALUES (73, 28, '11 M00 PIA 2 5 3 2530 5 E010 1 14 127 7 3 1 7.1 20 24601', '24601', 2.00, 'PZA', 'Herramienta Quita forros en cables ', 8856.23);
 INSERT INTO `req_detalle` VALUES (74, 28, '11 M00 PIA 2 5 3 2530 5 E010 1 14 127 7 3 1 7.1 20 24601', '24601', 25.00, 'PZA', 'Conectores RJ45 para cable UTP categoría 6', 41668.65);
 INSERT INTO `req_detalle` VALUES (75, 28, '11 M00 PIA 2 5 3 2530 5 E010 1 14 127 7 3 1 7.1 20 24601', '24601', 3.00, 'PZA', 'Pinzas para plegar cables CAT5/CAT6 con cavidades para RJ11, RJ12 y RJ45', 31867.85);
+INSERT INTO `req_detalle` VALUES (97, 27, '11 M00 PIA 2 5 3 2530 5 E010 1 14 127 5 2 1 5.3 24 35102', '24801', 22.00, 'PZA', 'Suministro de platabandas a base de tablarocas de 13 mm. de espesor de 10cm. de altura hasta 0.90cm. de ancho  color blanco, incluye instalación', 76999.96);
+INSERT INTO `req_detalle` VALUES (98, 27, '11 M00 PIA 2 5 3 2530 5 E010 1 14 127 5 2 1 5.3 24 35102', '24801', 21.00, 'PZA', 'Suministro de plafón falso. modulado en placas de 0.61 cms. x 0.61 cms. incluye instalación', 50063.94);
+INSERT INTO `req_detalle` VALUES (99, 27, '11 M00 PIA 2 5 3 2530 5 E010 1 14 127 5 2 1 5.3 24 35102', '24801', 5.00, 'PZA', 'suministro de ventana de aluminio de 1.20Mtrs x 1.40Mtrs en color blanco que incluye vidrio, marcos de aluminio, pegamento e instalación', 35686.10);
+INSERT INTO `req_detalle` VALUES (100, 23, '11 M00 PIA 2 5 3 2530 5 E010 1 14 127 7 3 1 7.1 20 31603', '31603', 1.00, 'SERVICIO', 'SERVICIO DE INTERNET DE 200 MEGAS DEL MES DE AGOSTO', 45351.36);
 
 -- ----------------------------
 -- Table structure for req_personal
@@ -490,8 +488,9 @@ CREATE TABLE `req_requisicion`  (
   `req_fechasolicitante` date DEFAULT NULL,
   `req_fechaactualizado` date DEFAULT NULL,
   `req_folio` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `req_tipo` tinyint(1) DEFAULT NULL COMMENT '0: Bien 1:Servicio',
   `req_fkper_solicitante` int(11) NOT NULL,
-  `req_esoperativo` tinyint(4) DEFAULT NULL,
+  `req_esoperativo` tinyint(1) DEFAULT NULL,
   `req_justificacion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `req_fkper_subdirector` int(11) NOT NULL,
   `req_fkper_planeacion` int(11) NOT NULL,
@@ -513,16 +512,14 @@ CREATE TABLE `req_requisicion`  (
 -- ----------------------------
 -- Records of req_requisicion
 -- ----------------------------
-INSERT INTO `req_requisicion` VALUES (5, '2019-08-13', '2019-08-13', '2019-09-23', '1', 8, 0, '1', 8, 6, 7, 1);
-INSERT INTO `req_requisicion` VALUES (6, '2019-08-13', '2019-08-13', NULL, '1', 8, 0, '1', 8, 6, 7, 1);
-INSERT INTO `req_requisicion` VALUES (9, '2019-08-13', '2019-08-13', NULL, '', 5, 0, 'NECESARIO PARA IMPRESIÓN DE OFICIOS DE LA IMPRESORA DE DIRECCIÓN CANON 1025N Y ATENDIENDO EL PROYECTO 7 ACTUALIZACIÓN Y PRODUCCIÓN DE MATERIAL EDUCATIVO Y RECURSOS DIGITALES ACCIÓN 7.1 FORTALECER LAS HABILIDADES DE LOS DOCENTES EN EL USO TE TI\'CS', 8, 6, 7, 1);
-INSERT INTO `req_requisicion` VALUES (17, '2019-08-15', '2019-08-15', NULL, '', 5, 0, 'NECESARIO PARA CUBRIR EL SERVICIO DE INTERNET DEL MES DE AGOSTO Y ATENDIENDO EL PROYECTO 7 DISEÑO, ACTUALIZACIÓN Y PRODUCCIÓN DE MATERIAL EDUCATIVO Y RECURSOS DIGITALES ACCIÓN 7.1 FORTALECER LAS HABILIDADES DE LOS DOCENTES EN EL USO DE TI´CS.', 8, 6, 7, 1);
-INSERT INTO `req_requisicion` VALUES (19, '2019-08-15', '2019-08-15', NULL, '', 5, 0, 'NECESARIO PARA CUBRIR EL SERVICIO TELEFÓNICO DEL MES DE AGOSTO Y ATENDIENDO EL PROYECTO 7 DISEÑO, ACTUALIZACIÓN Y PRODUCCIÓN DE MATERIAL EDUCATIVO Y RECURSOS DIGITALES ACCIÓN 7.1 FORTALECER LAS HABILIDADES DE LOS DOCENTES EN EL USO DE TI´CS.', 8, 6, 7, 1);
-INSERT INTO `req_requisicion` VALUES (21, '2019-08-16', '2019-08-16', NULL, '', 5, 1, 'NECESARIO PARA IMPRESIÓN DE DOCUMENTOS DEL DEPARTAMENTO DE CIIE Y ATENDIENDO EL PROYECTO 7 DISEÑO ACTUALIZACIÓN Y PRODUCCIÓN DE MATERIAL EDUCATIVO Y RECURSOS DIGITALES ACCIÓN 7.1 FORTALECER LAS HABILIDADES DE LOS DOCENTES EN EL USO DE LAS TICS.', 8, 6, 7, 1);
-INSERT INTO `req_requisicion` VALUES (23, '2019-08-19', '2019-08-19', NULL, '', 5, 0, 'NECESARIO PARA CUBRIR EL SERVICIO DE INTERNET DE 200 MEGAS DEL MES DE AGOSTO Y ATENDIENDO EL PROYECTO 7 DISEÑO, PRODUCCIÓN Y ACTUALIZACIÓN DE MATERIAL EDUCATIVO Y RECURSOS DIGITALES ACCIÓN 7.1 FORTALECER LAS ACTIVIDADES DE LOS DOCENTES EN EL USO DE TI´CS.                                                                                                                                                                                            ', 8, 6, 7, 1);
-INSERT INTO `req_requisicion` VALUES (26, '2019-08-22', '2019-08-22', NULL, '', 5, 1, 'NECESARIO PARA EL CORRECTO FUNCIONAMIENTO DE LA RED DE DATOS E INTERNET PARA EL USO DE LOS ESTUDIANTES, MAESTROS Y PERSONAL DEL ADMINISTRATIVO PARA LA REALIZACIÓN DE ACTIVIDADES ACADÉMICAS Y ADMINISTRATIVAS Y ATENDIENDO EL PROYECTO 5 PROYECTO DE EVALUACIÓN Y ACREDITACIÓN DE LOS PLANES Y PROGRAMAS DE LICENCIATURA ACCIÓN 5.3 ADECUACIÓN Y MANTENIMIENTO DE INFRAESTRUCTURA DE ÁREAS ACADÉMICAS Y LABORATORIOS\r\n', 8, 6, 7, 1);
-INSERT INTO `req_requisicion` VALUES (27, '2019-08-23', '2019-08-23', NULL, '', 5, 1, 'NECESARIO PARA REMODELACIÓN DE AULAS DE POSGRADO Y ATENDIENDO EL PROYECTO 5 PROYECTO DE EVALUACIÓN Y ACREDITACIÓN DE LOS PLANES Y PROGRAMAS DE LICENCIATURA ACCIÓN 5.3 ADECUACIÓN Y MANTENIMIENTO DE INFRAESTRUCTURA DE ÁREAS ACADÉMICAS Y LABORATORIOS\r\n', 8, 6, 7, 1);
-INSERT INTO `req_requisicion` VALUES (28, '2019-08-23', '2019-08-23', NULL, '', 5, 1, 'NECESARIO PARA LA ADECUACIÓN DE RED DE AULAS DE POSGRADO Y ATENDIENDO EL PROYECTO 7 DISEÑO ACTUALIZACIÓN Y PRODUCCIÓN DE MATERIAL EDUCATIVO Y RECURSOS DIGITALES ACCIÓN 7.3 PROMOVER EN LAS ACADEMIAS LA UTILIZACIÓN DE LOS RECURSOS DIGITALES ACADÉMICOS Y MOOCS.', 8, 6, 7, 1);
+INSERT INTO `req_requisicion` VALUES (9, '2019-08-13', '2019-08-13', NULL, '', NULL, 5, 0, 'NECESARIO PARA IMPRESIÓN DE OFICIOS DE LA IMPRESORA DE DIRECCIÓN CANON 1025N Y ATENDIENDO EL PROYECTO 7 ACTUALIZACIÓN Y PRODUCCIÓN DE MATERIAL EDUCATIVO Y RECURSOS DIGITALES ACCIÓN 7.1 FORTALECER LAS HABILIDADES DE LOS DOCENTES EN EL USO TE TI\'CS', 8, 6, 7, 1);
+INSERT INTO `req_requisicion` VALUES (17, '2019-08-15', '2019-08-15', NULL, '', NULL, 5, 0, 'NECESARIO PARA CUBRIR EL SERVICIO DE INTERNET DEL MES DE AGOSTO Y ATENDIENDO EL PROYECTO 7 DISEÑO, ACTUALIZACIÓN Y PRODUCCIÓN DE MATERIAL EDUCATIVO Y RECURSOS DIGITALES ACCIÓN 7.1 FORTALECER LAS HABILIDADES DE LOS DOCENTES EN EL USO DE TI´CS.', 8, 6, 7, 1);
+INSERT INTO `req_requisicion` VALUES (19, '2019-08-15', '2019-08-15', NULL, '', NULL, 5, 0, 'NECESARIO PARA CUBRIR EL SERVICIO TELEFÓNICO DEL MES DE AGOSTO Y ATENDIENDO EL PROYECTO 7 DISEÑO, ACTUALIZACIÓN Y PRODUCCIÓN DE MATERIAL EDUCATIVO Y RECURSOS DIGITALES ACCIÓN 7.1 FORTALECER LAS HABILIDADES DE LOS DOCENTES EN EL USO DE TI´CS.', 8, 6, 7, 1);
+INSERT INTO `req_requisicion` VALUES (21, '2019-08-16', '2019-08-16', NULL, '', NULL, 5, 1, 'NECESARIO PARA IMPRESIÓN DE DOCUMENTOS DEL DEPARTAMENTO DE CIIE Y ATENDIENDO EL PROYECTO 7 DISEÑO ACTUALIZACIÓN Y PRODUCCIÓN DE MATERIAL EDUCATIVO Y RECURSOS DIGITALES ACCIÓN 7.1 FORTALECER LAS HABILIDADES DE LOS DOCENTES EN EL USO DE LAS TICS.', 8, 6, 7, 1);
+INSERT INTO `req_requisicion` VALUES (23, '2019-08-19', '2019-08-19', '2019-09-23', '', 1, 5, 0, 'NECESARIO PARA CUBRIR EL SERVICIO DE INTERNET DE 200 MEGAS DEL MES DE AGOSTO Y ATENDIENDO EL PROYECTO 7 DISEÑO, PRODUCCIÓN Y ACTUALIZACIÓN DE MATERIAL EDUCATIVO Y RECURSOS DIGITALES ACCIÓN 7.1 FORTALECER LAS ACTIVIDADES DE LOS DOCENTES EN EL USO DE TI´CS.                                                                                                                                                                                            ', 8, 6, 7, 1);
+INSERT INTO `req_requisicion` VALUES (26, '2019-08-22', '2019-08-22', NULL, '', NULL, 5, 1, 'NECESARIO PARA EL CORRECTO FUNCIONAMIENTO DE LA RED DE DATOS E INTERNET PARA EL USO DE LOS ESTUDIANTES, MAESTROS Y PERSONAL DEL ADMINISTRATIVO PARA LA REALIZACIÓN DE ACTIVIDADES ACADÉMICAS Y ADMINISTRATIVAS Y ATENDIENDO EL PROYECTO 5 PROYECTO DE EVALUACIÓN Y ACREDITACIÓN DE LOS PLANES Y PROGRAMAS DE LICENCIATURA ACCIÓN 5.3 ADECUACIÓN Y MANTENIMIENTO DE INFRAESTRUCTURA DE ÁREAS ACADÉMICAS Y LABORATORIOS\r\n', 8, 6, 7, 1);
+INSERT INTO `req_requisicion` VALUES (27, '2019-08-23', '2019-08-23', '2019-09-23', '', 0, 5, 1, 'NECESARIO PARA REMODELACIÓN DE AULAS DE POSGRADO Y ATENDIENDO EL PROYECTO 5 PROYECTO DE EVALUACIÓN Y ACREDITACIÓN DE LOS PLANES Y PROGRAMAS DE LICENCIATURA ACCIÓN 5.3 ADECUACIÓN Y MANTENIMIENTO DE INFRAESTRUCTURA DE ÁREAS ACADÉMICAS Y LABORATORIOS\r\n', 8, 6, 7, 1);
+INSERT INTO `req_requisicion` VALUES (28, '2019-08-23', '2019-08-23', NULL, '', NULL, 5, 1, 'NECESARIO PARA LA ADECUACIÓN DE RED DE AULAS DE POSGRADO Y ATENDIENDO EL PROYECTO 7 DISEÑO ACTUALIZACIÓN Y PRODUCCIÓN DE MATERIAL EDUCATIVO Y RECURSOS DIGITALES ACCIÓN 7.3 PROMOVER EN LAS ACADEMIAS LA UTILIZACIÓN DE LOS RECURSOS DIGITALES ACADÉMICOS Y MOOCS.', 8, 6, 7, 1);
 
 -- ----------------------------
 -- Table structure for sws_dashboard

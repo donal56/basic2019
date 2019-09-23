@@ -47,6 +47,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->getSolicitante()->getFullName();
                 }
             ],
+            [
+                'attribute' => 'req_tipo',
+                'format'    => 'raw',
+                'value'     => function ($model) {
+                    return $model->req_tipo == '0'? 'BIENES':'SERVICIOS';
+                }
+            ],
             'req_fechasolicitante:date',
             'req_fechaactualizado:date',
             'req_esoperativo:boolean',

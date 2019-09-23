@@ -28,7 +28,21 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            'req_folio',
+            [
+                'attribute' => 'req_folio',
+                'contentOptions' => ['style' => 'width:8em'],
+            ],
+            [
+                'attribute' => 'req_tipo',
+                'format' => 'raw',
+                'value' => function($model)
+                {
+                    return  $model->req_tipo == '0'? 'BIENES':'SERVICIOS';
+                
+                },
+                'filter' => Html::activeDropDownList($searchModel, 'req_tipo', ['0' => 'BIENES' , '1' => 'SERVICIOS'],['class'=>'form-control','style'=>'padding:0px;font-size: 0.85em;','prompt' => '']),
+                'contentOptions' => ['style' => 'width:9.5em;font-size: 0.85em;'],
+            ],
             'req_fecha:date',
             [
                 'attribute' => 'req_justificacion',

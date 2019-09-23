@@ -22,21 +22,15 @@ use app\models\ReqConfiguracion;
 <div class="requisicion-form">
 
 
-    <?php $form = ActiveForm::begin(['fieldConfig' => function ($model, $attribute) 
-    {
-        if ($attribute == 'req_justificacion' || $attribute == 'temp') 
-        {
-            return ['options' => ['class' => 'col-md-12']];
-        }
-        else 
-        {
-            return ['options' => ['class' => 'col-md-3']];
-        }
-    }, 'id' => 'requisicion-form', 'validateOnSubmit' => false]); ?>
+    <?php $form = ActiveForm::begin(['id' => 'requisicion-form', 'validateOnSubmit' => false]); ?>
 
     <div class= 'row' style= 'margin-top: 1.0em'>
+        
+         <?= $form -> field($model, 'req_tipo' ,['options' => ['class' => 'form-group col-sm-2']]) ->dropDownList(
+            ['0' => 'BIENES' , '1' => 'SERVICIOS'],
+            ['style' => 'font-size: 0.9em']); ?>
         <?php
-            echo $form->field($model, 'req_fecha') -> widget(DatePicker::classname(), 
+            echo $form->field($model, 'req_fecha', ['options' => ['class' => 'form-group col-sm-2']]) -> widget(DatePicker::classname(), 
             [
                  'options' => ['value' => $model->isNewRecord ? date('Y-m-d') :  $model -> req_fecha,
                                  'style' => 'font-size: 0.9em'], 
@@ -49,9 +43,9 @@ use app\models\ReqConfiguracion;
                     'format' => 'yyyy-mm-dd']
             ]); 
         ?>  
-        <?= $form -> field($model, 'req_folio') -> textInput(['style' => 'font-size: 0.9em']);; ?>
+       
         <?php
-            echo $form->field($model, 'req_fechasolicitante') -> widget(DatePicker::classname(), 
+            echo $form->field($model, 'req_fechasolicitante',['options' => ['class' => 'form-group col-sm-2']] ) -> widget(DatePicker::classname(), 
             [
                 'options' => ['value' => $model -> isNewRecord ? date('Y-m-d') : $model -> req_fecha,
                                 'style' => 'font-size: 0.9em'],
@@ -64,13 +58,15 @@ use app\models\ReqConfiguracion;
                     'format' => 'yyyy-mm-dd']
             ]); 
         ?>  
-        <?= $form ->field($model, 'req_esoperativo') -> checkbox(['labelOptions' => ['class' => 'text-justify', 'style' => 'font-size: 0.9em']]); ?> 
    
+        <?= $form -> field($model, 'req_folio', ['options' => ['class' => 'form-group col-sm-2']]) -> textInput(['style' => 'font-size: 0.9em']);; ?>
+
+        <?= $form ->field($model, 'req_esoperativo',['options' => ['class' => 'form-group col-sm-4']]) -> checkbox(['labelOptions' => ['class' => 'text-justify', 'style' => 'margin-top:15px;font-size: 0.9em;']]); ?> 
 
     </div>
 
     <div class= 'row'>
-        <?= $form -> field($model, 'req_justificacion') -> textarea(['label' => 'Justificación', 'rows' => 2, 'placeholder' => 'LO ANTERIOR PARA SER UTILIZADO EN LA ACCIÓN:', 'style' => 'font-size: 0.9em']); ?>
+        <?= $form -> field($model, 'req_justificacion',['options' => ['class' => 'form-group col-sm-12']]) -> textarea(['label' => 'Justificación', 'rows' => 2, 'placeholder' => 'LO ANTERIOR PARA SER UTILIZADO EN LA ACCIÓN:', 'style' => 'font-size: 0.9em']); ?>
     </div>
         
     <div class="row req-detalle-form">

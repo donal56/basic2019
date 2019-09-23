@@ -1,0 +1,3 @@
+CREATE TRIGGER `req_actualizado` BEFORE UPDATE ON `req_requisicion` FOR EACH ROW begin
+ set new.req_fechaactualizado = CURDATE();
+end;
