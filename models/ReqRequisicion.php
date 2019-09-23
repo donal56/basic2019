@@ -42,7 +42,7 @@ class ReqRequisicion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['req_fecha', 'req_fechasolicitante'], 'safe'],
+            [['req_fecha', 'req_fechasolicitante','req_fechaactualizado'], 'safe'],
             [['req_fkper_solicitante', 'req_fkper_subdirector', 'req_fkper_planeacion', 'req_fkper_director', 'req_fkconfiguracion'], 'required'],
             [['req_fkper_solicitante', 'req_esoperativo', 'req_fkper_subdirector', 'req_fkper_planeacion', 'req_fkper_director', 'req_fkconfiguracion'], 'integer'],
             [['req_justificacion'], 'string'],
@@ -66,6 +66,7 @@ class ReqRequisicion extends \yii\db\ActiveRecord
             'req_folio' => 'Folio',
             'req_fkper_solicitante' => 'Solicitante',
             'req_fechasolicitante' => 'Fecha de solicitud',
+            'req_fechaactualizado' => 'Fecha de actualización',
             'req_esoperativo' => '¿Los bienes o servicios estan contemplados en el programa operativo anual?',
             'req_justificacion' => 'Justificación',
             'req_fkper_subdirector' => 'Subdirector',

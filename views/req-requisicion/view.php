@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'req_id',
-            'req_fecha',
+            'req_fecha:date',
             'req_folio',
              [
                 'attribute' => 'req_fkper_solicitante',
@@ -47,14 +47,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->getSolicitante()->getFullName();
                 }
             ],
-            'req_fechasolicitante',
-            [
-                'attribute' =>  'req_esoperativo',
-                'format'    => 'raw',
-                'value'     => function ($model) {
-                    return $model->req_esoperativo = 1 ? 'Si' : 'No';
-                }
-            ],
+            'req_fechasolicitante:date',
+            'req_fechaactualizado:date',
+            'req_esoperativo:boolean',
             'req_justificacion:ntext',
             [
                 'attribute' => 'req_fkper_subdirector',

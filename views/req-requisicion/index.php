@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             'req_folio',
-            'req_fecha',
+            'req_fecha:date',
             [
                 'attribute' => 'req_justificacion',
                 'format' => 'raw',

@@ -74,6 +74,7 @@ class ReqRequisicionSearch extends ReqRequisicion
             'req_fecha' => $this->req_fecha,
             'req_fkper_solicitante' => $usuarioActual,
             'req_fechasolicitante' => $this->req_fechasolicitante,
+            'req_fechaactualizado' => $this->req_fechaactualizado,
             'req_esoperativo' => $this->req_esoperativo,
             'req_fkper_subdirector' => $this->req_fkper_subdirector,
             'req_fkper_planeacion' => $this->req_fkper_planeacion,
