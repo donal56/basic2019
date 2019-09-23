@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : MySQL
+ Source Server         : localhost
  Source Server Type    : MySQL
  Source Server Version : 80016
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80016
  File Encoding         : 65001
 
- Date: 20/09/2019 17:00:13
+ Date: 23/09/2019 14:58:41
 */
 
 SET NAMES utf8mb4;
@@ -373,6 +373,33 @@ CREATE TABLE `auth_rule`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for req_area
+-- ----------------------------
+DROP TABLE IF EXISTS `req_area`;
+CREATE TABLE `req_area`  (
+  `are_id` int(11) NOT NULL AUTO_INCREMENT,
+  `are_nivel` int(1) DEFAULT NULL,
+  `are_nombre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `are_fkper_responsable` int(11) NOT NULL,
+  `are_fkper_superior` int(11) NOT NULL,
+  PRIMARY KEY (`are_id`) USING BTREE,
+  INDEX `fk_req_area_req_personal_idx`(`are_fkper_responsable`) USING BTREE,
+  INDEX `are_fkper_superior`(`are_fkper_superior`) USING BTREE,
+  CONSTRAINT `fk_req_departamento_req_personal1` FOREIGN KEY (`are_fkper_responsable`) REFERENCES `req_personal` (`per_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `req_area_ibfk_1` FOREIGN KEY (`are_fkper_superior`) REFERENCES `req_personal` (`per_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of req_area
+-- ----------------------------
+INSERT INTO `req_area` VALUES (5, 2, 'DIRECCIÓN', 7, 7);
+INSERT INTO `req_area` VALUES (6, 1, 'SUBDIRECCIÓN DE PLANEACIÓN Y VINCULACIÓN', 9, 7);
+INSERT INTO `req_area` VALUES (7, 0, 'DEPTO. DE PLAN., PROG. Y PRESUPUESTACIÓN', 6, 8);
+INSERT INTO `req_area` VALUES (8, 0, 'DEPARTAMENTO DE CENTRO DE COMPUTO', 5, 8);
+INSERT INTO `req_area` VALUES (9, 1, ' SUBDIRECCIÓN DE SERVICIOS ADMINISTRATIVOS', 8, 7);
+INSERT INTO `req_area` VALUES (10, 1, 'SUBDIRECCIÓN ACADEMICA', 10, 7);
+
+-- ----------------------------
 -- Table structure for req_configuracion
 -- ----------------------------
 DROP TABLE IF EXISTS `req_configuracion`;
@@ -433,6 +460,7 @@ INSERT INTO `req_detalle` VALUES (75, 28, '11 M00 PIA 2 5 3 2530 5 E010 1 14 127
 DROP TABLE IF EXISTS `req_personal`;
 CREATE TABLE `req_personal`  (
   `per_id` int(11) NOT NULL AUTO_INCREMENT,
+  `per_titulo` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `per_nombre` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `per_paterno` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `per_materno` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
@@ -445,12 +473,12 @@ CREATE TABLE `req_personal`  (
 -- ----------------------------
 -- Records of req_personal
 -- ----------------------------
-INSERT INTO `req_personal` VALUES (5, 'MTC. JOSE MANUEL', 'GOMEZ', 'ZEA', 1);
-INSERT INTO `req_personal` VALUES (6, 'LIC. INFORM. LAURA ELENA', 'SUAREZ', 'VIDAL', 6);
-INSERT INTO `req_personal` VALUES (7, 'M.A. ANGEL FRANCISCO', 'VELASCO', 'MUÑOZ', 7);
-INSERT INTO `req_personal` VALUES (8, 'M.A.P.P EDUARDO ENOCH', 'GALINDO', 'SANCHEZ', 9);
-INSERT INTO `req_personal` VALUES (9, 'M.I. RAUL', 'RAMIREZ', 'QUIROZ', 10);
-INSERT INTO `req_personal` VALUES (10, 'M.C. BRISSA ROXANA', 'DE LEON ', 'DE LOS SANTOS', 11);
+INSERT INTO `req_personal` VALUES (5, 'MTC.', 'JOSE MANUEL', 'GOMEZ', 'ZEA', 1);
+INSERT INTO `req_personal` VALUES (6, 'ISC.', 'LAURA ELENA', 'SUAREZ', 'VIDAL', 6);
+INSERT INTO `req_personal` VALUES (7, 'M.A.', 'ANGEL FRANCISCO', 'VELASCO', 'MUÑOZ', 7);
+INSERT INTO `req_personal` VALUES (8, 'M.A.P.P', 'EDUARDO ENOCH', 'GALINDO', 'SANCHEZ', 9);
+INSERT INTO `req_personal` VALUES (9, 'M.I.', 'RAUL', 'RAMIREZ', 'QUIROZ', 10);
+INSERT INTO `req_personal` VALUES (10, 'M.C.', 'BRISSA ROXANA', 'DE LEON ', 'DE LOS SANTOS', 11);
 
 -- ----------------------------
 -- Table structure for req_requisicion
