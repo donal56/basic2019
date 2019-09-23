@@ -24,6 +24,8 @@ use yii\helpers\ArrayHelper;
 
     <?php $form = ActiveForm::begin(); ?>
 
+    <?= $form->field($model, 'per_titulo')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'per_nombre')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'per_paterno')->textInput(['maxlength' => true]) ?>

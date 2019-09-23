@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'per_id',
+            'per_titulo',
             'per_nombre',
             'per_paterno',
             'per_materno',

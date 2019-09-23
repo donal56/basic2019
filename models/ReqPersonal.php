@@ -39,7 +39,8 @@ class ReqPersonal extends \yii\db\ActiveRecord
         return [
             [['per_fkuser'], 'required'],
             [['per_fkuser'], 'integer'],
-            [['per_nombre', 'per_paterno', 'per_materno'], 'string', 'max' => 60],
+            [['per_titulo'], 'string', 'max' => 20],
+            [['per_titulo','per_nombre', 'per_paterno', 'per_materno'], 'string', 'max' => 60],
             [['per_fkuser'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['per_fkuser' => 'id']],
         ];
     }
@@ -51,6 +52,7 @@ class ReqPersonal extends \yii\db\ActiveRecord
     {
         return [
             'per_id' => 'ID',
+            'per_titulo' => 'Titulo',
             'per_nombre' => 'Nombre',
             'per_paterno' => 'Apellido Paterno',
             'per_materno' => 'Apellido Materno',
@@ -114,6 +116,6 @@ class ReqPersonal extends \yii\db\ActiveRecord
 
     public function fullName()
     {
-        return $this->per_nombre . " " . $this->per_paterno . " " . $this->per_materno;
+        return $this->per_titulo . " " . $this->per_nombre . " " . $this->per_paterno . " " . $this->per_materno;
     }
 }
