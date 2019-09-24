@@ -28,6 +28,7 @@ use Yii;
  */
 class ReqRequisicion extends \yii\db\ActiveRecord
 {
+    public $req_total = 0;
     /**
      * @inheritdoc
      */
@@ -74,6 +75,7 @@ class ReqRequisicion extends \yii\db\ActiveRecord
             'req_fkper_planeacion' => 'Jefe de planeación',
             'req_fkper_director' => 'Director',
             'req_fkconfiguracion' => 'Configuración',
+            'req_total' => 'Total',
         ];
     }
 
@@ -171,6 +173,17 @@ class ReqRequisicion extends \yii\db\ActiveRecord
     {
         return $this->findPersona($this->req_fkper_director);
     }
+
+    public function getTotal()
+    {   
+        $detalles = $this->getDetalle();
+        foreach ($detalles as $detalle)
+        {
+            $this->req_total += $detalle->det_costo;
+        }
+        return $this->req_total;
+    }
+
 
     public function getDetalle()
     {    

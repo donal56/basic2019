@@ -43,13 +43,27 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => Html::activeDropDownList($searchModel, 'req_tipo', ['0' => 'BIENES' , '1' => 'SERVICIOS'],['class'=>'form-control','style'=>'padding:0px;font-size: 0.85em;','prompt' => '']),
                 'contentOptions' => ['style' => 'width:9.5em;font-size: 0.85em;'],
             ],
-            'req_fecha:date',
+            [
+                'attribute' => 'req_fecha',
+                'format' => 'date',
+                'contentOptions' => ['style' => 'width: 1em; font-size: 0.85em'],
+            ],
             [
                 'attribute' => 'req_justificacion',
                 'format' => 'raw',
                 'value' => function($model)
                 {
                     return mb_substr($model->req_justificacion,0,85)."...";
+                
+                },
+                'contentOptions' => ['style' => 'font-size: 0.85em'],
+            ],
+            [
+                'attribute' => "req_total",
+                'format' => 'raw',
+                'value' => function($model)
+                {
+                    return '$'.number_format( $model->getTotal(), 2, '.', ',');
                 
                 },
                 'contentOptions' => ['style' => 'font-size: 0.85em'],
