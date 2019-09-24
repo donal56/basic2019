@@ -19,7 +19,7 @@ class ReqPersonalSearch extends ReqPersonal
     {
         return [
             [['per_id', 'per_fkuser'], 'integer'],
-            [['per_nombre', 'per_paterno', 'per_materno'], 'safe'],
+            [['per_titulo','per_nombre', 'per_paterno', 'per_materno'], 'safe'],
         ];
     }
 
@@ -64,6 +64,7 @@ class ReqPersonalSearch extends ReqPersonal
         ]);
 
         $query->andFilterWhere(['like', 'per_nombre', $this->per_nombre])
+            ->andFilterWhere(['like', 'per_titulo', $this->per_titulo])
             ->andFilterWhere(['like', 'per_paterno', $this->per_paterno])
             ->andFilterWhere(['like', 'per_materno', $this->per_materno]);
 

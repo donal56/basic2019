@@ -29,6 +29,7 @@ use app\components\SWS_API;
  */
 class ReqRequisicion extends \yii\db\ActiveRecord
 {
+    public $req_total = 0;
     /**
      * @inheritdoc
      */
@@ -43,7 +44,7 @@ class ReqRequisicion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['req_fecha', 'req_fechasolicitante'], 'safe'],
+            [['req_tipo','req_fecha', 'req_fechasolicitante','req_fechaactualizado'], 'safe'],
             [['req_fkper_solicitante', 'req_fkper_subdirector', 'req_fkper_planeacion', 'req_fkper_director', 'req_fkconfiguracion'], 'required'],
             [['req_fkper_solicitante', 'req_esoperativo', 'req_fkper_subdirector', 'req_fkper_planeacion', 'req_fkper_director', 'req_fkconfiguracion'], 'integer'],
             [['req_justificacion'], 'string'],
@@ -65,14 +66,17 @@ class ReqRequisicion extends \yii\db\ActiveRecord
             'req_id' => 'ID',
             'req_fecha' => 'Fecha de elaboración',
             'req_folio' => 'Folio',
+            'req_tipo' => 'Tipo',
             'req_fkper_solicitante' => 'Solicitante',
             'req_fechasolicitante' => 'Fecha de solicitud',
+            'req_fechaactualizado' => 'Fecha de actualización',
             'req_esoperativo' => '¿Los bienes o servicios estan contemplados en el programa operativo anual?',
             'req_justificacion' => 'Justificación',
             'req_fkper_subdirector' => 'Subdirector',
             'req_fkper_planeacion' => 'Jefe de planeación',
             'req_fkper_director' => 'Director',
             'req_fkconfiguracion' => 'Configuración',
+            'req_total' => 'Total',
         ];
     }
 
@@ -170,6 +174,17 @@ class ReqRequisicion extends \yii\db\ActiveRecord
     {
         return $this->findPersona($this->req_fkper_director);
     }
+
+    public function getTotal()
+    {   
+        $detalles = $this->getDetalle();
+        foreach ($detalles as $detalle)
+        {
+            $this->req_total += $detalle->det_costo;
+        }
+        return $this->req_total;
+    }
+
 
     public function getDetalle()
     {    

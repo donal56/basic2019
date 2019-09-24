@@ -20,7 +20,7 @@ class ReqRequisicionSearch extends ReqRequisicion
     {
         return [
             [['req_id', 'req_fkper_solicitante', 'req_esoperativo', 'req_fkper_subdirector', 'req_fkper_planeacion', 'req_fkper_director', 'req_fkconfiguracion'], 'integer'],
-            [['req_fecha', 'req_folio', 'req_fechasolicitante', 'req_justificacion'], 'safe'],
+            [['req_tipo','req_fecha', 'req_folio', 'req_fechasolicitante', 'req_justificacion'], 'safe'],
         ];
     }
 
@@ -74,6 +74,7 @@ class ReqRequisicionSearch extends ReqRequisicion
             'req_fecha' => $this->req_fecha,
             'req_fkper_solicitante' => $usuarioActual,
             'req_fechasolicitante' => $this->req_fechasolicitante,
+            'req_fechaactualizado' => $this->req_fechaactualizado,
             'req_esoperativo' => $this->req_esoperativo,
             'req_fkper_subdirector' => $this->req_fkper_subdirector,
             'req_fkper_planeacion' => $this->req_fkper_planeacion,
@@ -81,7 +82,8 @@ class ReqRequisicionSearch extends ReqRequisicion
             'req_fkconfiguracion' => $this->req_fkconfiguracion,
         ]);
 
-        $query->andFilterWhere(['like', 'req_folio', $this->req_folio])
+        $query->andFilterWhere(['like', 'req_tipo', $this->req_tipo])
+            ->andFilterWhere(['like', 'req_folio', $this->req_folio])
             ->andFilterWhere(['like', 'req_justificacion', $this->req_justificacion]);
 
         return $dataProvider;
