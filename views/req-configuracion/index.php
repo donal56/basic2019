@@ -14,24 +14,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <br>
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <br>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'layout' => '{items}',
         'columns' => [
             'con_id',
             'con_instituto',
             [
+                'label' => 'Logo',
                 'attribute' => 'con_logo',
-                'format'    => 'raw',
-                'contentOptions' => ['style'=>'vertical-align: middle; width:65px;'],
-                'value'     => function ($model) {
-                    return '<center>'.Html::img($model->con_logo, ['width'=>'80px']).'<br>'.$model->con_logo.'</center>';
-                },
+                'format' => 'raw',
+                'value' => function ($data) 
+                {
+                    return Html::img($data->con_logo, ['alt'=>'Logo', 'height'=>'120']);
+                }
             ],
-            [
-                'attribute' => 'con_revision',
-            ],
+            'con_revision', 
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{update}',

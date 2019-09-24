@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\components\SWS_API;
 
 /**
  * This is the model class for table "req_requisicion".
@@ -180,4 +181,23 @@ class ReqRequisicion extends \yii\db\ActiveRecord
 
     }
 
+    public function checkUpdates()
+    {
+        $superiorActual = SWS_API::getSuperior()[3];
+        $planeacionActual = SWS_API::getJefePlaneacion()[3];
+        $directorActual = SWS_API::getDirector()[3];
+
+        if( $this->req_fkper_subdirector == $superiorActual && $this->req_fkper_planeacion == $planeacionActual &&  $this->req_fkper_director == $directorActual)
+        {
+            return 0;
+        }
+        else
+        {
+            return [
+                'superior' => $superiorActual,
+                'planeacion' => $planeacionActual,
+                'director' => $directorActual
+            ];
+        }   
+    }
 }

@@ -154,11 +154,35 @@ use app\models\ReqConfiguracion;
 
     </div>
 
+    <?php 
+        if(!$nuevosCargos)
+        {
+            Alert::begin([
+                'options' => [
+                    'class' => 'alert-info',
+                    'id' => 'alertFirmas'
+                ],
+            ]);
+            
+            $a = $nuevosCargos['superior'];
+            $b = $nuevosCargos['planeacion'];
+            $c = $nuevosCargos['director'];
+
+            echo <<<LABEL
+            <span class="glyphicon glyphicon-info-sign"></span>
+            <b>Se han actualizado algunos datos de las firmas.</b> ¿Desea realizar los cambios?
+            <a style= "cursor: pointer" onclick= "actualizarFirmas($a ,$b ,$c)"> Actualizar</a>
+LABEL;
+
+            Alert::end();
+        }
+    ?>
+
     <div class= 'row'>
         <?= $form -> field($model, 'req_fkper_solicitante') -> hiddenInput(['value' => SWS_API::getID()])->label(false); ?>
-        <?= $form -> field($model, 'req_fkper_subdirector') -> hiddenInput(['value' => SWS_API::getSuperior()[3]])->label(false) ?>
-        <?= $form -> field($model, 'req_fkper_planeacion') -> hiddenInput(['value' => SWS_API::getJefePlaneacion()[3]])->label(false) ?>
-        <?= $form -> field($model, 'req_fkper_director') -> hiddenInput(['value' => SWS_API::getDirector()[3]])->label(false) ?>
+        <?= $form -> field($model, 'req_fkper_subdirector') -> hiddenInput(['id' => 'fSuperior', 'value' => SWS_API::getSuperior()[3]])->label(false) ?>
+        <?= $form -> field($model, 'req_fkper_planeacion') -> hiddenInput(['id' => 'fPlaneacion', 'value' => SWS_API::getJefePlaneacion()[3]])->label(false) ?>
+        <?= $form -> field($model, 'req_fkper_director') -> hiddenInput(['id' => 'fDirector', 'value' => SWS_API::getDirector()[3]])->label(false) ?>
     </div>
 
     <?= $form -> field($model, 'req_fkconfiguracion') -> hiddenInput(['value'=> ReqConfiguracion::find()->one()->con_id])->label(false); ?><br>
@@ -203,205 +227,6 @@ use app\models\ReqConfiguracion;
 </div>
 
 <?php 
-} ?>
-
-<?php 
-$script = <<< JS
-window.errorDet = [];
-
-$('.multiple-input').on('afterInit', function() 
-{
-    if($('.list-cell__det_clave').find('input').val()!="")
-    {
-        $('.btn-success').click();
-
-    }else{
-        validateDetalles();
-    }
-    $('.list-cell__det_id').hide();
-    $('#alert-id').find('.close').attr("data-dismiss","modal"); 
-
-
-   
-    $('#ModalDet').modal('show');
-    setTimeout(function() {
-            $('#ModalDet').modal('hide');
-    }, 2500);
-
-    $('#alert-det').find('.close').attr('data-dismiss','modal');
-
-
-
-}).on('afterAddRow', function(e, row, currentIndex) 
-{
-    $('.list-cell__det_id').hide();
-
-    var first = $('.js-input-plus').clone();
-    var last = $('.js-input-remove').first().clone();
-    $('.js-input-plus').replaceWith(last);
-    $('.multiple-input-list__btn').first().replaceWith(first);
-
-    validateDetalles();
- 
-}).on('beforeAddRow', function(e, row, currentIndex)
-{
-    if(errorDet.length!=0){
-        return false;
-    }
-}).on('beforeDeleteRow', function(e, row, currentIndex)
-{
-    var conf;
-
-    if ($(row).find('input').eq(1).val()== ""){
-        conf = true;
-    }
-    else {
-        conf =  confirm('¿Seguro que quieres eliminar esta fila?');
-    }
-
-    if(conf){
-        $(row).find('input').each(
-            function(index,det) {
-              removeError($(det).attr('id'));
-            }
-        );
-    }
-    return conf;
-});
-
-//on change
-function validateDetalles(){
-
-    $("[id^='reqdetalle-temp']").on('change.yii',function(){
-    var detalle =$(this).attr('id');
-
-        if (detalle.includes('det_clave')){
-            if($(this).val().length > 100)
-            {
-
-                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
-                ["Clave  debería contener hasta 100 caracteres."]);
-                addError(detalle);
-
-            }else{
-                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
-                removeError(detalle);
-            }
-
-        }
-        if (detalle.includes('det_partida')){
-
-            if($(this).val().length > 6)
-            {
-                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
-                ["Partida  debería contener hasta 6 caracteres."]);
-                addError(detalle);
-            }else{
-                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
-                removeError(detalle);
-            }
-
-        }
-        if (detalle.includes('det_cantidad')){
-            
-            if($(this).val().length > 14)
-            {
-                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
-                ["Cantidad debería contener hasta 14 numeros"]);
-                addError(detalle);
-            }else if (isNaN($(this).val())){
-                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
-                ["Cantidad debería ser un numero sin simbolos"]);
-                addError(detalle);
-            }else{
-                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
-                removeError(detalle);
-            }
-
-        }
-        if (detalle.includes('det_unidad')){
-            if($(this).val().length > 20)
-            {
-                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
-                ["Unidad debería contener hasta 20 caracteres"]);
-                addError(detalle);
-            }else{
-                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
-                removeError(detalle);
-            }
-
-        }
-        if (detalle.includes('det_descripcion')){
-            if($(this).val().length > 5000)
-            {
-                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
-                ["Descripcion debería contener hasta 500 caracteres"]);
-                addError(detalle);
-            }else{
-                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
-                removeError(detalle);
-            }
-        
-        }
-        if (detalle.includes('det_costo')){
-            
-            if($(this).val().length > 14)
-            {
-                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
-                ["Costo debería contener hasta 14 numeros"]);
-                addError(detalle);
-            }else if (isNaN($(this).val())){
-                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), 
-                ["Costo debería ser un numero sin simbolos"]);
-                addError(detalle);
-            }else{
-                $('#requisicion-form').yiiActiveForm('updateAttribute', $(this).attr('id'), '');
-                removeError(detalle);
-            }
-        }
-
-    });
-}
-
-function removeError(detalle){
-    var index = errorDet.indexOf(detalle);
-    
-    if(index!=-1){
-        errorDet.splice(index);
-    }
-
-}
-
-function addError(detalle){
-    var index = errorDet.indexOf(detalle);
-
-    if(index==-1){
-       errorDet.push(detalle);
-    }
-
-}
-
-
-
-$('#requisicion-form').on('submit', function (e) {
-   
-    if(errorDet.length!=0){
-
-        $('#ModalCenter').modal('toggle');
-        
-        setTimeout(function() {
-            $('#ModalCenter').modal('hide');
-        }, 2500);
-        e.preventDefault();
-        
-        return false;
-   }
- 
-}); 
-
-
-JS;
-
-$this->registerJs($script);
-
+} 
+    $this->registerJsFile("/js/requisicion.js", ['depends' => 'yii\web\JqueryAsset']);
 ?>

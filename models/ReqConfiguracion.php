@@ -19,6 +19,8 @@ class ReqConfiguracion extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public $file;
+
     public static function tableName()
     {
         return 'req_configuracion';
@@ -32,8 +34,9 @@ class ReqConfiguracion extends \yii\db\ActiveRecord
         return [
             [['con_instituto'], 'required'],
             [['con_instituto'], 'string', 'max' => 50],
-            [['con_logo'], 'string', 'max' => 250],
+            [['file'], 'file', 'extensions' => 'png, jpg, jpeg'],
             [['con_revision'], 'string', 'max' => 45],
+            [['con_logo'], 'string', 'max' => 250],
         ];
     }
 
@@ -47,6 +50,7 @@ class ReqConfiguracion extends \yii\db\ActiveRecord
             'con_instituto' => 'Instituto',
             'con_logo' => 'Logo',
             'con_revision' => 'Revision',
+            'file' => 'Logo'
         ];
     }
 
