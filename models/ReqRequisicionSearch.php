@@ -43,6 +43,7 @@ class ReqRequisicionSearch extends ReqRequisicion
     public function search($params)
     {
         $query = ReqRequisicion::find();
+        $fecha = explode( ' a ', $params['ReqRequisicionSearch']['intervalo']);
        
         $query1 = new Query;
         $query1 -> select(['req_personal.per_id as ID', 
@@ -71,7 +72,6 @@ class ReqRequisicionSearch extends ReqRequisicion
         // grid filtering conditions
         $query->andFilterWhere([
             'req_id' => $this->req_id,
-            'req_fecha' => $this->req_fecha,
             'req_fkper_solicitante' => $usuarioActual,
             'req_fechasolicitante' => $this->req_fechasolicitante,
             'req_fechaactualizado' => $this->req_fechaactualizado,
@@ -85,6 +85,9 @@ class ReqRequisicionSearch extends ReqRequisicion
         $query->andFilterWhere(['like', 'req_tipo', $this->req_tipo])
             ->andFilterWhere(['like', 'req_folio', $this->req_folio])
             ->andFilterWhere(['like', 'req_justificacion', $this->req_justificacion]);
+
+        $query->andFilterWhere(['>=', 'req_fecha', $fecha[0] ])
+            ->andFilterWhere(['<=', 'req_fecha', $fecha[1]]);
 
         return $dataProvider;
     }

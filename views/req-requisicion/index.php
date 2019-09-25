@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\components\SWS_API;
+use kartik\daterange\DateRangePicker;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\RequisicionSearch */
@@ -44,10 +45,26 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['style' => 'width:9.5em;font-size: 0.85em;'],
             ],
             [
-                'attribute' => 'req_fecha',
-                'format' => 'date',
-                'contentOptions' => ['style' => 'width: 1em; font-size: 0.85em'],
+                'attribute'=>'req_fecha',
+                'label'=>'Fecha de elaboración  ',
+                'format'=>'date',
+                'filter'=> '<div class="drp-container input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>'.
+                    DateRangePicker::widget(
+                    [
+                        'name'  => 'ReqRequisicionSearch[intervalo]',
+                        'pluginOptions'=>
+                        [ 
+                            'locale'=> [ 'separator'=>' a '],
+                            'opens'=>'right'
+                        ] 
+                    ]) . '</div>',
+                'contentOptions' => ['style' => 'width: 12em; font-size: 0.85em'],
             ],
+            // [
+            //     'attribute' => 'req_fecha',
+            //     'format' => 'date',
+                
+            // ],
             [
                 'attribute' => 'req_justificacion',
                 'format' => 'raw',

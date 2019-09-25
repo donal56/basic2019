@@ -7,14 +7,14 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Requisicion */
 
-$this->title = $model->req_folio;
+$this->title = $model->req_folio? $model->req_folio : 'Requisición sin folio';
 $this->params['breadcrumbs'][] = ['label' => 'Requisiciones', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="requisicion-view">
     
     <br>
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($model->req_folio) ?></h1>
     <br>
 
     <p>

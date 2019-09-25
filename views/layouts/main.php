@@ -20,7 +20,7 @@ ItvhAsset::register($this);
     <div class="wraper">
       <?php $this->beginBody() ?>
 
-        <?php require_once('lyt_header.php'); ?>
+        <?php !Yii::$app->user->isGuest ?: require_once('lyt_header.php'); ?>
         <?php require_once('lyt_navbar.php'); ?>
 
       <div class="content_block">

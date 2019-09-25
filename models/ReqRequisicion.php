@@ -30,6 +30,7 @@ use app\components\SWS_API;
 class ReqRequisicion extends \yii\db\ActiveRecord
 {
     public $req_total = 0;
+    public $intervalo;
     /**
      * @inheritdoc
      */
