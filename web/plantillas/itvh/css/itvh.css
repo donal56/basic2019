@@ -14,6 +14,20 @@
              src: url(../fonts/SoberanaSans-Bold.otf);
              font-weight: normal ; }
 /*Barra de navegacion(layouts)*/
+@media (min-width: 768px)
+{
+    #nav-img-right
+    {
+        display: none;
+    }
+
+    #nav-img-left
+    {
+        display: none;
+    }
+}
+
+
 .navbar-default.tecnm-navbar
 {
     min-height: 40px;
