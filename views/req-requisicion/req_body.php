@@ -26,30 +26,30 @@
 		$total = 0;
 		foreach ($model->getDetalle() as $column)
 		{
-			echo '<tr>';
-
-			echo '<td style="font: 10px arial;">'.$column->det_clave.'</td>';
-
-			echo '<td style="font: 10px arial;">'.$column->det_partida.'</td>';
-
-			echo '<td style="font: 10px arial;">'.$column->det_cantidad.'</td>';
-
-			echo '<td style="font: 10px arial;">'.$column->det_unidad.'</td>';
-
-			echo '<td align="justify" style="font: 10px arial;">'.$column->det_descripcion.'</td>';
-
-			$total = $total+$column->det_costo;
-
-			echo '<td style="font: 10px arial;">'.'$'.number_format($column->det_costo, 2, '.', ',').'</td>';
-
-
-			echo '</tr>';
-		}
-
 	?>
+			<tr>
+
+			<td align="center" style="font: 10px arial;"> <?= $column->det_clave   ?> </td>
+
+			<td align="center" style="font: 10px arial;"> <?= $column->det_partida ?> </td>
+
+			<td align="center" style="font: 10px arial;"> <?= $column->det_cantidad?> </td>
+
+			<td align="center" style="font: 10px arial;"> <?= $column->det_unidad  ?> </td>
+
+			<td align="justify" style="font: 10px arial;"> <?=$column->det_descripcion ?> </td>
+
+			<?php  $total = $total+$column->det_costo; ?>
+
+			<td align="center" style="font: 10px arial;"> $<?= number_format($column->det_costo, 2, '.', ',') ?> </td>
+
+			</tr>
+		
+		<?php } ?>
+
 		<tr>
 			<td colspan="5" align="right" style="font-size: 10px;">TOTAL</td>
-			<td align="left" style="font-size: 10px;">$<?= number_format($total, 2, '.', ',') ?></td>
+			<td align="center" style="font-size: 10px;">$<?= number_format($total, 2, '.', ',') ?></td>
 		</tr>
 
 
