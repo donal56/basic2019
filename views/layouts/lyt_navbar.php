@@ -34,7 +34,7 @@ else
   ];
   $menuItems[] = 
   [
-    'label' => utf8_encode(strftime("%A, %e de %B de %Y"))
+    'label' => utf8_encode(strftime("%a, %e de %b de %Y"))
   ];
 
   $tecnm[] = 
@@ -46,25 +46,24 @@ else
     'label' => Html::img('@web/img/itvh.png', ['alt' => 'Logo', 'height' => '48'])
   ];
 
+  echo Nav::widget([
+    'options' => ['class' => 'navbar-nav navbar-left', 'id' => 'nav-img-left'],
+    'encodeLabels' => false,
+    'items' => $tecnm,
+  ]);
+
+  echo Nav::widget([
+    'options' => ['class' => 'navbar-nav navbar-right', 'id' => 'nav-img-right'],
+    'encodeLabels' => false,
+    'items' => $itvh,
+  ]);
 
 }
 
 echo Nav::widget([
-  'options' => ['class' => 'navbar-nav navbar-left'],
-  'encodeLabels' => false,
-  'items' => $tecnm,
-]);
-
-echo Nav::widget([
-    'options' => ['class' => 'navbar-nav navbar-left', 'style' => 'vertical-align: middle'],
+    'options' => ['class' => 'navbar-nav navbar-center', 'style' => 'padding: 20px'],
     'encodeLabels' => false,
     'items' => $menuItems,
-]);
-
-echo Nav::widget([
-  'options' => ['class' => 'navbar-nav navbar-right'],
-  'encodeLabels' => false,
-  'items' => $itvh,
 ]);
 
 NavBar::end();
