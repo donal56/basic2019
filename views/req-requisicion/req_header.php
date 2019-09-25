@@ -30,14 +30,16 @@
 	</table>
 
 		<div style="font: 12px arial;text-align: center;padding-top: 5mm;">
-		<b>INSTITUTO TECNOLOGICO DE <?= $model->getConfig()->con_instituto ?> <br>
+		<b>INSTITUTO TECNOLÓGICO DE <?= $model->getConfig()->con_instituto ?> <br>
 		REQUISICIÓN DE BIENES Y SERVICIOS</b>
 	</div>
 
 	<table width="100%">
 		<tr>
-			<td style="font: 10px arial;">FECHA:&nbsp;<u><?= $model->req_fecha; ?></u></td>
-			<td style="font: 10px arial;" align="right">FOLIO No:&nbsp;<u><?=($model->req_folio!=""?$model->req_folio!="":"___________")?></u></td>
+			<td style="font: 10px arial;">FECHA:&nbsp;<u><?= mb_strtoupper(\Yii::$app->formatter->asDate($model->req_fecha, 'long'));?></u></td>
+			<td style="font: 11px arial;" align="right">FOLIO No:&nbsp;
+				<u><b><?=($model->req_folio!=""?$model->req_folio :"___________")?></b></u>
+			</td>
 		</tr>
 	</table>
 
