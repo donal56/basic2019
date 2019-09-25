@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost
+ Source Server         : localhost_3306
  Source Server Type    : MySQL
  Source Server Version : 80016
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80016
  File Encoding         : 65001
 
- Date: 23/09/2019 18:50:38
+ Date: 25/09/2019 17:40:59
 */
 
 SET NAMES utf8mb4;
@@ -34,7 +34,11 @@ CREATE TABLE `auth_assignment`  (
 -- ----------------------------
 -- Records of auth_assignment
 -- ----------------------------
-INSERT INTO `auth_assignment` VALUES ('JEFE', 8, 1566510212);
+INSERT INTO `auth_assignment` VALUES ('jefe', 1, 1569451173);
+INSERT INTO `auth_assignment` VALUES ('jefe', 3, 1566588398);
+INSERT INTO `auth_assignment` VALUES ('otro', 4, 1566596332);
+INSERT INTO `auth_assignment` VALUES ('otros', 4, 1566597215);
+INSERT INTO `auth_assignment` VALUES ('otros', 6, 1569451189);
 
 -- ----------------------------
 -- Table structure for auth_item
@@ -54,7 +58,7 @@ CREATE TABLE `auth_item`  (
   INDEX `idx-auth_item-type`(`type`) USING BTREE,
   INDEX `fk_auth_item_group_code`(`group_code`) USING BTREE,
   CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `fk_auth_item_group_code` FOREIGN KEY (`group_code`) REFERENCES `auth_item_group` (`code`) ON DELETE SET NULL ON UPDATE CASCADE
+  CONSTRAINT `auth_item_ibfk_2` FOREIGN KEY (`group_code`) REFERENCES `auth_item_group` (`code`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -122,39 +126,40 @@ INSERT INTO `auth_item` VALUES ('/migrate/new', 3, NULL, NULL, NULL, 1426062189,
 INSERT INTO `auth_item` VALUES ('/migrate/redo', 3, NULL, NULL, NULL, 1426062189, 1426062189, NULL);
 INSERT INTO `auth_item` VALUES ('/migrate/to', 3, NULL, NULL, NULL, 1426062189, 1426062189, NULL);
 INSERT INTO `auth_item` VALUES ('/migrate/up', 3, NULL, NULL, NULL, 1426062189, 1426062189, NULL);
-INSERT INTO `auth_item` VALUES ('/req-area/*', 3, NULL, NULL, NULL, 1565623698, 1565623698, NULL);
-INSERT INTO `auth_item` VALUES ('/req-area/create', 3, NULL, NULL, NULL, 1565623700, 1565623700, NULL);
-INSERT INTO `auth_item` VALUES ('/req-area/delete', 3, NULL, NULL, NULL, 1565623698, 1565623698, NULL);
-INSERT INTO `auth_item` VALUES ('/req-area/index', 3, NULL, NULL, NULL, 1565623700, 1565623700, NULL);
-INSERT INTO `auth_item` VALUES ('/req-area/update', 3, NULL, NULL, NULL, 1565623699, 1565623699, NULL);
-INSERT INTO `auth_item` VALUES ('/req-area/view', 3, NULL, NULL, NULL, 1565623700, 1565623700, NULL);
-INSERT INTO `auth_item` VALUES ('/req-configuracion/*', 3, NULL, NULL, NULL, 1565623696, 1565623696, NULL);
-INSERT INTO `auth_item` VALUES ('/req-configuracion/create', 3, NULL, NULL, NULL, 1565623697, 1565623697, NULL);
-INSERT INTO `auth_item` VALUES ('/req-configuracion/delete', 3, NULL, NULL, NULL, 1565623696, 1565623696, NULL);
-INSERT INTO `auth_item` VALUES ('/req-configuracion/index', 3, NULL, NULL, NULL, 1565623698, 1565623698, NULL);
-INSERT INTO `auth_item` VALUES ('/req-configuracion/update', 3, NULL, NULL, NULL, 1565623697, 1565623697, NULL);
-INSERT INTO `auth_item` VALUES ('/req-configuracion/view', 3, NULL, NULL, NULL, 1565623697, 1565623697, NULL);
-INSERT INTO `auth_item` VALUES ('/req-detalle/*', 3, NULL, NULL, NULL, 1565623693, 1565623693, NULL);
-INSERT INTO `auth_item` VALUES ('/req-detalle/create', 3, NULL, NULL, NULL, 1565623695, 1565623695, NULL);
-INSERT INTO `auth_item` VALUES ('/req-detalle/delete', 3, NULL, NULL, NULL, 1565623694, 1565623694, NULL);
-INSERT INTO `auth_item` VALUES ('/req-detalle/index', 3, NULL, NULL, NULL, 1565623696, 1565623696, NULL);
-INSERT INTO `auth_item` VALUES ('/req-detalle/update', 3, NULL, NULL, NULL, 1565623694, 1565623694, NULL);
-INSERT INTO `auth_item` VALUES ('/req-detalle/view', 3, NULL, NULL, NULL, 1565623695, 1565623695, NULL);
-INSERT INTO `auth_item` VALUES ('/req-personal/*', 3, NULL, NULL, NULL, 1565623691, 1565623691, NULL);
-INSERT INTO `auth_item` VALUES ('/req-personal/create', 3, NULL, NULL, NULL, 1565623692, 1565623692, NULL);
-INSERT INTO `auth_item` VALUES ('/req-personal/delete', 3, NULL, NULL, NULL, 1565623691, 1565623691, NULL);
-INSERT INTO `auth_item` VALUES ('/req-personal/index', 3, NULL, NULL, NULL, 1565623693, 1565623693, NULL);
-INSERT INTO `auth_item` VALUES ('/req-personal/update', 3, NULL, NULL, NULL, 1565623691, 1565623691, NULL);
-INSERT INTO `auth_item` VALUES ('/req-personal/view', 3, NULL, NULL, NULL, 1565623693, 1565623693, NULL);
-INSERT INTO `auth_item` VALUES ('/req-requisicion/*', 3, NULL, NULL, NULL, 1565623687, 1565623687, NULL);
-INSERT INTO `auth_item` VALUES ('/req-requisicion/create', 3, NULL, NULL, NULL, 1565623689, 1565623689, NULL);
-INSERT INTO `auth_item` VALUES ('/req-requisicion/delete', 3, NULL, NULL, NULL, 1565623689, 1565623689, NULL);
-INSERT INTO `auth_item` VALUES ('/req-requisicion/index', 3, NULL, NULL, NULL, 1565623690, 1565623690, NULL);
-INSERT INTO `auth_item` VALUES ('/req-requisicion/report', 3, NULL, NULL, NULL, 1565623688, 1565623688, NULL);
-INSERT INTO `auth_item` VALUES ('/req-requisicion/update', 3, NULL, NULL, NULL, 1565623689, 1565623689, NULL);
-INSERT INTO `auth_item` VALUES ('/req-requisicion/view', 3, NULL, NULL, NULL, 1565623690, 1565623690, NULL);
+INSERT INTO `auth_item` VALUES ('/req-area/*', 3, NULL, NULL, NULL, 1566588299, 1566588299, NULL);
+INSERT INTO `auth_item` VALUES ('/req-area/create', 3, NULL, NULL, NULL, 1566588300, 1566588300, NULL);
+INSERT INTO `auth_item` VALUES ('/req-area/delete', 3, NULL, NULL, NULL, 1566588300, 1566588300, NULL);
+INSERT INTO `auth_item` VALUES ('/req-area/index', 3, NULL, NULL, NULL, 1566588300, 1566588300, NULL);
+INSERT INTO `auth_item` VALUES ('/req-area/update', 3, NULL, NULL, NULL, 1566588300, 1566588300, NULL);
+INSERT INTO `auth_item` VALUES ('/req-area/view', 3, NULL, NULL, NULL, 1566588300, 1566588300, NULL);
+INSERT INTO `auth_item` VALUES ('/req-configuracion/*', 3, NULL, NULL, NULL, 1566588298, 1566588298, NULL);
+INSERT INTO `auth_item` VALUES ('/req-configuracion/create', 3, NULL, NULL, NULL, 1566588299, 1566588299, NULL);
+INSERT INTO `auth_item` VALUES ('/req-configuracion/delete', 3, NULL, NULL, NULL, 1566588299, 1566588299, NULL);
+INSERT INTO `auth_item` VALUES ('/req-configuracion/index', 3, NULL, NULL, NULL, 1566588299, 1566588299, NULL);
+INSERT INTO `auth_item` VALUES ('/req-configuracion/update', 3, NULL, NULL, NULL, 1566588299, 1566588299, NULL);
+INSERT INTO `auth_item` VALUES ('/req-configuracion/view', 3, NULL, NULL, NULL, 1566588299, 1566588299, NULL);
+INSERT INTO `auth_item` VALUES ('/req-detalle/*', 3, NULL, NULL, NULL, 1566588297, 1566588297, NULL);
+INSERT INTO `auth_item` VALUES ('/req-detalle/create', 3, NULL, NULL, NULL, 1566588298, 1566588298, NULL);
+INSERT INTO `auth_item` VALUES ('/req-detalle/delete', 3, NULL, NULL, NULL, 1566588297, 1566588297, NULL);
+INSERT INTO `auth_item` VALUES ('/req-detalle/index', 3, NULL, NULL, NULL, 1566588298, 1566588298, NULL);
+INSERT INTO `auth_item` VALUES ('/req-detalle/update', 3, NULL, NULL, NULL, 1566588298, 1566588298, NULL);
+INSERT INTO `auth_item` VALUES ('/req-detalle/view', 3, NULL, NULL, NULL, 1566588298, 1566588298, NULL);
+INSERT INTO `auth_item` VALUES ('/req-personal/*', 3, NULL, NULL, NULL, 1566588296, 1566588296, NULL);
+INSERT INTO `auth_item` VALUES ('/req-personal/create', 3, NULL, NULL, NULL, 1566588297, 1566588297, NULL);
+INSERT INTO `auth_item` VALUES ('/req-personal/delete', 3, NULL, NULL, NULL, 1566588296, 1566588296, NULL);
+INSERT INTO `auth_item` VALUES ('/req-personal/index', 3, NULL, NULL, NULL, 1566588297, 1566588297, NULL);
+INSERT INTO `auth_item` VALUES ('/req-personal/update', 3, NULL, NULL, NULL, 1566588296, 1566588296, NULL);
+INSERT INTO `auth_item` VALUES ('/req-personal/view', 3, NULL, NULL, NULL, 1566588297, 1566588297, NULL);
+INSERT INTO `auth_item` VALUES ('/req-requisicion/*', 3, NULL, NULL, NULL, 1566588295, 1566588295, NULL);
+INSERT INTO `auth_item` VALUES ('/req-requisicion/create', 3, NULL, NULL, NULL, 1566588296, 1566588296, NULL);
+INSERT INTO `auth_item` VALUES ('/req-requisicion/delete', 3, NULL, NULL, NULL, 1566588295, 1566588295, NULL);
+INSERT INTO `auth_item` VALUES ('/req-requisicion/index', 3, NULL, NULL, NULL, 1566588296, 1566588296, NULL);
+INSERT INTO `auth_item` VALUES ('/req-requisicion/report', 3, NULL, NULL, NULL, 1566588295, 1566588295, NULL);
+INSERT INTO `auth_item` VALUES ('/req-requisicion/update', 3, NULL, NULL, NULL, 1566588295, 1566588295, NULL);
+INSERT INTO `auth_item` VALUES ('/req-requisicion/view', 3, NULL, NULL, NULL, 1566588296, 1566588296, NULL);
 INSERT INTO `auth_item` VALUES ('/site/*', 3, NULL, NULL, NULL, 1510367286, 1510367286, NULL);
 INSERT INTO `auth_item` VALUES ('/site/about', 3, NULL, NULL, NULL, 1510367286, 1510367286, NULL);
+INSERT INTO `auth_item` VALUES ('/site/acceso', 3, NULL, NULL, NULL, 1566597172, 1566597172, NULL);
 INSERT INTO `auth_item` VALUES ('/site/captcha', 3, NULL, NULL, NULL, 1510367286, 1510367286, NULL);
 INSERT INTO `auth_item` VALUES ('/site/contact', 3, NULL, NULL, NULL, 1510367286, 1510367286, NULL);
 INSERT INTO `auth_item` VALUES ('/site/dash', 3, NULL, NULL, NULL, 1510367286, 1510367286, NULL);
@@ -162,20 +167,21 @@ INSERT INTO `auth_item` VALUES ('/site/error', 3, NULL, NULL, NULL, 1510367286, 
 INSERT INTO `auth_item` VALUES ('/site/index', 3, NULL, NULL, NULL, 1510367286, 1510367286, NULL);
 INSERT INTO `auth_item` VALUES ('/site/login', 3, NULL, NULL, NULL, 1510367286, 1510367286, NULL);
 INSERT INTO `auth_item` VALUES ('/site/logout', 3, NULL, NULL, NULL, 1510367286, 1510367286, NULL);
-INSERT INTO `auth_item` VALUES ('/sws-dashboard/*', 3, NULL, NULL, NULL, 1565623684, 1565623684, NULL);
-INSERT INTO `auth_item` VALUES ('/sws-dashboard/contador', 3, NULL, NULL, NULL, 1565623685, 1565623685, NULL);
-INSERT INTO `auth_item` VALUES ('/sws-dashboard/create', 3, NULL, NULL, NULL, 1565623686, 1565623686, NULL);
-INSERT INTO `auth_item` VALUES ('/sws-dashboard/delete', 3, NULL, NULL, NULL, 1565623685, 1565623685, NULL);
-INSERT INTO `auth_item` VALUES ('/sws-dashboard/index', 3, NULL, NULL, NULL, 1565623687, 1565623687, NULL);
-INSERT INTO `auth_item` VALUES ('/sws-dashboard/submenu', 3, NULL, NULL, NULL, 1565623684, 1565623684, NULL);
-INSERT INTO `auth_item` VALUES ('/sws-dashboard/update', 3, NULL, NULL, NULL, 1565623685, 1565623685, NULL);
-INSERT INTO `auth_item` VALUES ('/sws-dashboard/view', 3, NULL, NULL, NULL, 1565623686, 1565623686, NULL);
-INSERT INTO `auth_item` VALUES ('/sws-dashboardgrupos/*', 3, NULL, NULL, NULL, 1565623682, 1565623682, NULL);
-INSERT INTO `auth_item` VALUES ('/sws-dashboardgrupos/create', 3, NULL, NULL, NULL, 1565623683, 1565623683, NULL);
-INSERT INTO `auth_item` VALUES ('/sws-dashboardgrupos/delete', 3, NULL, NULL, NULL, 1565623682, 1565623682, NULL);
-INSERT INTO `auth_item` VALUES ('/sws-dashboardgrupos/index', 3, NULL, NULL, NULL, 1565623683, 1565623683, NULL);
-INSERT INTO `auth_item` VALUES ('/sws-dashboardgrupos/update', 3, NULL, NULL, NULL, 1565623682, 1565623682, NULL);
-INSERT INTO `auth_item` VALUES ('/sws-dashboardgrupos/view', 3, NULL, NULL, NULL, 1565623683, 1565623683, NULL);
+INSERT INTO `auth_item` VALUES ('/site/tablas', 3, NULL, NULL, NULL, 1566588294, 1566588294, NULL);
+INSERT INTO `auth_item` VALUES ('/sws-dashboard/*', 3, NULL, NULL, NULL, 1566588293, 1566588293, NULL);
+INSERT INTO `auth_item` VALUES ('/sws-dashboard/contador', 3, NULL, NULL, NULL, 1566588293, 1566588293, NULL);
+INSERT INTO `auth_item` VALUES ('/sws-dashboard/create', 3, NULL, NULL, NULL, 1566588293, 1566588293, NULL);
+INSERT INTO `auth_item` VALUES ('/sws-dashboard/delete', 3, NULL, NULL, NULL, 1566588293, 1566588293, NULL);
+INSERT INTO `auth_item` VALUES ('/sws-dashboard/index', 3, NULL, NULL, NULL, 1566588294, 1566588294, NULL);
+INSERT INTO `auth_item` VALUES ('/sws-dashboard/submenu', 3, NULL, NULL, NULL, 1566588293, 1566588293, NULL);
+INSERT INTO `auth_item` VALUES ('/sws-dashboard/update', 3, NULL, NULL, NULL, 1566588293, 1566588293, NULL);
+INSERT INTO `auth_item` VALUES ('/sws-dashboard/view', 3, NULL, NULL, NULL, 1566588294, 1566588294, NULL);
+INSERT INTO `auth_item` VALUES ('/sws-dashboardgrupos/*', 3, NULL, NULL, NULL, 1566588292, 1566588292, NULL);
+INSERT INTO `auth_item` VALUES ('/sws-dashboardgrupos/create', 3, NULL, NULL, NULL, 1566588292, 1566588292, NULL);
+INSERT INTO `auth_item` VALUES ('/sws-dashboardgrupos/delete', 3, NULL, NULL, NULL, 1566588292, 1566588292, NULL);
+INSERT INTO `auth_item` VALUES ('/sws-dashboardgrupos/index', 3, NULL, NULL, NULL, 1566588293, 1566588293, NULL);
+INSERT INTO `auth_item` VALUES ('/sws-dashboardgrupos/update', 3, NULL, NULL, NULL, 1566588292, 1566588292, NULL);
+INSERT INTO `auth_item` VALUES ('/sws-dashboardgrupos/view', 3, NULL, NULL, NULL, 1566588293, 1566588293, NULL);
 INSERT INTO `auth_item` VALUES ('/user-management/*', 3, NULL, NULL, NULL, 1426062189, 1426062189, NULL);
 INSERT INTO `auth_item` VALUES ('/user-management/auth-item-group/*', 3, NULL, NULL, NULL, 1426062189, 1426062189, NULL);
 INSERT INTO `auth_item` VALUES ('/user-management/auth-item-group/bulk-activate', 3, NULL, NULL, NULL, 1426062189, 1426062189, NULL);
@@ -267,9 +273,11 @@ INSERT INTO `auth_item` VALUES ('createUsers', 2, 'Create users', NULL, NULL, 14
 INSERT INTO `auth_item` VALUES ('deleteUsers', 2, 'Delete users', NULL, NULL, 1426062189, 1426062189, 'userManagement');
 INSERT INTO `auth_item` VALUES ('editUserEmail', 2, 'Edit user email', NULL, NULL, 1426062189, 1426062189, 'userManagement');
 INSERT INTO `auth_item` VALUES ('editUsers', 2, 'Edit users', NULL, NULL, 1426062189, 1426062189, 'userManagement');
-INSERT INTO `auth_item` VALUES ('JEFE', 1, 'JEFE', NULL, NULL, 1566510051, 1566510051, NULL);
-INSERT INTO `auth_item` VALUES ('JEFE DEP', 2, 'JEFE DE DEPARTAMENTO', NULL, NULL, 1566510140, 1566510140, 'JEFES');
+INSERT INTO `auth_item` VALUES ('jefe', 1, 'jefe', NULL, NULL, 1566588353, 1566588353, NULL);
 INSERT INTO `auth_item` VALUES ('otro', 1, 'otro', NULL, NULL, 1510364638, 1510364638, NULL);
+INSERT INTO `auth_item` VALUES ('otros', 1, 'accesoOtros', NULL, NULL, 1566597076, 1566597076, NULL);
+INSERT INTO `auth_item` VALUES ('permisoOtros', 2, 'permisoOtros', NULL, NULL, 1566597166, 1566597166, 'otros');
+INSERT INTO `auth_item` VALUES ('prueba', 2, 'prueba', NULL, NULL, 1566588282, 1566588282, 'prueba');
 INSERT INTO `auth_item` VALUES ('Usuario General', 2, 'Usuario General', NULL, NULL, 1510367259, 1510367259, 'userManagement');
 INSERT INTO `auth_item` VALUES ('viewRegistrationIp', 2, 'View registration IP', NULL, NULL, 1426062189, 1426062189, 'userManagement');
 INSERT INTO `auth_item` VALUES ('viewUserEmail', 2, 'View user email', NULL, NULL, 1426062189, 1426062189, 'userManagement');
@@ -293,22 +301,17 @@ CREATE TABLE `auth_item_child`  (
 -- ----------------------------
 -- Records of auth_item_child
 -- ----------------------------
-INSERT INTO `auth_item_child` VALUES ('JEFE DEP', '//index');
-INSERT INTO `auth_item_child` VALUES ('JEFE DEP', '/dashboard/*');
-INSERT INTO `auth_item_child` VALUES ('Usuario General', '/req-requisicion/*');
-INSERT INTO `auth_item_child` VALUES ('JEFE DEP', '/req-requisicion/create');
-INSERT INTO `auth_item_child` VALUES ('Usuario General', '/req-requisicion/create');
-INSERT INTO `auth_item_child` VALUES ('Usuario General', '/req-requisicion/delete');
-INSERT INTO `auth_item_child` VALUES ('JEFE DEP', '/req-requisicion/index');
-INSERT INTO `auth_item_child` VALUES ('Usuario General', '/req-requisicion/index');
-INSERT INTO `auth_item_child` VALUES ('JEFE DEP', '/req-requisicion/report');
-INSERT INTO `auth_item_child` VALUES ('Usuario General', '/req-requisicion/report');
-INSERT INTO `auth_item_child` VALUES ('JEFE DEP', '/req-requisicion/update');
-INSERT INTO `auth_item_child` VALUES ('JEFE DEP', '/req-requisicion/view');
-INSERT INTO `auth_item_child` VALUES ('Usuario General', '/req-requisicion/view');
-INSERT INTO `auth_item_child` VALUES ('JEFE DEP', '/sws-dashboard/*');
-INSERT INTO `auth_item_child` VALUES ('JEFE DEP', '/sws-dashboard/index');
-INSERT INTO `auth_item_child` VALUES ('Usuario General', '/sws-dashboard/submenu');
+INSERT INTO `auth_item_child` VALUES ('prueba', '/dashboard/index');
+INSERT INTO `auth_item_child` VALUES ('prueba', '/req-requisicion/create');
+INSERT INTO `auth_item_child` VALUES ('prueba', '/req-requisicion/index');
+INSERT INTO `auth_item_child` VALUES ('prueba', '/req-requisicion/report');
+INSERT INTO `auth_item_child` VALUES ('prueba', '/req-requisicion/update');
+INSERT INTO `auth_item_child` VALUES ('prueba', '/req-requisicion/view');
+INSERT INTO `auth_item_child` VALUES ('permisoOtros', '/site/acceso');
+INSERT INTO `auth_item_child` VALUES ('prueba', '/site/index');
+INSERT INTO `auth_item_child` VALUES ('Usuario General', '/site/index');
+INSERT INTO `auth_item_child` VALUES ('prueba', '/sws-dashboard/submenu');
+INSERT INTO `auth_item_child` VALUES ('prueba', '/sws-dashboardgrupos/index');
 INSERT INTO `auth_item_child` VALUES ('changeOwnPassword', '/user-management/auth/change-own-password');
 INSERT INTO `auth_item_child` VALUES ('assignRolesToUsers', '/user-management/user-permission/set');
 INSERT INTO `auth_item_child` VALUES ('assignRolesToUsers', '/user-management/user-permission/set-roles');
@@ -331,6 +334,8 @@ INSERT INTO `auth_item_child` VALUES ('Admin', 'changeUserPassword');
 INSERT INTO `auth_item_child` VALUES ('Admin', 'createUsers');
 INSERT INTO `auth_item_child` VALUES ('Admin', 'deleteUsers');
 INSERT INTO `auth_item_child` VALUES ('Admin', 'editUsers');
+INSERT INTO `auth_item_child` VALUES ('otros', 'permisoOtros');
+INSERT INTO `auth_item_child` VALUES ('jefe', 'prueba');
 INSERT INTO `auth_item_child` VALUES ('otro', 'Usuario General');
 INSERT INTO `auth_item_child` VALUES ('editUserEmail', 'viewUserEmail');
 INSERT INTO `auth_item_child` VALUES ('assignRolesToUsers', 'viewUserRoles');
@@ -356,7 +361,8 @@ CREATE TABLE `auth_item_group`  (
 -- ----------------------------
 -- Records of auth_item_group
 -- ----------------------------
-INSERT INTO `auth_item_group` VALUES ('JEFES', 'JEFES', 1566510105, 1566510105);
+INSERT INTO `auth_item_group` VALUES ('otros', 'otros', 1566597116, 1566597116);
+INSERT INTO `auth_item_group` VALUES ('prueba', 'prueba', 1566588258, 1566588258);
 INSERT INTO `auth_item_group` VALUES ('userCommonPermissions', 'User common permission', 1426062189, 1426062189);
 INSERT INTO `auth_item_group` VALUES ('userManagement', 'User management', 1426062189, 1426062189);
 
@@ -432,7 +438,7 @@ CREATE TABLE `req_detalle`  (
   PRIMARY KEY (`det_id`) USING BTREE,
   INDEX `fk_Producto_requisicion_req1_idx`(`det_fkrequisicion`) USING BTREE,
   CONSTRAINT `fk_Producto_requisicion_req1` FOREIGN KEY (`det_fkrequisicion`) REFERENCES `req_requisicion` (`req_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 76 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 101 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of req_detalle
@@ -630,5 +636,7 @@ CREATE TABLE `user_visit_log`  (
 INSERT INTO `user_visit_log` VALUES (1, '5d89263b2987e', '127.0.0.1', 'es', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36', 1, 1569269307, 'Chrome', 'Windows');
 INSERT INTO `user_visit_log` VALUES (2, '5d89345c5220d', '127.0.0.1', 'es', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36', 1, 1569272924, 'Chrome', 'Windows');
 INSERT INTO `user_visit_log` VALUES (3, '5d893ac96f018', '127.0.0.1', 'es', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36', 1, 1569274569, 'Chrome', 'Windows');
+INSERT INTO `user_visit_log` VALUES (224, '5d8bec8b2a549', '127.0.0.1', 'es', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36', 1, 1569451147, 'Chrome', 'Windows');
+INSERT INTO `user_visit_log` VALUES (225, '5d8becce3a731', '127.0.0.1', 'es', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36', 6, 1569451214, 'Chrome', 'Windows');
 
 SET FOREIGN_KEY_CHECKS = 1;
