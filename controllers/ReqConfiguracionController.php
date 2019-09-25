@@ -8,6 +8,7 @@ use app\models\ReqConfiguracionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * ConfiguracionController implements the CRUD actions for ReqConfiguracion model.
@@ -30,7 +31,7 @@ class ReqConfiguracionController extends Controller
             [ 
  
                 'class' => \yii\filters\AccessControl::className(), 
-                'only' => ['index','create','update','view'], 
+                'only' => ['index','update'], 
                 'rules' =>  
                 [ 
                     // allow authenticated users
@@ -64,30 +65,30 @@ class ReqConfiguracionController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
+    // public function actionView($id)
+    // {
+    //     return $this->render('view', [
+    //         'model' => $this->findModel($id),
+    //     ]);
+    // }
 
     /**
      * Creates a new ReqConfiguracion model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
-        $model = new ReqConfiguracion();
+    // public function actionCreate()
+    // {
+    //     $model = new ReqConfiguracion();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->con_id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
+    //     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+    //         return $this->redirect(['view', 'id' => $model->con_id]);
+    //     } else {
+    //         return $this->render('create', [
+    //             'model' => $model,
+    //         ]);
+    //     }
+    // }
 
     /**
      * Updates an existing ReqConfiguracion model.
@@ -98,13 +99,35 @@ class ReqConfiguracionController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $oldPath = Yii::getAlias("@webroot") . $model->con_logo;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->con_id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if ($model->load(Yii::$app->request->post())) 
+        {
+            try
+            {
+                $model->file = UploadedFile::getInstance($model, 'file');
+                $model->file->saveAs( Yii::getAlias("@webroot") . '/img/requisiciones/'. $model->file->baseName . '.' . $model->file->extension, false);
+                $model->con_logo = '/img/requisiciones/'. $model->file->baseName . '.' . $model->file->extension;
+
+                try
+                {
+                    unlink($oldPath);
+                }
+                catch(Exception $e) {   }
+            }
+            catch(Exception $e)
+            {
+
+            }
+            finally
+            {
+                $model->save();
+                return $this->redirect(['index']);
+            }   
+        }
+        else 
+        {
+            return $this->render('update', ['model' => $model]);
         }
     }
 
@@ -114,12 +137,12 @@ class ReqConfiguracionController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
+    // public function actionDelete($id)
+    // {
+    //     $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
-    }
+    //     return $this->redirect(['index']);
+    // }
 
     /**
      * Finds the ReqConfiguracion model based on its primary key value.

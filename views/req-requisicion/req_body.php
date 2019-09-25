@@ -84,7 +84,7 @@
 		<tr>
 			<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?= $sws::getSuperior()[2] ?>
 				<br>&nbsp; 	<?=  $sws::getSuperior()[0]?>
-			</td>
+			</td>Cambiar estooooooooo al modeloooooooooooooo
 			<td align="center" style="font-size: 10px;border-right: 10mm solid #FFF;"><?= $sws::getJefePlaneacion()[2] ?>
 				<br>&nbsp; 	<?=  $sws::getJefePlaneacion()[0] ?>
 			</td>

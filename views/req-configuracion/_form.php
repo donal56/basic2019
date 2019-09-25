@@ -10,16 +10,17 @@ use yii\widgets\ActiveForm;
 
 <div class="req-configuracion-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'con_instituto')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'con_logo')->textInput(['maxlength' => true]) ?>
+    <!-- <?= $form->field($model, 'con_logo')->textInput(['maxlength' => true]) ?> -->
+    <?= $form->field($model, 'file')->fileInput(['accept' => '.jpg,.jpeg,.png', 'class' => 'well']) ?>
 
     <?= $form->field($model, 'con_revision')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton('Actualizar', ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Cancelar', '/req-configuracion', ['Class' => 'btn btn-danger']); ?>
     </div>
 
