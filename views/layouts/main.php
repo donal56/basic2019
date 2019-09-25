@@ -32,7 +32,7 @@ ItvhAsset::register($this);
       </div>
       <?php $this->endBody() ?>
     </div>
-    <?php require_once('lyt_footer.php'); ?>
+    <?php #require_once('lyt_footer.php'); ?>
   </body>
 </html>
 <?php $this->endPage() ?>
