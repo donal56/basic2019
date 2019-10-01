@@ -72,10 +72,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function($model)
                 {
-                    return StringHelper::truncateWords($model->req_justificacion, 10);
+                    return StringHelper::truncate($model->req_justificacion, 80);
                 
                 },
-                'contentOptions' => ['style' => 'font-size: 0.85em'],
+                'contentOptions' => ['style' => 'max-width:52em;font-size: 0.85em'],
                 'filterOptions' => ['class' => 'input-group-sm'],
             ],
             [
@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return '$'.number_format( $model->getTotal(), 2, '.', ',');
                 
                 },
-                'contentOptions' => ['style' => 'font-size: 0.85em'],
+                'contentOptions' => ['style' => 'width:10em;font-size: 0.85em'],
                 'filter'=> "<input class = 'form-control' name= 'ReqRequisicionSearch[costoTotal]'></input>",
                 'filterOptions' => ['class' => 'input-group-sm'],
             ],
