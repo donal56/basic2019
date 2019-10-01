@@ -9,7 +9,7 @@ use webvimark\modules\UserManagement\UserManagementModule;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
-$this->title = 'Login';
+$this->title = 'Inicio de sesión';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
