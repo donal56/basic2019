@@ -298,7 +298,7 @@ class ReqRequisicionController extends Controller
 
         if($this -> getIDUsuarioActual() == $model->getSolicitanteID() && SWS_API::find())
         {
-
+            $sws = new SWS_API();
             $pdf = new Pdf([
                 // set to use core fonts only
                 'mode' => Pdf::MODE_CORE, 
@@ -317,9 +317,9 @@ class ReqRequisicionController extends Controller
             
             $mpdf = $pdf->api;
 
-            $mpdf -> SetHTMLHeader($this->renderPartial('req_header', [ 'model' =>   $model, 'sws' => new SWS_API() ]));
+            $mpdf->SetHTMLHeader($this->renderPartial('req_header',['model' => $model, 'sws' => $sws]));
 
-            $pdf->content = $this->renderPartial('req_body', [ 'model' =>   $model, 'sws' => new SWS_API() ]);
+            $pdf->content = $this->renderPartial('req_body', [ 'model' =>   $model, 'sws' => $sws]);
          
             $mpdf -> SetHTMLFooter($this->renderPartial('req_footer', [ 'model' =>   $model ]));
        
