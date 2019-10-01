@@ -7,6 +7,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
 use app\models\ReqRequisicion;
+use app\models\ReqPersonal;
 
 /**
  * RequisicionSearch represents the model behind the search form about `app\models\Requisicion`.
@@ -43,16 +44,14 @@ class ReqRequisicionSearch extends ReqRequisicion
     public function search($params)
     {
         $query = ReqRequisicion::find();
+        $query->addSelect(["*", "SUM(req_detalle.det_costo) AS req_costoTotal"])
+              ->innerJoin('req_detalle', 'req_requisicion.req_id = req_detalle.det_fkrequisicion')
+              ->groupBy(['req_requisicion.req_id']);
+
+
         $fecha = explode( ' a ', $params['ReqRequisicionSearch']['intervalo']);
-       
-        $query1 = new Query;
-        $query1 -> select(['req_personal.per_id as ID', 
-        'CONCAT(req_personal.per_nombre, " ", req_personal.per_paterno, " ", req_personal.per_materno) as Nombre '])
-            -> from('req_personal')
-            -> join('INNER JOIN', 'user', 'req_personal.per_fkuser = user.id')
-            -> where(['user.id' => Yii::$app->user->identity->id]);
-        $data1 = $query1 -> createCommand() -> queryAll();
-        $usuarioActual = $query1 -> createCommand() -> queryAll()[0]['ID'];
+        $costoTotal = $params['ReqRequisicionSearch']['costoTotal'];
+        $usuarioActual = ReqPersonal::findOne(['per_fkuser' => Yii::$app->user->identity->id])->per_id;
 
         // add conditions that should always apply here
 
@@ -87,7 +86,10 @@ class ReqRequisicionSearch extends ReqRequisicion
             ->andFilterWhere(['like', 'req_justificacion', $this->req_justificacion]);
 
         $query->andFilterWhere(['>=', 'req_fecha', $fecha[0] ])
-            ->andFilterWhere(['<=', 'req_fecha', $fecha[1]]);
+                ->andFilterWhere(['<=', 'req_fecha', $fecha[1]]);
+
+        if( $costoTotal)
+            $query->having(['=', 'req_costoTotal', $costoTotal]);
 
         return $dataProvider;
     }

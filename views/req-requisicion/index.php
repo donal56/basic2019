@@ -16,14 +16,14 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="requisicion-index">
 
     <br>
-    <h1><?= Html::encode($this->title) ?></h1>
+
+    <div>
+        <h2 align= 'center' style= 'display: inline-block'><?= Html::encode($this->title) ?></h2>
+        <?= Html::a('Nueva Requisición', ['create'], ['class' => 'btn btn-success btn-sm', 'style' => 'float: right; display: inline-block']) ?>
+    </div>
+
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <br>
-
-    <p>
-        <?= Html::a('Nueva Requisición', ['create'], ['class' => 'btn btn-success']) ?>
-        <br><br>
-    </p>
 
 <?php Pjax::begin(['enablePushState'=>false]); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -84,15 +84,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 
                 },
                 'contentOptions' => ['style' => 'font-size: 0.85em'],
+                'filter'=> "<input class = 'form-control' name= 'ReqRequisicionSearch[costoTotal]'></input>"
             ],
-            ['class' => 'yii\grid\ActionColumn',
-            'buttons' => [
-                'print' => function ($url, $model, $key) {
-                    return Html::a ( '<span class="glyphicon glyphicon-print"></span> ', ['req-requisicion/report', 'id' => $model->req_id],['data-pjax'=>"0"]);
-
-                },
-            ],
-            'template' => '{print} {view} {update} {delete} '
+            [
+                'class' => 'app\components\ActionColumnPlus',
+                'filter'=> Html::a('Limpiar filtros', ['index'], ['class' => 'btn btn-default']),
+                'buttons' => 
+                [
+                    'print' => function ($url, $model, $key) 
+                    {
+                        return Html::a ( '<span class="glyphicon glyphicon-print"></span> ', ['req-requisicion/report', 'id' => $model->req_id],['data-pjax'=>"0"]);
+                    },
+                ],
+                'template' => '{print} {view} {update} {delete} '
             ]
         ],
     ]); 

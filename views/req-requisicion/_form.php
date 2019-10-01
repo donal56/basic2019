@@ -14,9 +14,6 @@ use app\models\ReqConfiguracion;
 /* @var $this yii\web\View */
 /* @var $model app\models\Requisicion */
 /* @var $form yii\widgets\ActiveForm */
-
-    $query3 = new Query;
-    $data5 = $query3->select(['con_id as ID' , 'CONCAT("INSTITUTO TECNOLÓGICO DE ", con_instituto) as Instituto'])->from('req_configuracion')->createCommand()->queryAll();
 ?>
 <br>
 <div class="requisicion-form">
@@ -174,12 +171,11 @@ LABEL;
         }
     ?>
 
-    <div class= 'row'>
         <?= $form -> field($model, 'req_fkper_solicitante') -> hiddenInput(['value' => SWS_API::getID()])->label(false); ?>
         <?= $form -> field($model, 'req_fkper_subdirector') -> hiddenInput(['id' => 'fSuperior', 'value' => SWS_API::getSuperior()[3]])->label(false) ?>
         <?= $form -> field($model, 'req_fkper_planeacion') -> hiddenInput(['id' => 'fPlaneacion', 'value' => SWS_API::getJefePlaneacion()[3]])->label(false) ?>
         <?= $form -> field($model, 'req_fkper_director') -> hiddenInput(['id' => 'fDirector', 'value' => SWS_API::getDirector()[3]])->label(false) ?>
-    </div>
+
 
     <?= $form -> field($model, 'req_fkconfiguracion') -> hiddenInput(['value'=> ReqConfiguracion::find()->one()->con_id])->label(false); ?><br>
 
