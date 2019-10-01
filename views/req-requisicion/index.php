@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\components\SWS_API;
 use kartik\daterange\DateRangePicker;
+use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\RequisicionSearch */
@@ -21,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <h2 align= 'center' style= 'display: inline-block'><?= Html::encode($this->title) ?></h2>
         <?= Html::a('Nueva Requisición', ['create'], ['class' => 'btn btn-success btn-sm', 'style' => 'float: right; display: inline-block']) ?>
     </div>
-
+    <br>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
 <?php Pjax::begin(['enablePushState'=>false]); ?>    <?= GridView::widget([
@@ -31,6 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'req_folio',
                 'contentOptions' => ['style' => 'width:8em'],
+                'filterOptions' => ['class' => 'input-group-sm'],
             ],
             [
                 'attribute' => 'req_tipo',
@@ -42,12 +44,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'filter' => Html::activeDropDownList($searchModel, 'req_tipo', ['0' => 'BIENES' , '1' => 'SERVICIOS'],['class'=>'form-control','style'=>'padding:0px;font-size: 0.85em;','prompt' => '']),
                 'contentOptions' => ['style' => 'width:9.5em;font-size: 0.85em;'],
+                'filterOptions' => ['class' => 'input-group-sm'],
             ],
             [
                 'attribute'=>'req_fecha',
                 'label'=>'Fecha de elaboración  ',
                 'format'=>'date',
-                'filter'=> '<div class="drp-container input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>'.
+                'filter'=> '<div class="drp-container input-group-sm input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>'.
                     DateRangePicker::widget(
                     [
                         'name'  => 'ReqRequisicionSearch[intervalo]',
@@ -69,10 +72,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function($model)
                 {
-                    return mb_substr($model->req_justificacion,0,85)."...";
+                    return StringHelper::truncateWords($model->req_justificacion, 10);
                 
                 },
                 'contentOptions' => ['style' => 'font-size: 0.85em'],
+                'filterOptions' => ['class' => 'input-group-sm'],
             ],
             [
                 'attribute' => "req_total",
@@ -83,11 +87,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 
                 },
                 'contentOptions' => ['style' => 'font-size: 0.85em'],
-                'filter'=> "<input class = 'form-control' name= 'ReqRequisicionSearch[costoTotal]'></input>"
+                'filter'=> "<input class = 'form-control' name= 'ReqRequisicionSearch[costoTotal]'></input>",
+                'filterOptions' => ['class' => 'input-group-sm'],
             ],
             [
                 'class' => 'app\components\ActionColumnPlus',
-                'filter'=> Html::a('Limpiar filtros', ['index'], ['class' => 'btn btn-default']),
+                'filter'=> Html::a('Limpiar', ['index'], ['class' => 'btn btn-sm btn-default']),
                 'buttons' => 
                 [
                     'print' => function ($url, $model, $key) 
