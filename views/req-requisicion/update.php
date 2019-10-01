@@ -12,9 +12,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
 ?>
 <div class="requisicion-update">
-    <br>
-    <h1><?= Html::encode($this->title) ?></h1>
-    <br>
+    <h3 style="text-align: center;"><?= Html::encode($this->title) ?></h3><hr style="margin:0;">
     <?= $this->render('_form', [
         'model' => $model,
         'modeldet' => $modeldet,

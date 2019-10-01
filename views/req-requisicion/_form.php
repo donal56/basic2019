@@ -21,7 +21,7 @@ use app\models\ReqConfiguracion;
 
     <?php $form = ActiveForm::begin(['id' => 'requisicion-form', 'validateOnSubmit' => false]); ?>
 
-    <div class= 'row' style= 'margin-top: 1.0em'>
+    <div class= 'row'>
         
          <?= $form -> field($model, 'req_tipo' ,['options' => ['class' => 'form-group col-sm-2']]) ->dropDownList(
             ['0' => 'BIENES' , '1' => 'SERVICIOS'],
@@ -66,7 +66,7 @@ use app\models\ReqConfiguracion;
         <?= $form -> field($model, 'req_justificacion',['options' => ['class' => 'form-group col-sm-12']]) -> textarea(['label' => 'Justificación', 'rows' => 2, 'placeholder' => 'LO ANTERIOR PARA SER UTILIZADO EN LA ACCIÓN:', 'style' => 'font-size: 0.9em']); ?>
     </div>
         
-    <div class="row req-detalle-form">
+    <div class="row req-detalle-form col-sm-12" >
 
         <?= $form->field($modeldet,'temp')->widget(MultipleInput::className(), 
         [
@@ -127,7 +127,7 @@ use app\models\ReqConfiguracion;
                     'type' => 'textarea',
                     'options'=> 
                     [
-                        'style' => 'height: 70px; !important; width: 47em; font-size: 0.9em',
+                        'style' => 'height: 70px; width: 48.5em; font-size: 0.9em',
                     ],
                     'enableError' => true 
                 ],
@@ -171,15 +171,14 @@ LABEL;
         }
     ?>
 
-        <?= $form -> field($model, 'req_fkper_solicitante') -> hiddenInput(['value' => SWS_API::getID()])->label(false); ?>
-        <?= $form -> field($model, 'req_fkper_subdirector') -> hiddenInput(['id' => 'fSuperior', 'value' => SWS_API::getSuperior()[3]])->label(false) ?>
-        <?= $form -> field($model, 'req_fkper_planeacion') -> hiddenInput(['id' => 'fPlaneacion', 'value' => SWS_API::getJefePlaneacion()[3]])->label(false) ?>
-        <?= $form -> field($model, 'req_fkper_director') -> hiddenInput(['id' => 'fDirector', 'value' => SWS_API::getDirector()[3]])->label(false) ?>
+        <?= $form -> field($model, 'req_fkper_solicitante',['options' => ['class' => '']]) -> hiddenInput(['value' => SWS_API::getID()])->label(false); ?>
+        <?= $form -> field($model, 'req_fkper_subdirector',['options' => ['class' => '']]) -> hiddenInput(['id' => 'fSuperior', 'value' => SWS_API::getSuperior()[3]])->label(false) ?>
+        <?= $form -> field($model, 'req_fkper_planeacion',['options' => ['class' => '']]) -> hiddenInput(['id' => 'fPlaneacion', 'value' => SWS_API::getJefePlaneacion()[3]])->label(false) ?>
+        <?= $form -> field($model, 'req_fkper_director',['options' => ['class' => '']]) -> hiddenInput(['id' => 'fDirector', 'value' => SWS_API::getDirector()[3]])->label(false) ?>
 
+    <?= $form -> field($model, 'req_fkconfiguracion',['options' => ['class' => '']]) -> hiddenInput(['value'=> ReqConfiguracion::find()->one()->con_id])->label(false); ?><br>
 
-    <?= $form -> field($model, 'req_fkconfiguracion') -> hiddenInput(['value'=> ReqConfiguracion::find()->one()->con_id])->label(false); ?><br>
-
-    <div class="row form-group col-md-3" style= 'margin-top: 1.0em'>
+    <div class="row form-group col-md-3">
         <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         <?= Html::a('Cancelar', '/req-requisicion', ['Class' => 'btn btn-danger']); ?>
     </div>

@@ -12,6 +12,7 @@ NavBar::begin([
     'brandUrl' => Yii::$app->homeUrl,
     'options' => [
         'class' => 'navbar navbar-default tecnm-navbar',
+        'style' => 'margin-bottom:1em',
     ],
 ]);
 
@@ -67,4 +68,9 @@ echo Nav::widget([
 ]);
 
 NavBar::end();
+
+$this->registerCss('.navbar .nav>li>a { 
+  padding: .3em 2em .3em .1em;
+  background-color: unset !important;
+} ');
 ?>
