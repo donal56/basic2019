@@ -38,11 +38,11 @@ else
     'linkOptions' => ['data-method' => 'post'],
   ];
   
-  $tecnm[] = 
+  $tecnm = 
   [
     'label' => Html::a(Html::img('@web/img/tecnm.png', ['alt' => 'Logo', 'height' => '50']), 'https://tecnm.mx/')
   ];
-  $itvh[] = 
+  $itvh = 
   [
     'label' => Html::a(Html::img('@web/img/itvh.png', ['alt' => 'Logo', 'height' => '40']), 'http://villahermosa.tecnm.mx/')
   ];
