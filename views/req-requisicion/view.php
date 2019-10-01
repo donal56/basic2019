@@ -13,9 +13,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="requisicion-view">
     
-    <br>
+
     <h1><?= Html::encode($model->req_folio) ?></h1>
-    <br>
+ 
 
     <p>
         <?= Html::a('', '/req-requisicion', ['class' => 'btn btn-success glyphicon glyphicon-arrow-left']) ?>

@@ -69,7 +69,7 @@ use app\models\ReqConfiguracion;
         <?= $form -> field($model, 'req_justificacion',['options' => ['class' => 'form-group col-sm-12']]) -> textarea(['label' => 'Justificación', 'rows' => 2, 'placeholder' => 'LO ANTERIOR PARA SER UTILIZADO EN LA ACCIÓN:', 'style' => 'font-size: 0.9em']); ?>
     </div>
         
-    <div class="row req-detalle-form">
+    <div class="row req-detalle-form col-sm-12" >
 
         <?= $form->field($modeldet,'temp')->widget(MultipleInput::className(), 
         [
@@ -130,7 +130,7 @@ use app\models\ReqConfiguracion;
                     'type' => 'textarea',
                     'options'=> 
                     [
-                        'style' => 'height: 70px; !important; width: 47em; font-size: 0.9em',
+                        'style' => 'height: 70px; width: 48.5em; font-size: 0.9em',
                     ],
                     'enableError' => true 
                 ],

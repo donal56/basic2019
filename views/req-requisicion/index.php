@@ -15,10 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="requisicion-index">
 
-    <br>
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-    <br>
 
     <p>
         <?= Html::a('Nueva Requisición', ['create'], ['class' => 'btn btn-success']) ?>
