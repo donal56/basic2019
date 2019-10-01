@@ -48,13 +48,13 @@ else
   ];
 
   echo Nav::widget([
-    'options' => ['class' => 'navbar-nav navbar-left', 'id' => 'nav-img-left'],
+    'options' => ['class' => 'navbar-nav navbar-left', 'id' => 'nav-img-left' ,'style' => 'margin:5px'],
     'encodeLabels' => false,
     'items' => $tecnm,
   ]);
 
   echo Nav::widget([
-    'options' => ['class' => 'navbar-nav navbar-right', 'id' => 'nav-img-right', 'style' => 'margin-right: 45px'],
+    'options' => ['class' => 'navbar-nav navbar-right', 'id' => 'nav-img-right', 'style' => 'margin-right: 45px;margin-top:5px;'],
     'encodeLabels' => false,
     'items' => $itvh,
   ]);
