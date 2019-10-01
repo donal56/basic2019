@@ -40,11 +40,11 @@ else
   
   $tecnm[] = 
   [
-    'label' => Html::img('@web/img/tecnm.png', ['alt' => 'Logo', 'height' => '50'])
+    'label' => Html::a(Html::img('@web/img/tecnm.png', ['alt' => 'Logo', 'height' => '50']), 'https://tecnm.mx/')
   ];
   $itvh[] = 
   [
-    'label' => Html::img('@web/img/itvh.png', ['alt' => 'Logo', 'height' => '40'])
+    'label' => Html::a(Html::img('@web/img/itvh.png', ['alt' => 'Logo', 'height' => '40']), 'http://villahermosa.tecnm.mx/')
   ];
 
   echo Nav::widget([
