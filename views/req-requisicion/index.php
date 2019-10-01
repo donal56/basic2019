@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return StringHelper::truncate($model->req_justificacion, 80);
                 
                 },
-                'contentOptions' => ['style' => 'max-width:52em;font-size: 0.85em'],
+                'contentOptions' => ['style' => 'font-size: 0.85em'],
                 'filterOptions' => ['class' => 'input-group-sm'],
             ],
             [
