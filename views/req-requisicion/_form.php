@@ -145,14 +145,13 @@ use app\models\ReqConfiguracion;
         ])->label(false);
         ?>
 
-    </div>
-
+</div>
     <?php 
-        if(!$nuevosCargos)
+        if(!$model->isNewRecord && $nuevosCargos)
         {
             Alert::begin([
                 'options' => [
-                    'class' => 'alert-info',
+                    'class' => 'alert-info col-sm-12',
                     'id' => 'alertFirmas'
                 ],
             ]);
@@ -171,10 +170,10 @@ LABEL;
         }
     ?>
 
-        <?= $form -> field($model, 'req_fkper_solicitante',['options' => ['class' => '']]) -> hiddenInput(['value' => SWS_API::getID()])->label(false); ?>
-        <?= $form -> field($model, 'req_fkper_subdirector',['options' => ['class' => '']]) -> hiddenInput(['id' => 'fSuperior', 'value' => SWS_API::getSuperior()[3]])->label(false) ?>
-        <?= $form -> field($model, 'req_fkper_planeacion',['options' => ['class' => '']]) -> hiddenInput(['id' => 'fPlaneacion', 'value' => SWS_API::getJefePlaneacion()[3]])->label(false) ?>
-        <?= $form -> field($model, 'req_fkper_director',['options' => ['class' => '']]) -> hiddenInput(['id' => 'fDirector', 'value' => SWS_API::getDirector()[3]])->label(false) ?>
+    <?= $form -> field($model, 'req_fkper_solicitante',['options' => ['class' => '']]) -> hiddenInput(['value' => SWS_API::getID()])->label(false); ?>
+    <?= $form -> field($model, 'req_fkper_subdirector',['options' => ['class' => '']]) -> hiddenInput(['id' => 'fSuperior', 'value' => SWS_API::getSuperior()[3]])->label(false) ?>
+    <?= $form -> field($model, 'req_fkper_planeacion',['options' => ['class' => '']]) -> hiddenInput(['id' => 'fPlaneacion', 'value' => SWS_API::getJefePlaneacion()[3]])->label(false) ?>
+    <?= $form -> field($model, 'req_fkper_director',['options' => ['class' => '']]) -> hiddenInput(['id' => 'fDirector', 'value' => SWS_API::getDirector()[3]])->label(false) ?>
 
     <?= $form -> field($model, 'req_fkconfiguracion',['options' => ['class' => '']]) -> hiddenInput(['value'=> ReqConfiguracion::find()->one()->con_id])->label(false); ?><br>
 
