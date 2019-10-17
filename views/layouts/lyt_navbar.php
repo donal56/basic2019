@@ -6,7 +6,7 @@ use yii\helpers\Html;
 ?>
 
 <?php
-setlocale(LC_ALL, "es_MX");
+$formatter = \Yii::$app->formatter;
 
 NavBar::begin([
     'brandUrl' => Yii::$app->homeUrl,
@@ -26,11 +26,15 @@ else
 {  
   //Agregar opciones de administrador
   //if(Yii::$app->user->identity->hasRole('Admin')):
+    
     $menuItems[] = 
     [
-      'label' => utf8_encode(strftime("%a, %e de %b de %Y"))
+      'label' => $formatter->asDate(gmdate('d-m-Y'), 'php:D, d \d\e M \d\e Y')
     ];
-  $menuItems[] = ['label' => 'Administrador', 'items'=>UserManagementModule::menuItems()];
+
+    if(Yii::$app->user->isSuperAdmin)
+        $menuItems[] = ['label' => 'Administrador', 'items'=>UserManagementModule::menuItems()];
+        
   $menuItems[] = 
   [
     'label' => 'Cerrar Sesión (' . Yii::$app->user->identity->username . ')',

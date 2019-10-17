@@ -2,13 +2,13 @@
     namespace app\components;
 
     use Yii;
-    use app\models\ReqPersonal;
+    use webvimark\modules\UserManagement\models\User;
 
     static $SWS_UserObj;
 
     class SWS_API
     {
-        public static function find()
+        public static function find(int $userID = null)
         {
             #De forma que no haga búsquedas si ya se hizo una primera vez
             if(!$GLOBALS['SWS_UserObj'])
@@ -23,11 +23,10 @@
 
 
                 #Identificando al usuario actual y sus datos personales
-                $userId= Yii::$app->user->identity->id;
-                $perObj= ReqPersonal::findOne(['per_fkuser' => $userId]);
-                $perName = $perObj->getFullName();
-
-
+                $userId=  $userID ? $userID : Yii::$app->user->identity->id;
+                $usuObj= User::findOne(['id' => $userId]);
+                $usuRFC = $usuObj->rfc;
+                
                 #Busca al jefe dentro del SWS, en caso de no encontrarlo retorna NULL
                 #Es necesario revisar los nombres esten bien escritos, incluyendo acentos
                 #Por el momento falta gente en el JSON
@@ -35,12 +34,12 @@
                 {
                     foreach($niveles[$i] as $object)
                     {
-                        if(Utilidades::lazyCompare($object->titnombre, $perName))
+                        if(Utilidades::lazyCompare($object->titular, $usuRFC))
                         {
                             $GLOBALS['SWS_UserObj'][] = $object->descripcion;
                             $GLOBALS['SWS_UserObj'][] = $object->titular;
                             $GLOBALS['SWS_UserObj'][] = mb_strtoupper($object->titnombre);
-                            $GLOBALS['SWS_UserObj'][] = $perObj->per_id;
+                            $GLOBALS['SWS_UserObj'][] = $userId;     //id del usuario
                             $GLOBALS['SWS_UserObj'][] = '';         //aun no se sabe el nivel(int), este orden es el mismo que los otros arreglos de usuarios
                             $GLOBALS['SWS_UserObj'][] = $i + 1;     //nivel en número
 
@@ -75,7 +74,7 @@
 
         public static function getID()
         {
-            //ID de personal
+            //ID de usuario
             SWS_API::find();
             return $GLOBALS['SWS_UserObj'][3];
         }
@@ -85,7 +84,7 @@
             SWS_API::find();
             $nivel = $GLOBALS['SWS_UserObj'][5];
 
-            return (!$verbose) ? $nivel : (nivel == 1 ? 'DIRECTOR(A)' : (nivel == 2 ? 'SUBDIRECTOR(A)' : 'JEFE(A) DE OFICINA'));
+            return (!$verbose) ? $nivel : ($nivel == 1 ? 'DIRECTOR(A)' : ($nivel == 2 ? 'SUBDIRECTOR(A)' : 'JEFE(A) DE OFICINA'));
         }
 
         public static function getSubdireccion()
@@ -106,7 +105,7 @@
                     foreach($subs[$i] as $object)
                     {
                         #se encuntra el nombre dentro de una de ellas
-                        if(Utilidades::lazyCompare($object->titnombre, $GLOBALS['SWS_UserObj'][2]))
+                        if(Utilidades::lazyCompare($object->titular, $GLOBALS['SWS_UserObj'][1]))
                         {
                             #la unica forma de identificarlas es por el nombre
                             $departamento = ($i == 0) ? 'SUBDIRECCION DE SERVICIOS ADMINISTRATIVOS' : (($i == 1) ? 'SUBDIRECCION DE PLANEACION Y VINCULACION' : 'SUBDIRECCION ACADEMICA');
@@ -126,7 +125,7 @@
                                     $subdireccion[0]= mb_strtoupper($subdireccion[0]);
                                     $subdireccion[1]= mb_strtoupper($subdireccion[1]);
                                     $subdireccion[2]= mb_strtoupper($subdireccion[2]);
-                                    $subdireccion[]= SWS_API::buscarID($subdireccion[2]);
+                                    $subdireccion[]= SWS_API::buscarID($subdireccion[1]);
                                     //Se usara en las firmas
                                     $subdireccion[]= 'SUBDIRECTOR(A)';
                                     
@@ -192,7 +191,7 @@
                     $pla[0]= mb_strtoupper($pla[0]);
                     $pla[1]= mb_strtoupper($pla[1]);
                     $pla[2]= mb_strtoupper($pla[2]);
-                    $pla[]= SWS_API::buscarID($pla[2]);
+                    $pla[]= SWS_API::buscarID($pla[1]);
                     $pla[]= 'JEFE(A) DE DEPTO. DE PLANEACIÓN, PROGRAMACIÓN Y PRESUPUESTACIÓN';
 
                     return $pla;
@@ -211,27 +210,45 @@
             $director[0]= mb_strtoupper($director[0]);
             $director[1]= mb_strtoupper($director[1]);
             $director[2]= mb_strtoupper($director[2]);
-            $director[]= SWS_API::buscarID($director[2]);
+            $director[]= SWS_API::buscarID($director[1]);
             $director[]= 'DIRECTOR(A)';
 
             return $director;
         }
 
-        private static function buscarID(string $nombre)
+        private static function buscarID(string $rfc)
         {
-            $modelos = ReqPersonal::find()->all();
+            $modelos = User::find()->all();
 
             foreach($modelos as $modelo)
             {
-                $modelo_nombre= $modelo->getFullName();
+                $modelo_rfc= $modelo->rfc;
 
-                if(Utilidades::lazyCompare($modelo_nombre, $nombre))
+                if(Utilidades::lazyCompare($modelo_rfc, $rfc))
                 {
-                    return $modelo->per_id;
+                    return $modelo->id;
                 }
             }
 
             return null;
+        }
+
+        public static function buscarNombre(string $rfc)
+        {
+                $nivel1 = file_get_contents('http://sws.itvillahermosa.edu.mx/ws/jefes?nivel=1');
+                $nivel2 = file_get_contents('http://sws.itvillahermosa.edu.mx/ws/jefes?nivel=2');
+                $nivel3 = file_get_contents('http://sws.itvillahermosa.edu.mx/ws/jefes?nivel=3');
+                $niveles = [json_decode($nivel1, false), json_decode($nivel2, false), json_decode($nivel3, false)];
+
+                for($i= 0; $i < sizeOf($niveles); $i++)
+                {
+                    foreach($niveles[$i] as $object)
+                    {
+                        if(Utilidades::lazyCompare($object->titular, $rfc))
+                            return mb_strtoupper($object->titnombre);
+                    }
+                }
+                return null;
         }
     }
 ?>

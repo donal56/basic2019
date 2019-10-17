@@ -7,7 +7,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
 use app\models\ReqRequisicion;
-use app\models\ReqPersonal;
+use webvimark\modules\UserManagement\models\User;
 
 /**
  * RequisicionSearch represents the model behind the search form about `app\models\Requisicion`.
@@ -20,7 +20,7 @@ class ReqRequisicionSearch extends ReqRequisicion
     public function rules()
     {
         return [
-            [['req_id', 'req_fkper_solicitante', 'req_esoperativo', 'req_fkper_subdirector', 'req_fkper_planeacion', 'req_fkper_director', 'req_fkconfiguracion'], 'integer'],
+            [['req_id', 'req_fkuse_solicitante', 'req_esoperativo', 'req_fkuse_subdirector', 'req_fkuse_planeacion', 'req_fkuse_director', 'req_fkconfiguracion'], 'integer'],
             [['req_tipo','req_fecha', 'req_folio', 'req_fechasolicitante', 'req_justificacion'], 'safe'],
         ];
     }
@@ -51,7 +51,6 @@ class ReqRequisicionSearch extends ReqRequisicion
 
         $fecha = explode( ' a ', $params['ReqRequisicionSearch']['intervalo']);
         $costoTotal = $params['ReqRequisicionSearch']['costoTotal'];
-        $usuarioActual = ReqPersonal::findOne(['per_fkuser' => Yii::$app->user->identity->id])->per_id;
 
         // add conditions that should always apply here
 
@@ -71,15 +70,17 @@ class ReqRequisicionSearch extends ReqRequisicion
         // grid filtering conditions
         $query->andFilterWhere([
             'req_id' => $this->req_id,
-            'req_fkper_solicitante' => $usuarioActual,
             'req_fechasolicitante' => $this->req_fechasolicitante,
             'req_fechaactualizado' => $this->req_fechaactualizado,
             'req_esoperativo' => $this->req_esoperativo,
-            'req_fkper_subdirector' => $this->req_fkper_subdirector,
-            'req_fkper_planeacion' => $this->req_fkper_planeacion,
-            'req_fkper_director' => $this->req_fkper_director,
-            'req_fkconfiguracion' => $this->req_fkconfiguracion,
+            'req_fkuse_subdirector' => $this->req_fkuse_subdirector,
+            'req_fkuse_planeacion' => $this->req_fkuse_planeacion,
+            'req_fkuse_director' => $this->req_fkuse_director,
+            'req_fkconfiguracion' => $this->req_fkconfiguracion
         ]);
+
+        if(!Yii::$app->user->isSuperAdmin)
+            $query->andFilterWhere(['req_fkuse_solicitante' => Yii::$app->user->identity->id]);
 
         $query->andFilterWhere(['like', 'req_tipo', $this->req_tipo])
             ->andFilterWhere(['like', 'req_folio', $this->req_folio])

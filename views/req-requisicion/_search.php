@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'req_folio') ?>
 
-    <?= $form->field($model, 'req_fkper_solicitante') ?>
+    <?= $form->field($model, 'req_fkuse_solicitante') ?>
 
     <?= $form->field($model, 'req_fechasolicitante') ?>
 
@@ -29,11 +29,11 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'req_justificacion') ?>
 
-    <?php // echo $form->field($model, 'req_fkper_subdirector') ?>
+    <?php // echo $form->field($model, 'req_fkuse_subdirector') ?>
 
-    <?php // echo $form->field($model, 'req_fkper_planeacion') ?>
+    <?php // echo $form->field($model, 'req_fkuse_planeacion') ?>
 
-    <?php // echo $form->field($model, 'req_fkper_director') ?>
+    <?php // echo $form->field($model, 'req_fkuse_director') ?>
 
     <?php // echo $form->field($model, 'req_fkconfiguracion') ?>
 

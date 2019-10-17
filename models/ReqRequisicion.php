@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use app\components\SWS_API;
+use webvimark\modules\UserManagement\models\User;
 
 /**
  * This is the model class for table "req_requisicion".
@@ -11,20 +12,20 @@ use app\components\SWS_API;
  * @property integer $req_id
  * @property string $req_fecha
  * @property string $req_folio
- * @property integer $req_fkper_solicitante
+ * @property integer $req_fkuse_solicitante
  * @property string $req_fechasolicitante
  * @property integer $req_esoperativo
  * @property string $req_justificacion
- * @property integer $req_fkper_subdirector
- * @property integer $req_fkper_planeacion
- * @property integer $req_fkper_director
+ * @property integer $req_fkuse_subdirector
+ * @property integer $req_fkuse_planeacion
+ * @property integer $req_fkuse_director
  * @property integer $req_fkconfiguracion
  *
  * @property ReqDetalle[] $reqDetalles
- * @property ReqPersonal $reqFkperSolicitante
- * @property ReqPersonal $reqFkperSubdirector
- * @property ReqPersonal $reqFkperPlaneacion
- * @property ReqPersonal $reqFkperDirector
+ * @property User $reqFkuseSubdirector
+ * @property User $reqFusePlaneacion
+ * @property User $reqFkuseDirector
+ * @property User $reqFkuseSolicitante
  * @property ReqConfiguracion $reqFkconfiguracion
  */
 class ReqRequisicion extends \yii\db\ActiveRecord
@@ -46,14 +47,14 @@ class ReqRequisicion extends \yii\db\ActiveRecord
     {
         return [
             [['req_tipo','req_fecha', 'req_fechasolicitante','req_fechaactualizado'], 'safe'],
-            [['req_fkper_solicitante', 'req_fkper_subdirector', 'req_fkper_planeacion', 'req_fkper_director', 'req_fkconfiguracion'], 'required'],
-            [['req_fkper_solicitante', 'req_esoperativo', 'req_fkper_subdirector', 'req_fkper_planeacion', 'req_fkper_director', 'req_fkconfiguracion'], 'integer'],
+            [['req_fkuse_solicitante', 'req_fkuse_subdirector', 'req_fkuse_planeacion', 'req_fkuse_director', 'req_fkconfiguracion'], 'required'],
+            [['req_fkuse_solicitante', 'req_esoperativo', 'req_fkuse_subdirector', 'req_fkuse_planeacion', 'req_fkuse_director', 'req_fkconfiguracion'], 'integer'],
             [['req_justificacion'], 'string'],
             [['req_folio'], 'string', 'max' => 45],
-            [['req_fkper_solicitante'], 'exist', 'skipOnError' => true, 'targetClass' => ReqPersonal::className(), 'targetAttribute' => ['req_fkper_solicitante' => 'per_id']],
-            [['req_fkper_subdirector'], 'exist', 'skipOnError' => true, 'targetClass' => ReqPersonal::className(), 'targetAttribute' => ['req_fkper_subdirector' => 'per_id']],
-            [['req_fkper_planeacion'], 'exist', 'skipOnError' => true, 'targetClass' => ReqPersonal::className(), 'targetAttribute' => ['req_fkper_planeacion' => 'per_id']],
-            [['req_fkper_director'], 'exist', 'skipOnError' => true, 'targetClass' => ReqPersonal::className(), 'targetAttribute' => ['req_fkper_director' => 'per_id']],
+            [['req_fkuse_solicitante'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['req_fkuse_solicitante' => 'id']],
+            [['req_fkuse_subdirector'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['req_fkuse_subdirector' => 'id']],
+            [['req_fkuse_planeacion'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['req_fkuse_planeacion' => 'id']],
+            [['req_fkuse_director'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['req_fkuse_director' => 'id']],
             [['req_fkconfiguracion'], 'exist', 'skipOnError' => true, 'targetClass' => ReqConfiguracion::className(), 'targetAttribute' => ['req_fkconfiguracion' => 'con_id']],
         ];
     }
@@ -68,14 +69,14 @@ class ReqRequisicion extends \yii\db\ActiveRecord
             'req_fecha' => 'Fecha de elaboración',
             'req_folio' => 'Folio',
             'req_tipo' => 'Tipo',
-            'req_fkper_solicitante' => 'Solicitante',
+            'req_fkuse_solicitante' => 'Solicitante',
             'req_fechasolicitante' => 'Fecha de solicitud',
             'req_fechaactualizado' => 'Fecha de actualización',
             'req_esoperativo' => '¿Los bienes o servicios estan contemplados en el programa operativo anual?',
             'req_justificacion' => 'Justificación',
-            'req_fkper_subdirector' => 'Subdirector',
-            'req_fkper_planeacion' => 'Jefe de planeación',
-            'req_fkper_director' => 'Director',
+            'req_fkuse_subdirector' => 'Subdirector',
+            'req_fkuse_planeacion' => 'Jefe de planeación',
+            'req_fkuse_director' => 'Director',
             'req_fkconfiguracion' => 'Configuración',
             'req_total' => 'Total',
         ];
@@ -92,39 +93,39 @@ class ReqRequisicion extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getReqFkperSolicitante()
+    public function getReqFkuseSolicitante()
     {
-        return $this->hasOne(ReqPersonal::className(), ['per_id' => 'req_fkper_solicitante']);
+        return $this->hasOne(User::className(), ['id' => 'req_fkuse_solicitante']);
     }
 
     public function getSolicitanteID()
     {
-        return $this->getReqFkperSolicitante() -> asArray() -> one()['per_id'];
+        return $this->getReqFkuseSolicitante() -> asArray() -> one()['id'];
     }
 
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getReqFkperSubdirector()
+    public function getReqFkuseSubdirector()
     {
-        return $this->hasOne(ReqPersonal::className(), ['per_id' => 'req_fkper_subdirector']);
+        return $this->hasOne(User::className(), ['id' => 'req_fkuse_subdirector']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getReqFkperPlaneacion()
+    public function getReqFkusePlaneacion()
     {
-        return $this->hasOne(ReqPersonal::className(), ['per_id' => 'req_fkper_planeacion']);
+        return $this->hasOne(User::className(), ['id' => 'req_fkuse_planeacion']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getReqFkperDirector()
+    public function getReqFkuseDirector()
     {
-        return $this->hasOne(ReqPersonal::className(), ['per_id' => 'req_fkper_director']);
+        return $this->hasOne(User::className(), ['id' => 'req_fkuse_director']);
     }
 
     /**
@@ -147,9 +148,9 @@ class ReqRequisicion extends \yii\db\ActiveRecord
     }
 
 
-    public static function findPersona($id)
+    public static function findUser($id)
     {
-        if (($model = ReqPersonal::findOne($id)) !== null) {
+        if (($model = User::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('Error en el registro del personal');
@@ -158,22 +159,22 @@ class ReqRequisicion extends \yii\db\ActiveRecord
 
     public function getSolicitante()
     {
-        return $this->findPersona($this->req_fkper_solicitante);
+        return $this->findUser($this->req_fkuse_solicitante);
     }
 
     public function getSubdirector()
     {
-        return $this->findPersona($this->req_fkper_subdirector);
+        return $this->findUser($this->req_fkuse_subdirector);
     }
 
     public function getPlaneacion()
     {
-        return $this->findPersona($this->req_fkper_planeacion);
+        return $this->findUser($this->req_fkuse_planeacion);
     }
 
     public function getDirector()
     {
-        return $this->findPersona($this->req_fkper_director);
+        return $this->findUser($this->req_fkuse_director);
     }
 
     public function getTotal()
@@ -203,7 +204,7 @@ class ReqRequisicion extends \yii\db\ActiveRecord
         $planeacionActual = SWS_API::getJefePlaneacion()[3];
         $directorActual = SWS_API::getDirector()[3];
 
-        if( $this->req_fkper_subdirector == $superiorActual && $this->req_fkper_planeacion == $planeacionActual &&  $this->req_fkper_director == $directorActual)
+        if( $this->req_fkuse_subdirector == $superiorActual && $this->req_fkuse_planeacion == $planeacionActual &&  $this->req_fkuse_director == $directorActual)
         {
             return 0;
         }

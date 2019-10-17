@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
+use app\components\SWS_API;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Requisicion */
@@ -41,10 +42,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'req_fecha:date',
             'req_folio',
              [
-                'attribute' => 'req_fkper_solicitante',
+                'attribute' => 'req_fkuse_solicitante',
                 'format'    => 'raw',
                 'value'     => function ($model) {
-                    return $model->getSolicitante()->getFullName();
+                    return SWS_API::buscarNombre($model->getSolicitante()->rfc);
                 }
             ],
             [
@@ -59,24 +60,24 @@ $this->params['breadcrumbs'][] = $this->title;
             'req_esoperativo:boolean',
             'req_justificacion:ntext',
             [
-                'attribute' => 'req_fkper_subdirector',
+                'attribute' => 'req_fkuse_subdirector',
                 'format'    => 'raw',
                 'value'     => function ($model) {
-                    return $model->getSubdirector()->getFullName();
+                    return SWS_API::buscarNombre($model->getSubdirector()->rfc);
                 }
             ],
             [
-                'attribute' => 'req_fkper_planeacion',
+                'attribute' => 'req_fkuse_planeacion',
                 'format'    => 'raw',
                 'value'     => function ($model) {
-                    return $model->getPlaneacion()->getFullName();
+                    return SWS_API::buscarNombre($model->getPlaneacion()->rfc);
                 }
             ],
             [
-                'attribute' => 'req_fkper_director',
+                'attribute' => 'req_fkuse_director',
                 'format'    => 'raw',
                 'value'     => function ($model) {
-                    return $model->getDirector()->getFullName();
+                    return SWS_API::buscarNombre($model->getDirector()->rfc);
                 }
             ],
         ],

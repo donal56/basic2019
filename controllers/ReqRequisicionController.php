@@ -12,7 +12,6 @@ use app\controllers\ReqRequiscion;
 use app\models\ReqRequisicion;
 use app\models\ReqRequisicionSearch;
 use app\models\ReqConfiguracion;
-use app\models\ReqPersonal;
 use app\models\ReqArea;
 use app\models\ReqDetalle;
 use yii\db\Query;
@@ -20,6 +19,7 @@ use app\models\ReqDetalleSearch;
 use yii\web\ServerErrorHttpException;
 use yii\web\UnauthorizedHttpException;
 use app\components\SWS_API;
+use webvimark\modules\UserManagement\models\User;
 
 /**
  * RequisicionController implements the CRUD actions for Requisicion model.
@@ -84,7 +84,7 @@ class ReqRequisicionController extends Controller
         $searchModel = new ReqDetalleSearch();
         $dataProvider = $searchModel->search($id);
 
-        if($this -> getIDUsuarioActual() == $model -> getReqFkperSolicitante() -> asArray() -> one()['per_id'])
+        if(Yii::$app->user->isSuperAdmin || $this -> getIDUsuarioActual() == $model -> getReqFkuseSolicitante() -> asArray() -> one()['id'])
         {
             return $this->render('view', [
                 'model' => $this->findModel($id),
@@ -124,7 +124,7 @@ class ReqRequisicionController extends Controller
             $transaction = $connection->beginTransaction();
             $countDet = 0;
             
-            if ($req['ReqRequisicion']['req_fkper_solicitante'] === (String) $this -> getIDUsuarioActual() && $model->load($datareq) && $model->save()) {
+            if ($req['ReqRequisicion']['req_fkuse_solicitante'] === (String) $this -> getIDUsuarioActual() && $model->load($datareq) && $model->save()) {
                 $req_id =  $model->req_id;
                 //Save detalles
                 
@@ -196,7 +196,7 @@ class ReqRequisicionController extends Controller
 
         $this->view->params['empty'] = '';
 
-        if($this -> getIDUsuarioActual() == $model -> getReqFkperSolicitante() -> asArray() -> one()['per_id'])
+        if(Yii::$app->user->isSuperAdmin || $this -> getIDUsuarioActual() == $model -> getReqFkuseSolicitante() -> asArray() -> one()['id'])
         {
             $modeldet = new ReqDetalle();
             $modeldet['temp'] = $model->getDetalle();
@@ -215,7 +215,7 @@ class ReqRequisicionController extends Controller
                 $connection = \Yii::$app->db;
                 $transaction = $connection->beginTransaction();
             
-                if ($requisicion['req_fkper_solicitante'] === (String) $this -> getIDUsuarioActual()  && $model->load($datareq) && $model->save()) 
+                if ($requisicion['req_fkuse_solicitante'] === (String) $this -> getIDUsuarioActual()  && $model->load($datareq) && $model->save()) 
                 {
                     //update detalles
                     for ($i=0; $i < sizeof($detalle); $i++) 
@@ -278,7 +278,7 @@ class ReqRequisicionController extends Controller
      */
     public function actionDelete($id)
     {
-        if($this -> getIDUsuarioActual() == $this -> findModel($id)-> getReqFkperSolicitante() -> asArray() -> one()['per_id'])
+        if(Yii::$app->user->isSuperAdmin || $this -> getIDUsuarioActual() == $this -> findModel($id)-> getReqFkuseSolicitante() -> asArray() -> one()['id'])
         {
     	    ReqDetalle::deleteAll('det_fkrequisicion = '.$id);
             $this->findModel($id)->delete();
@@ -296,9 +296,12 @@ class ReqRequisicionController extends Controller
     {
         $model =  $this->findModel($id);
 
-        if($this -> getIDUsuarioActual() == $model->getSolicitanteID() && SWS_API::find())
+        if(Yii::$app->user->isSuperAdmin || $this -> getIDUsuarioActual() == $model->getSolicitanteID())
         {
             $sws = new SWS_API();
+            
+            Yii::$app->user->isSuperAdmin ? $sws::find($model->req_fkuse_solicitante) : $sws::find();
+
             $pdf = new Pdf([
                 // set to use core fonts only
                 'mode' => Pdf::MODE_CORE, 
@@ -369,16 +372,7 @@ class ReqRequisicionController extends Controller
 
     public function getIDUsuarioActual()
     {
-        $query1 = new Query;
-        $query1 -> select(['req_personal.per_id as ID', 
-            'CONCAT(req_personal.per_nombre, " ", req_personal.per_paterno, " ", req_personal.per_materno) as Nombre '])
-                -> from('req_personal')
-                -> join('INNER JOIN', 'user', 'req_personal.per_fkuser = user.id')
-                -> where(['user.id' => Yii::$app->user->identity->id]);
-        $data1 = $query1 -> createCommand() -> queryAll();
-        $usuarioActual = $query1 -> createCommand() -> queryAll()[0]['ID'];
-
-        return $usuarioActual;
+        return Yii::$app->user->identity->id;
     }
 
 }

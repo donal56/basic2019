@@ -7,9 +7,9 @@ use yii\helpers\ArrayHelper;
 use unclead\multipleinput\MultipleInput;
 use kartik\date\DatePicker;
 use yii\db\Query;
-use yii\web\User;
 use app\components\SWS_API;
 use app\models\ReqConfiguracion;
+use webvimark\modules\UserManagement\models\User;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Requisicion */
@@ -63,7 +63,7 @@ use app\models\ReqConfiguracion;
     </div>
 
     <div class= 'row'>
-        <?= $form -> field($model, 'req_justificacion',['options' => ['class' => 'form-group col-sm-12']]) -> textarea(['label' => 'Justificación', 'rows' => 2, 'placeholder' => 'LO ANTERIOR PARA SER UTILIZADO EN LA ACCIÓN:', 'style' => 'font-size: 0.9em']); ?>
+        <?= $form -> field($model, 'req_justificacion',['options' => ['class' => 'form-group col-sm-12']]) -> textarea(['label' => 'Justificación', 'rows' => 3, 'placeholder' => 'LO ANTERIOR PARA SER UTILIZADO EN LA ACCIÓN:', 'style' => 'font-size: 0.9em']); ?>
     </div>
         
     <div class="row req-detalle-form col-sm-12" >
@@ -147,7 +147,26 @@ use app\models\ReqConfiguracion;
 
 </div>
     <?php 
+
+        //si el modelo se actualiza y existen nuevos cargos
         if(!$model->isNewRecord && $nuevosCargos)
+        {
+             //Si el usuario actual es superadmin, no verificar nuevos cargos a menos de que el sea el solicitante
+            if (User::findOne(Yii::$app->user->identity->id)->superadmin)
+            {
+                if (User::findOne($model->req_fkuse_solicitante)->rfc == User::findOne(Yii::$app->user->identity->id)->rfc)
+                {
+                    alertCambios($model, $nuevosCargos);
+                }
+            }
+            else 
+            {
+                alertCambios($model, $nuevosCargos);
+            }
+            
+        }
+
+        function alertCambios($model, $nuevosCargos)
         {
             Alert::begin([
                 'options' => [
@@ -156,24 +175,42 @@ use app\models\ReqConfiguracion;
                 ],
             ]);
             
+            //IDs de usuario
             $a = $nuevosCargos['superior'];
             $b = $nuevosCargos['planeacion'];
             $c = $nuevosCargos['director'];
 
+            //nombres;
+            $old1 = SWS_API::buscarNombre(User::findOne($model->req_fkuse_subdirector)->rfc);
+            $old2 = SWS_API::buscarNombre(User::findOne($model->req_fkuse_planeacion)->rfc);
+            $old3 = SWS_API::buscarNombre(User::findOne($model->req_fkuse_director)->rfc);
+
+            //nombres
+            $new1 = SWS_API::getSuperior()[2];
+            $new2 = SWS_API::getJefePlaneacion()[2];
+            $new3 = SWS_API::getDirector()[2];
+
             echo <<<LABEL
             <span class="glyphicon glyphicon-info-sign"></span>
             <b>Se han actualizado algunos datos de las firmas.</b> ¿Desea realizar los cambios?
-            <a style= "cursor: pointer" onclick= "actualizarFirmas($a ,$b ,$c)"> Actualizar</a>
+            <a style= "cursor: pointer" onclick= "actualizarFirmas($a ,$b ,$c)"> Actualizar</a><br><br>     
 LABEL;
 
+            if ($a != $model->req_fkuse_subdirector) 
+                echo 'SUBDIRECTOR: ' . $old1 . ' => ' . $new1 . '<br>';
+            if ($b != $model->req_fkuse_planeacion)
+                echo 'JEFE DE PLANEACIÓN: ' . $old2 . ' => ' . $new2 . '<br>';
+            if ($c != $model->req_fkuse_director)
+                echo 'DIRECTOR: ' . $old3 . ' => ' . $new3 . '<br>';
+            
             Alert::end();
         }
     ?>
-
-    <?= $form -> field($model, 'req_fkper_solicitante',['options' => ['class' => '']]) -> hiddenInput(['value' => SWS_API::getID()])->label(false); ?>
-    <?= $form -> field($model, 'req_fkper_subdirector',['options' => ['class' => '']]) -> hiddenInput(['id' => 'fSuperior', 'value' => SWS_API::getSuperior()[3]])->label(false) ?>
-    <?= $form -> field($model, 'req_fkper_planeacion',['options' => ['class' => '']]) -> hiddenInput(['id' => 'fPlaneacion', 'value' => SWS_API::getJefePlaneacion()[3]])->label(false) ?>
-    <?= $form -> field($model, 'req_fkper_director',['options' => ['class' => '']]) -> hiddenInput(['id' => 'fDirector', 'value' => SWS_API::getDirector()[3]])->label(false) ?>
+  
+    <?= $form -> field($model, 'req_fkuse_solicitante',['options' => ['class' => '']]) -> hiddenInput(['value' => $model->isNewRecord ? SWS_API::getID() : $model->req_fkuse_solicitante])->label(false); ?>
+    <?= $form -> field($model, 'req_fkuse_subdirector',['options' => ['class' => '']]) -> hiddenInput(['id' => 'fSuperior', 'value' => $model->isNewRecord ? SWS_API::getSuperior()[3] : $model->req_fkuse_subdirector])->label(false) ?>
+    <?= $form -> field($model, 'req_fkuse_planeacion',['options' => ['class' => '']]) -> hiddenInput(['id' => 'fPlaneacion', 'value' => $model->isNewRecord ?SWS_API::getJefePlaneacion()[3] : $model->req_fkuse_planeacion])->label(false) ?>
+    <?= $form -> field($model, 'req_fkuse_director',['options' => ['class' => '']]) -> hiddenInput(['id' => 'fDirector', 'value' =>  $model->isNewRecord ? SWS_API::getDirector()[3]  : $model->req_fkuse_director])->label(false) ?>
 
     <?= $form -> field($model, 'req_fkconfiguracion',['options' => ['class' => '']]) -> hiddenInput(['value'=> ReqConfiguracion::find()->one()->con_id])->label(false); ?><br>
 

@@ -320,6 +320,21 @@ class Utilidades
 
    public static function lazyCompare($p1, $p2)
    {
+       #Compara sin importar espacios y mayúsculas
+      
+       $p1 = mb_strtoupper($p1);
+       $p2 = mb_strtoupper($p2);
+       $p1 = trim($p1, "\t\n\r");
+       $p2 = trim($p2, "\t\n\r");
+       $p1 = preg_replace('/\s/', '', $p1);
+       $p2 = preg_replace('/\s/', '', $p2);
+       
+       return ($p1 == $p2);
+   }
+
+
+   public static function laziestCompare($p1, $p2)
+   {
        #Compara sin importar espacios, acentos y mayúsculas
        #Termina siendo redundante
 
