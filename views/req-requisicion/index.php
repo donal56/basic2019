@@ -54,6 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     DateRangePicker::widget(
                     [
                         'name'  => 'ReqRequisicionSearch[intervalo]',
+                        'useWithAddon'=>'true',
                         'pluginOptions'=>
                         [ 
                             'locale'=> [ 'separator'=>' a '],
