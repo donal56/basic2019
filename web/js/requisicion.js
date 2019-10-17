@@ -65,7 +65,7 @@ function validateDetalles(){
 
     $("[id^='reqdetalle-temp']").on('change.yii',function(){
     var detalle =$(this).attr('id');
-
+    $(this).val($(this).val().trim());
         if (detalle.includes('det_clave')){
             if($(this).val().length > 100)
             {
