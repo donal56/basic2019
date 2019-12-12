@@ -104,6 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{print} {view} {update} {delete} '
             ]
         ],
+        'tableOptions' => ['class' => 'table table-striped table-condensed table-bordered']
     ]); 
     ?>
 <?php Pjax::end(); ?></div>
