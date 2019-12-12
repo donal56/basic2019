@@ -31,12 +31,12 @@
 .box:hover img {
 	visibility:hidden;
 }
-.caption {
+/* .caption {
 	position:absolute;
 	background:#000;
 	padding:20px 25px;
 	left:0;bottom:0;
-}
+} */
 .caption p {
 	color:#FFF;
 	margin:0px;

@@ -100,10 +100,6 @@ class SiteController extends Controller
         return $this->render('dashboardPrincipal');
     }
 
-    public function actionVue(){
-        return $this->render('vue');
-    }
-
     /**
      * Login action.
      *
