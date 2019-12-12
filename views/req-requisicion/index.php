@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <br>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-<?php Pjax::begin(['enablePushState'=>false]); ?>    <?= GridView::widget([
+<?php Pjax::begin(['timeout'=>false]); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
