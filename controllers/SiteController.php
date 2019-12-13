@@ -76,21 +76,25 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $gpo = null;
-        $prv = null;
-        if(isset(Yii::$app->SESSION['gpo'])) {
-            $gpo = Yii::$app->SESSION['gpo'];
-            unset(Yii::$app->SESSION['gpo']);
-            if(isset(Yii::$app->SESSION['prv'])) {
-                $prv = Yii::$app->SESSION['prv'];
-                unset(Yii::$app->SESSION['prv']);
-            }
-        }
-        $botones = SwsDashboard::botones($gpo,$prv);
-        if(!Yii::$app->user->isGuest) {
-            return $this->render('index',[
-	            'botones' => $botones,
-	        ]);
+        // $gpo = null;
+        // $prv = null;
+        // if(isset(Yii::$app->SESSION['gpo'])) 
+        // {
+        //     $gpo = Yii::$app->SESSION['gpo'];
+        //     unset(Yii::$app->SESSION['gpo']);
+        //     if(isset(Yii::$app->SESSION['prv'])) 
+        //     {
+        //         $prv = Yii::$app->SESSION['prv'];
+        //         unset(Yii::$app->SESSION['prv']);
+        //     }
+        // }
+
+        // $botones = SwsDashboard::botones($gpo,$prv);
+
+        if(!Yii::$app->user->isGuest) 
+        {
+            // return $this->render('index',['botones' => $botones]);
+            return $this->redirect('/req-requisicion/index');
         }
         return $this->redirect('site/login');
     }

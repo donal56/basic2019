@@ -307,7 +307,7 @@
                   }
               })], 1), a("v-list-tile-title", {
                   staticClass: "title"
-              }, [t._v("\n          Vuetify MD\n        ")])], 1), a("v-divider"), t._l(t.links, function(e, r) {
+              }, [t._v("\n          SISREPLAN\n        ")])], 1), a("v-divider"), t._l(t.links, function(e, r) {
                   return a("v-list-tile", {
                       key: r,
                       staticClass: "v-list-item",
@@ -327,9 +327,7 @@
                       "active-class": "success",
                       to: "/upgrade"
                   }
-              }, [a("v-list-tile-action", [a("v-icon", [t._v("mdi-package-up")])], 1), a("v-list-tile-title", {
-                  staticClass: "font-weight-light"
-              }, [t._v("\n          Upgrade To PRO\n        ")])], 1)], 2)], 1)], 1)
+              }, [], 1)], 2)], 1)], 1)
           },
           n = [],
           i = a("db72"),
@@ -346,36 +344,36 @@
                       logo: "favicon.ico",
                       links: [
                           {
-                            to: "/req-requisicion",
+                            to: "/",
                             icon: "mdi-file-document",
                             text: "Requisiciones"
                           },
                     {
-                          to: "/",
+                          to: "/vuetify-material-dashboard/",
                           icon: "mdi-view-dashboard",
                           text: "Dashboard"
                       }, {
-                          to: "/user-profile",
+                          to: "/vuetify-material-dashboard/user-profile",
                           icon: "mdi-account",
                           text: "User Profile"
                       }, {
-                          to: "/table-list",
+                          to: "/vuetify-material-dashboard/table-list",
                           icon: "mdi-clipboard-outline",
                           text: "Table List"
                       }, {
-                          to: "/typography",
+                          to: "/vuetify-material-dashboard/typography",
                           icon: "mdi-format-font",
                           text: "Typography"
                       }, {
-                          to: "/icons",
+                          to: "/vuetify-material-dashboard/icons",
                           icon: "mdi-chart-bubble",
                           text: "Icons"
                       }, {
-                          to: "/maps",
+                          to: "/vuetify-material-dashboard/maps",
                           icon: "mdi-map-marker",
                           text: "Maps"
                       }, {
-                          to: "/notifications",
+                          to: "/vuetify-material-dashboard/notifications",
                           icon: "mdi-bell",
                           text: "Notifications"
                       }]
@@ -581,11 +579,8 @@
           }, {
               path: "/notifications",
               view: "Notifications"
-          }, {
-              path: "/upgrade",
-              name: "Upgrade to PRO",
-              view: "Upgrade"
-          }];
+          }
+        ];
 
       function S(t, e, r) {
           return {
@@ -598,7 +593,7 @@
       }
       r["default"].use(C["a"]);
       var $ = new C["a"]({
-          base: "/vuetify-material-dashboard/",
+          base: "",
           mode: "hash",
           routes: E.map(function(t) {
               return S(t.path, t.view, t.name)
@@ -768,30 +763,10 @@
                       absolute: "",
                       height: "82"
                   }
-              }, [a("div", {
-                  staticClass: "footer-items"
-              }, t._l(t.links, function(e) {
-                  return a("span", {
-                      key: e.name
-                  }, [a("a", {
-                      staticClass: "tertiary--text footer-links",
-                      attrs: {
-                          href: e.Link
-                      }
-                  }, [t._v(t._s(e.name))])])
-              }), 0), a("v-spacer"), a("span", {
-                  staticClass: "font-weight-light copyright"
-              }, [t._v("\n    ©\n    " + t._s((new Date).getFullYear()) + "\n    "), a("a", {
-                  attrs: {
-                      href: "https://www.creative-tim.com/",
-                      target: "_blank"
-                  }
-              }, [t._v("Creative Tim")]), t._v(", made with\n    "), a("v-icon", {
-                  attrs: {
-                      color: "tertiary",
-                      size: "17"
-                  }
-              }, [t._v("mdi-heart")]), t._v("\n    for a better web\n  ")], 1)], 1)
+              }, 
+              [
+                    t._v("Footerrrrr")
+              ], 1)
           },
           n = [],
           i = {
@@ -1067,6 +1042,7 @@
       o["default"].use(c.a), o["default"].use(l["a"], {
           useCache: !0
       });
+      
       var f = {
               data: function() {
                   return {
@@ -1293,7 +1269,7 @@
           s = {
               data: function() {
                   return {
-                      notifications: ["Mike, John responded to your email", "You have 5 new tasks", "You're now a friend with Andrew", "Another Notification", "Another One"],
+                      notifications: ["Notificación 1"],
                       title: null,
                       responsive: !1
                   }

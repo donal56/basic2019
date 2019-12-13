@@ -26,8 +26,8 @@ ItvhAsset::register($this);
         <?php !Yii::$app->user->isGuest ?: require_once('lyt_header.php'); ?>
         <?php require_once('lyt_navbar.php'); ?>
 
+        <?= $content ?>
         <div id=app>
-            <?= $content ?>
         </div>
                 
         <?php $this->endBody() ?>
