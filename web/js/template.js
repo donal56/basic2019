@@ -881,8 +881,6 @@
                       left: "",
                       "min-width": "300",
                       "max-width": "300",
-                      "nudge-left": "12",
-                      "offset-x": "",
                       transition: "slide-y-transition"
                   }
               }, [a("v-btn", {
@@ -913,7 +911,7 @@
                   }
               }, [a("div", {
                   staticClass: "text-xs-center body-2 text-uppercase sidebar-filter"
-              }, [t._v("Sidebar Filters")]), a("v-layout", {
+              }, [t._v("Color")]), a("v-layout", {
                   attrs: {
                       "justify-center": ""
                   }
@@ -938,7 +936,7 @@
                   }
               }, [a("div", {
                   staticClass: "text-xs-center body-2 text-uppercase sidebar-filter"
-              }, [t._v("Images")])]), t._l(t.images, function(e) {
+              }, [t._v("Fondo")])]), t._l(t.images, function(e) {
                   return a("v-flex", {
                       key: e,
                       attrs: {
@@ -956,81 +954,8 @@
                           }
                       }
                   })], 1)
-              }), a("v-flex", {
-                  attrs: {
-                      xs12: ""
-                  }
-              }, [a("v-btn", {
-                  attrs: {
-                      href: t.freeUrl,
-                      target: "_blank",
-                      color: "success",
-                      block: ""
-                  }
-              }, [t._v("\n            Free Download\n          ")])], 1), a("v-flex", {
-                  attrs: {
-                      xs12: ""
-                  }
-              }, [a("v-btn", {
-                  staticClass: "white--text",
-                  attrs: {
-                      href: t.documentationLink,
-                      target: "_blank",
-                      color: "primary",
-                      block: ""
-                  }
-              }, [t._v("\n            Documentation\n          ")])], 1), a("v-flex", {
-                  attrs: {
-                      xs12: ""
-                  }
-              }, [a("div", {
-                  staticClass: "text-xs-center body-2 text-uppercase"
-              }, [a("div", {
-                  staticClass: " sidebar-filter"
-              }, [t._v("\n              Thank You for Sharing!\n            ")]), a("social-sharing", {
-                  attrs: {
-                      url: t.shareUrl,
-                      title: "Vuetify Material Dashboard - Admin Template for Vue.js",
-                      hashtags: "vuejs, vuex, dashboard, vuetify, vuetify material",
-                      "twitter-user": "creativetim"
-                  },
-                  inlineTemplate: {
-                      render: function() {
-                          var t = this,
-                              e = t.$createElement,
-                              a = t._self._c || e;
-                          return a("div", {
-                              staticClass: "centered-buttons"
-                          }, [a("network", {
-                              staticClass: "mr-2 v-btn-facebook v-btn v-btn--floating v-btn--icon v-btn--small theme--dark indigo v-btn--round",
-                              attrs: {
-                                  network: "facebook"
-                              }
-                          }, [a("i", {
-                              staticClass: "v-icon mdi mdi-facebook theme--dark"
-                          })]), a("network", {
-                              staticClass: "v-btn-twitter v-btn v-btn--floating v-btn--icon v-btn--small theme--dark cyan v-btn--round",
-                              attrs: {
-                                  network: "twitter"
-                              }
-                          }, [a("i", {
-                              staticClass: "v-icon mdi mdi-twitter theme--dark"
-                          })])], 1)
-                      },
-                      staticRenderFns: []
-                  }
-              })], 1)]), a("v-flex", {
-                  attrs: {
-                      xs12: ""
-                  }
-              }, [a("div", {
-                  staticClass: "text-center"
-              }, [a("gh-btns-star", {
-                  attrs: {
-                      slug: "creativetimofficial/vuetify-material-dashboard",
-                      "show-count": ""
-                  }
-              })], 1)])], 2)], 1)], 1)], 1)
+              })
+               ], 2)], 1)], 1)], 1)
           },
           n = [],
           i = a("db72"),
@@ -1046,10 +971,6 @@
       var f = {
               data: function() {
                   return {
-                      documentationLink: "https://demos.creative-tim.com/vuetify-material-dashboard/documentation",
-                      shareUrl: "https://www.creative-tim.com/product/vuetify-material-dashboard",
-                      buyUrl: "",
-                      freeUrl: "https://www.creative-tim.com/product/vuetify-material-dashboard",
                       colors: ["primary", "info", "success", "warning", "danger"],
                       images: ["https://demos.creative-tim.com/vue-material-dashboard/img/sidebar-1.23832d31.jpg", "https://demos.creative-tim.com/vue-material-dashboard/img/sidebar-2.32103624.jpg", "https://demos.creative-tim.com/vue-material-dashboard/img/sidebar-3.3a54f533.jpg", "https://demos.creative-tim.com/vue-material-dashboard/img/sidebar-4.3b7e38ed.jpg"]
                   }

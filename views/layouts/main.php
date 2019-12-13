@@ -20,19 +20,22 @@ ItvhAsset::register($this);
 </head>
 
 <body>
-    <div class="wraper">
-        <?php $this->beginBody() ?>
+    <?php $this->beginBody() ?>
 
-        <?php !Yii::$app->user->isGuest ?: require_once('lyt_header.php'); ?>
-        <?php require_once('lyt_navbar.php'); ?>
-
+    <div class="very-main-content" style= "max-width: calc(100% - 260px); float: right;">
         <?= $content ?>
-        <div id=app>
-        </div>
-                
-        <?php $this->endBody() ?>
     </div>
+
+    <div id=app>
+    </div>
+
+
+    <?php //!Yii::$app->user->isGuest ?: require_once('lyt_header.php'); ?>
+    <?php //require_once('lyt_navbar.php'); ?>
+
     <?php #require_once('lyt_footer.php'); ?>
+
+    <?php $this->endBody() ?>
 </body>
 
 </html>
